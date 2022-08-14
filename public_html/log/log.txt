@@ -1,0 +1,32 @@
+Fault: 12-08-2022 22:44:56 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 101
+
+Fault: 12-08-2022 22:45:32 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 101
+
+Fault: 12-08-2022 22:48:57 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 101
+
+Fault: 12-08-2022 22:53:29 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 76
+
+Fault: 12-08-2022 22:53:59 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 12-08-2022 22:56:38 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 12-08-2022 23:12:20 - Не верное имя файла для подключения: core/user/controller/IndexController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 12-08-2022 23:16:27 - Не верное имя файла для подключения: core/user/model/Model
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
