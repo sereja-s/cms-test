@@ -6,6 +6,10 @@ use core\base\controller\BaseMethods;
 
 // создаём класс обработки исключений, который наследует базовый класс Exception обработки исключений языка PHP
 // (знак \ говорит, что искать базовый класс Exception необходимо в глобальном пространстве имён)
+/** 
+ * Класс обработки исключений
+ * Методы: public function __construct();
+ */
 class RouteException extends \Exception
 {
 

@@ -8,7 +8,7 @@ use core\base\settings\Settings;
 
 /** 
  * Точка входа в нашу систему контроллеров (отвечает за разбор адресной строки)
- * Методы: private function __construct(); private function createRoute($var, $arr)
+ * Методы: private function __construct(); private function createRoute()
  */
 class RouteController extends BaseController
 {

@@ -26,7 +26,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		!$this->model && $this->model = Model::instance();
 	}
 
-	protected function outputData()
+	/* protected function outputData()
 	{
-	}
+	} */
 }
