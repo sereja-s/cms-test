@@ -7,7 +7,11 @@ use core\base\model\BaseModelMethods;
 
 /** 
  * Класс базовой модели
- *  Методы: protected function connect(); final public function query()
+ * (Здесь: $crud = r - SELECT / c - INSERT / u - UPDATE / d - DELETE)
+ * 
+ *  Методы: protected function connect(); final public function query(); final public function get(); 
+ * 			final public function add(); final public function edit(); public function delete(); 
+ *          final public function showColumns(); 
  */
 abstract class BaseModel extends BaseModelMethods
 {
@@ -18,7 +22,6 @@ abstract class BaseModel extends BaseModelMethods
 	 */
 	protected function connect()
 	{
-
 		//	ИНИЦИАЛИЗАЦИЯ ПОДКЛЮЧЕНИЯ ПРИ ПОМОЩИ ПОДКЛЮЧЕНИЯ БИБЛИОТЕКИ mysqli
 		// обращаемся к свойству db этого класса и в него сохраняем объект подключения библиотеки mysqli (установим заглушку текущих ошибок- @)
 		// класс mysqli (находится в глобальном пространстве имён) на вход принимает: которые хранятся в константах: 
@@ -46,10 +49,11 @@ abstract class BaseModel extends BaseModelMethods
 	 */
 
 	// Создадим метод query() с одноимённым названием (как и метод в классе (библиотеке) mysqli, использованный ранее)
-	// сделаем его финальным (не дадим возможности переопределять его в дочерних классах)
-	// на вход передадим: переменную с запросом ($query), метод которым будем этот запрос осуществлять (переменная $crud со значением по умолчанию: r (read- чтение)), идентификатор вставки $return_id со значением false
+	// сделаем его финальным (не дадим возможности переопределять его в дочерних классах)	 
+
 	/** 
-	 *  Метод делает запрос к БД и возвращает его результат
+	 *  Метод делает запрос к БД и возвращает его результат ($crud = r - SELECT / c - INSERT )
+	 * (на вход передадим: переменную с запросом ($query), метод которым будем этот запрос осуществлять (переменная $crud со значением по умолчанию: r (read- чтение)), идентификатор вставки $return_id со значением false)	  
 	 */
 	final public function query($query, $crud = 'r', $return_id = false)
 	{
@@ -135,7 +139,8 @@ abstract class BaseModel extends BaseModelMethods
 	 *           		'on'=>['id', 'parent_id']
 	 *           		'group_condition' => 'AND',
 	 *           	],
-	 *             'join_table1'=>[	              	
+	 *             'join_table2'=>[
+	 * 	            'table' => 'join_table2'  	
 	 *             	'fields' =>['id as j2_id', 'name as j2_name'],
 	 *             	'type'=>'left',
 	 *             	'where'=>['name'=>'Sasha'],
@@ -150,17 +155,19 @@ abstract class BaseModel extends BaseModelMethods
 	 */
 
 
-	// метод get (read)- получить (прочитать)	
-	/* final public function get($table, $set = [])
+	/** 
+	 * Метод get (read)- получает выборку данных из БД ($crud = r - SELECT)
+	 * (На вход: 1- таблица, 2- массив данных (если он не придёт, то будем выбирать всё из данной таблицы))
+	 */
+	final public function get($table, $set = [])
 	{
-
-		$fields = $this->createFields($set, $table); // переменная для поля, которые хотим получить
+		$fields = $this->createFields($set, $table); // переменная для полей, которые хотим получить
 
 		$order = $this->createOrder($set, $table); // переменная для хранения результата работы метода сортировки
 
-		$paginationWhere = $where = $this->createWhere($set, $table); // переменная для базового запроса
+		$paginationWhere = $where = $this->createWhere($set, $table); // переменная для базового запроса по условию (инструкция WHERE)
 
-		// если в переменную ничего не пришло
+		// если в переменную: $where ничего не пришло (Выпуск №22)
 		if (!$where) {
 			$new_where = true;
 			// иначе
@@ -168,7 +175,7 @@ abstract class BaseModel extends BaseModelMethods
 			$new_where = false;
 		}
 
-		// сохраним в переменную $join_arr массив, в который придёт запрос,сформированный по принципу JOIN
+		// сохраним в переменную $join_arr массив, в который придёт запрос, сформированный по принципу JOIN
 		$join_arr = $this->createJoin($set, $table, $new_where);
 
 		// в переменную $fields добавим то, что придёт в массив $join_arr (в его ячейку fields)
@@ -178,7 +185,7 @@ abstract class BaseModel extends BaseModelMethods
 		// в переменную $where добавим то, что придёт в массив $join_arr (в его ячейку where)
 		$where .= $join_arr['where'];
 
-		// обработаем то, что хранится в переменной $fields и обреэем последнюю запятую
+		// обработаем то, что хранится в переменной $fields и обреэаем последнюю запятую
 		$fields = rtrim($fields, ',');
 
 		// если в массив set (его ячейку limit) что то пришло, то в переменную $limit запишем 'LIMIT ' . $set['limit'], 
@@ -189,10 +196,11 @@ abstract class BaseModel extends BaseModelMethods
 		$this->createPagination($set, $table, $paginationWhere, $limit);
 
 
-		// формируем запрос в переменной $query: Выбрать поля $fields из переменной $table, далее указываем переменные, которые 
-		// придут (если они есть) $join $where $order $limit
+		// формируем запрос в переменной $query: Выбрать поля $fields из переменной $table, далее указываем переменные, 
+		// которые придут (если они есть) $join $where $order $limit
 		$query = "SELECT $fields FROM $table $join $where $order $limit";
 
+		//exit($query);
 
 		// если не пусто в ячейке: $set['return_query']
 		if (!empty($set['return_query'])) {
@@ -200,7 +208,7 @@ abstract class BaseModel extends BaseModelMethods
 			return $query; // вернём запрос, а не выборку
 		}
 
-		// вернём результат работы метода query() в переменную $res
+		// в переменную $res вернём результат работы метода query() На вход 1- переменная: $query ($crud = 'r' не указываем т.к. это значение по умолчанию)
 		$res = $this->query($query);
 
 		// проверим существует ли у нас флаг (join_structure) по которому мы будем определять: надо ли нам 
@@ -210,13 +218,12 @@ abstract class BaseModel extends BaseModelMethods
 		}
 
 		return $res;
-	} */
+	}
 
 
 
-	/* protected function createPagination($set, $table, $where, &$limit)
+	protected function createPagination($set, $table, $where, &$limit)
 	{
-
 		if (!empty($set['pagination'])) {
 
 			$this->postNumber = isset($set['pagination']['qty']) ? (int)$set['pagination']['qty'] : QTY;
@@ -234,50 +241,45 @@ abstract class BaseModel extends BaseModelMethods
 				$limit = 'LIMIT ' . ($this->page - 1) * $this->postNumber . ',' . $this->postNumber;
 			}
 		}
-	} */
-
-
-
-	/**
-	 * @param $table - table for INSERT data (таблица для вставки данных)
-	 * @param array $set - array parameters: (массив параметров)
-	 * fields => [place => value]; if not set we work with $_POST [place => value]
-	 * allow forward exsemple NOW() as Mysql Function usually as string
-	 * files => [place => value]; allow send array type [place => [array value]]
-	 * except => ['except1', 'except2'] - except this elements of array  from adding to query
-	 * return_id => true|false - return or not indeficator insert value
-	 * @return mixed
-	 */
-
+	}
 
 	/**
 	 * @param $table - таблица для вставки данных
 	 * @param array $set - массив параметров:
-	 * fields => [поле => значение]; - если не указан, то обрабатывается $_POST[поле => значение]
-	 * разрешена передача например NOW() в качестве MySql функции обычной строкой
-	 * files => [поле => значение]; - можно подать массив вида [поле => [массив значений]]
-	 * except => ['исключение 1', 'исключение 2'] - исключает данные элементы массива из добавленных в запрос
-	 * return_id => true | false - возвращать или нет идентификатор вставленной записи
+	 * fields => [поле => значение]; -если не указан, то обрабатывается $_POST[поле => значение]
+	 * Разрешена передача некоторых функций (например NOW()) в качестве MySql функции обычной строкой
+	 * files => [поле => значение]; -можно подать массив вида [поле => [массив значений]]
+	 * except => ['исключение 1', 'исключение 2'] -исключает данные элементы массива из добавленных в запрос
+	 * return_id => true | false -возвращать или нет идентификатор вставленной записи
 	 *@return mixed
 	 */
 
-	// add (create)- добавить (создать)
-	// на вход подаём переменные: $table- куда мы будем добавлять, $set = []- массив
-	/* final public function add($table, $set = [])
+	// Пример запроса на добавление данных в БД (единичная вставка):
+	// $query = "INSERT INTO teachers (name, surname, age) VALUES ('Masha', 'Sergeevna', '21')";
+
+	/** 
+	 * Метод добавляет данные в БД (add (create)- добавить (создать)- $crud = c - INSERT)
+	 * (На вход подаём переменные: $table- таблица куда будем добавлять, $set = []- по умолчанию путой массив)	   
+	 */
+	final public function add($table, $set = [])
 	{
 		// если это массив и не пуст, то сохраним его в результат, иначе сохраним суперглобальный массив $_POST
 		$set['fields'] = (is_array($set['fields']) && !empty($set['fields'])) ? $set['fields'] : $_POST;
 		// если это массив и не пуст, то сохраним его в результат, иначе вернём false
 		$set['files'] = (is_array($set['files']) && !empty($set['files'])) ? $set['files'] : false;
 
+
 		// если ничего не пришло в ячейки: fields и files массива $set
 		if (!$set['fields'] && !$set['files']) {
+
 			// то завершим работу скрипта
 			return false;
 		}
 
+
 		// если что то пришло в $set['return_id'], сохраним true , иначе false
 		$set['return_id'] = $set['return_id'] ? true : false;
+
 		// сделаем проверку: теперь для ячейки except массива $set (то что пришло в неё это массив? не пустой?) тогда сохраним это, иначе вернёт false
 		$set['except'] = (is_array($set['except']) && !empty($set['except'])) ? $set['except'] : false;
 
@@ -286,16 +288,19 @@ abstract class BaseModel extends BaseModelMethods
 		$insert_arr = $this->createInsert($set['fields'], $set['files'], $set['except']);
 
 		// формируем запрос
-		// здесь- {$insert_arr['fields']} и {$insert_arr['values']}: элементы массива (пишем в фигурных скобках, т.к. запрос 
-		// написан в двойных кавычках)
+		// здесь- {$insert_arr['fields']} и {$insert_arr['values']}- элементы массива (пишем их в фигурных скобках, т.к. 
+		// они передаются в строку(запрос) написанный в двойных кавычках)
 		$query = "INSERT INTO $table {$insert_arr['fields']} VALUES {$insert_arr['values']}";
 
 		// вернём результат работы метода query(), которому в параметры передаём переменную $query, ключ: c (т.е. создавать), ячейку return_id массива $set
 		return $this->query($query, 'c', $set['return_id']);
-	} */
+	}
 
-	// edit (update)- редактировать (обновить)
-	/* final public function edit($table, $set = [])
+	/** 
+	 * Метод редактирует данные в БД (edit (update)- редактировать (обновить)  $crud = u - UPDATE)
+	 * (На вход подаём переменные: $table- таблица куда будем добавлять, $set = []- по умолчанию путой массив)	   
+	 */
+	final public function edit($table, $set = [])
 	{
 		// начало как в final public function add()
 		$set['fields'] = (is_array($set['fields']) && !empty($set['fields'])) ? $set['fields'] : $_POST;
@@ -341,7 +346,7 @@ abstract class BaseModel extends BaseModelMethods
 
 		// вернём результат работы метода query(), которому в параметры передаём переменную $query, ключ: u (т.е.редактироать(обновить)), 
 		return $this->query($query, 'u');
-	} */
+	}
 
 	/**
 	 * @param $table // пременная (таблица)
@@ -375,8 +380,12 @@ abstract class BaseModel extends BaseModelMethods
 	 *             ]
 	 */
 
-	// delete- удалить
-	/* public function delete($table, $set = [])
+	// 
+	/** 
+	 * Метод удаляет данные в БД (delete- удалить  $crud = d - DELETE)
+	 * (На вход подаём переменные: $table- таблица куда будем добавлять, $set = []- по умолчанию путой массив)	   
+	 */
+	public function delete($table, $set = [])
 	{
 		// обрежем концевые пробелы
 		$table = trim($table);
@@ -391,7 +400,7 @@ abstract class BaseModel extends BaseModelMethods
 
 		if (is_array($set['fields']) && !empty($set['fields'])) {
 
-			// если пришло поле с первичным ключём
+			// если пришло поле с первичным ключём 
 			if ($columns['id_row']) {
 
 				// сделаем поиск в массиве (ф-ия php: array_search() если находит ключ в массиве, то возвращает его порядковый 
@@ -429,10 +438,10 @@ abstract class BaseModel extends BaseModelMethods
 		// отправим (вернём) запрос
 		// вернём результат работы метода query(), которому в параметры передаём переменную $query, ключ: u (т.е.редактироать(обновить)),
 		return $this->query($query, 'u');
-	} */
+	}
 
 	// метод модели для формирования UNION запросов к базе данных
-	/* public function buildUnion($table, $set)
+	public function buildUnion($table, $set)
 	{
 		if (array_key_exists('fields', $set) && $set['fields'] === null) {
 
@@ -464,10 +473,10 @@ abstract class BaseModel extends BaseModelMethods
 		$this->union[$table]['return_query'] = true;
 
 		return $this; // возвращаем указатель на контекст (на текущий объект данного класса)
-	} */
+	}
 
 	// метод для генерации UNION запросов и их выполнения
-	/* public function getUnion($set = [])
+	public function getUnion($set = [])
 	{
 		if (!$this->union) {
 
@@ -582,10 +591,12 @@ abstract class BaseModel extends BaseModelMethods
 		$this->union = [];
 
 		return $this->query(trim($query));
-	} */
+	}
 
-	// метод будет давать информацию о колонках с полями БД
-	/* final public function showColumns($table)
+	/** 
+	 * Метод даёт информацию о колонках с полями БД
+	 */
+	final public function showColumns($table)
 	{
 
 		// если ячейка: tableRows[$table] не существует или пустая
@@ -641,10 +652,10 @@ abstract class BaseModel extends BaseModelMethods
 		}
 
 		return $this->tableRows[$table];
-	} */
+	}
 
 	// метод который будет возвращать все таблицы из БД и будет проверять существуют ли вспомогательные таблицы
-	/* final public function showTables()
+	final public function showTables()
 	{
 		// в переменной сохраним запрос
 		$query = 'SHOW TABLES';
@@ -665,5 +676,5 @@ abstract class BaseModel extends BaseModelMethods
 		}
 
 		return $table_arr;
-	} */
+	}
 }

@@ -3,7 +3,12 @@
 namespace core\base\model;
 
 
-
+/** 
+ * Класс с методами для базовой модели
+ * 
+ * Методы: protected function createFields(); protected function createOrder(); protected function createWhere();
+ *  		  protected function createJoin(); protected function createInsert(); protected  function createUpdate()
+ */
 abstract class BaseModelMethods
 {
 	// количество элементов для показа
@@ -22,8 +27,12 @@ abstract class BaseModelMethods
 	// свойство используемое в методах модели для формирования UNION запросов к базе данных
 	protected $union = [];
 
-	/* protected function createFields($set, $table = false, $join = false)
+	/** 
+	 *  Метод вернёт строку с полями, в которой будут пристыкованы названия таблиц с псевдонимами
+	 */
+	protected function createFields($set, $table = false, $join = false)
 	{
+		// Проверим существует ли в массиве в $set, ячейка: ['fields'] и пришло ли в неё что-нибудь
 		// array_key_exists() — проверяет, существует ли в массиве заданный ключ или индекс
 		if (array_key_exists('fields', $set) && $set['fields'] === null) {
 			return '';
@@ -48,6 +57,7 @@ abstract class BaseModelMethods
 		// если у нас пришёл: $join или значение в ячейке: $set['join_structure'] установлено отличным от null
 		// и $set['join_structure'] возвращает true и что то пришло в $table
 		if (($join || isset($set['join_structure']) && $set['join_structure']) && $table) {
+
 			// поставим флаг структуризации джоинов в значение: true
 			$join_structure = true;
 			$this->showColumns($table);
@@ -140,11 +150,15 @@ abstract class BaseModelMethods
 
 		// вернётся строка с полями, в которой будут пристыкованы названия таблиц с псевдонимами 
 		return $fields;
-	} */
+	}
 
+	/** 
+	 *  Метод вернёт строку с сортировкой (укажет по какому полю сортировать и направление сортировки)
+	 */
 	protected function createOrder($set, $table = false)
 	{
 		$table = ($table && (!isset($set['no_concat']) || !$set['no_concat']))
+
 			// вызовем метод: createTableAlias(), ему на вход передадим переменную: $table и вернём то что будет 
 			// находиться в ячейке: ['alias'] результирующего массива и конкатенируем точку Результат сохраним в 
 			// переменной: $table (если условие выполнится) Иначе переменная: $table будет пустой
@@ -159,21 +173,25 @@ abstract class BaseModelMethods
 			// массива и вернётся в $set['order']
 			$set['order'] = (array)$set['order'];
 
+			// заполним ячейку: ['order_direction'] массива в переменной: $set, по условию:
 			$set['order_direction'] = (isset($set['order_direction']) && $set['order_direction'])
 				? (array)$set['order_direction'] : ['ASC'];
 
-			// что бы каждый раз не делать проверку пришло ли что-нибудь в переменную $order_by (пусто или нет), сразу занесём в неё строку: ORDER BY 
+			// что бы каждый раз не делать проверку в цикле: пришло ли что-нибудь в переменную $order_by (пусто или нет), 
+			// сразу занесём в неё строку: ORDER BY 
 			$order_by = 'ORDER BY ';
 
 			// объявим переменную $direct_count и изначально поставим в значение: ноль
 			$direct_count = 0;
+
+			// т.к. в массив в $set['order'] может прийти элементов больше, чем в массив в $set['order_direction'], то элементам одного массива (элементы, подлежащие сортировке) будут соответствовать элементы другого массива (направление сортировки), а крайний элемент 2-го массива зададаст направление для тех элементов 1-го массива, для которых не найдётся пары По этому надо определить крайний элемент и т.д. :
 
 			// запускаем цикл foreach (перебирает массив, задаваемый с помощью $set['order'] 
 			// На каждой итерации значение текущего элемента (в ячейке order из массива в переменной $set) присваивается переменной $order)
 			foreach ($set['order'] as $order) {
 
 				// проверим существует ли элемент массива order_direction с таким же порядковым номером, как элемент массива order
-				// ( здесь элемент с номером ноль будет всегда (даже по умолчанию в $set['order_direction'] что то будет изначально))
+				// (здесь элемент с номером ноль будет всегда (даже по умолчанию в $set['order_direction'] что то будет изначально))
 				// т.е. если в элементе order_direction массива $set, есть ячейка direct_count
 				if (!empty($set['order_direction'][$direct_count])) {
 
@@ -183,6 +201,7 @@ abstract class BaseModelMethods
 					// затем увеличиваем счётчик
 					$direct_count++;
 				} else {
+
 					// иначе положим (сохраним) в переменную $order_direction предыдущий элемент массива $set['order_direction']
 					$order_direction = strtoupper($set['order_direction'][$direct_count - 1]);
 				}
@@ -190,13 +209,13 @@ abstract class BaseModelMethods
 				// если переменная: $order есть в св-ве: $sqlFunc (sql-функции)
 				if (in_array($order, $this->sqlFunc)) {
 					$order_by .= $order . ',';
-					// is_int() — Проверяет, является ли переменная целым числом
+					// is_int() — Проверим является ли переменная: $order целым числом (например при сортировке с UNION т.е.объединённых запросов)
 				} elseif (is_int($order)) {
 					$order_by .= $order . ' ' . $order_direction . ',';
 				} else {
 
-					// в переменную $order_by добавим (конкатенируем): переменную $table, переменную $order (укажет по какому полю 
-					// сортировать), далее добавим: (конкатенируем) пробел, переменную $order_direction (направление сортировки), запятую
+					// в переменную $order_by добавим (конкатенируем): переменную $table, переменную $order (укажет по какому 
+					// полю сортировать), далее добавим(конкатенируем): пробел, переменную $order_direction (направление сортировки) и запятую
 					$order_by .= $table . $order . ' ' . $order_direction . ',';
 				}
 			}
@@ -207,11 +226,12 @@ abstract class BaseModelMethods
 		return $order_by;
 	}
 
-	// Метод createWhere() будет формировать строку запроса для инструкций WHERE в MySQL
-	// на вход передаём: массив который пришёл, таблцу, инструкцию с значением по умолчанию: WHERE
+	/** 
+	 * Метод формирует строку запроса для инструкций WHERE в MySQL
+	 * (На вход передаём: массив который пришёл, таблицу, инструкцию с значением по умолчанию: WHERE)
+	 */
 	protected function createWhere($set, $table = false, $instruction = 'WHERE')
 	{
-
 		$table = ($table && (!isset($set['no_concat']) || !$set['no_concat']))
 			? $this->createTableAlias($table)['alias'] . '.' : '';
 
@@ -219,6 +239,7 @@ abstract class BaseModelMethods
 
 		// если в ячейку: where массива: set пришла строка
 		if (!empty($set['where']) && is_string(($set['where']))) {
+
 			return $instruction . ' ' . trim($set['where']);
 		}
 
@@ -237,43 +258,53 @@ abstract class BaseModelMethods
 
 			// запускаем цикл foreach по ячейке: where (массиву в ней), массива: $set (Здесь нам нужны и ключи и значения)
 			foreach ($set['where'] as $key => $item) {
+
 				// на каждой итерации цикла добавим пробел к переменной $where (содежит инструкции (здесь: строка WHERE), 
 				// поступившие на вход ф-ии: createWhere())
 				$where .= ' ';
 
 				// проверим есть ли в ячейке operand массива $set, в ячейку $o_count что то пришло
 				if (!empty($set['operand'][$o_count])) {
+
 					// то в переменную $operand сохраним то, что пришло
 					$operand = $set['operand'][$o_count];
+
 					// и делаем приращение переменной $o_count
 					$o_count++;
 				} else {
+
 					// иначе сохраним предыдущее значение
 					$operand = $set['operand'][$o_count - 1];
 				}
 
 				// такую же проверку делаем в массиве $set для ячейки condition (её ячейки $c_count)
 				if (!empty($set['condition'][$c_count])) {
+
 					$condition = $set['condition'][$c_count];
+
 					$c_count++;
 				} else {
+
 					$condition = $set['condition'][$c_count - 1];
 				}
 
 				// Проверим какой операнд пришёл: если IN или NOT IN
 				if ($operand === 'IN' || $operand === 'NOT IN') {
 
-					// если переменная $item- строка и в начале этой строки стоит SELECT
+					// если переменная $item- строка и в начале этой строки стоит SELECT (т.е имеется вложенный запрос)
 					if (is_string($item) && strpos($item, 'SELECT') === 0) {
+
 						// то эту строку положим (сохраним) в переменную $in_str (без дополнительной обработки))
 						$in_str = $item;
 					} else {
 
 						// если переменная $item- массив
 						if (is_array($item)) {
+
 							//то этот массив положим (сохраним) в переменную $temp_item (без дополнительной обработки))
 							$temp_item = $item;
 						} else {
+
 							// иначе разберём строку в переменной $temp_item на массив по заданному разделителю- , (запятой)
 							$temp_item = explode(',', $item);
 						}
@@ -283,9 +314,10 @@ abstract class BaseModelMethods
 
 						// далее в цикле (foreach) переберём массив в переменной $temp_item и будем добавлять необходимые нам значения
 						foreach ($temp_item as $v) {
+
 							// на каждой итерации к переменной $in_str добавим злемент $v и запятую  в '' (одинарных кавычках) 
-							// при этом ф-ии php: addslashes() —  Экранирует строку с помощью слешей (Возвращает строку с обратным 
-							// слешем перед символами, которые нужно экранировать), 
+							// при этом ф-ии php: addslashes() —  Экранирует строку с помощью слешей (Возвращает строку с 
+							// обратным слешем перед символами, которые нужно экранировать), 
 							// trim() —  Удаляет пробелы из начала и конца строки (что бы пробелы тоже не попадали в ячейки массива)
 							$in_str .= "'" . addslashes(trim($v)) . "',";
 						}
@@ -296,6 +328,8 @@ abstract class BaseModelMethods
 					// далее то что идёт после них |т.е. в $in_str, предварительно обрезав запятую в конце| находится в скобках с пробелами
 					// и добавим то что есть в нашем условии: $condition
 					$where .= $table . $key . ' ' . $operand . ' (' . trim($in_str, ',') . ') ' . $condition;
+
+					//exit();
 
 					// strpos()- Ищет позицию (порядковый номер) первого вхождения подстроки LIKE в строку $operand
 					// если искомая подстрока LIKE будет стоять не первой, то она не будет найдена и ф-ия php^ strpos() вернёт false
@@ -313,18 +347,23 @@ abstract class BaseModelMethods
 						if (!$lt) {
 							// если в переменную $lt_key (в нулевой элемент) ничего не пришло (значит знак % стоял впереди подстроки LIKE)
 							if (!$lt_key) {
+
 								$item = '%' . $item;
 							} else {
+
 								$item .= '%';
 							}
 						}
 					}
 
 					$where .= $table . $key . ' LIKE ' . "'" . addslashes($item) . "' $condition";
+
+					//exit();
 				} else {
 
 					// strpos()- Ищет позицию (порядковый номер) первого вхождения подстроки SELECT в строку $item
-					// если SELECT стоит на первой позиции т.е. в нулевом элементе
+					// если SELECT стоит на первой позиции т.е. в нулевом элементе 
+					// Например запрос: 'WHERE id = (SELECT id FROM students)'
 					if (strpos($item, 'SELECT') === 0) {
 
 						$where .= $table . $key . $operand . '(' . $item . ") $condition";
@@ -350,9 +389,12 @@ abstract class BaseModelMethods
 		return $where;
 	}
 
-	/* protected function createJoin($set, $table, $new_where = false)
+	/** 
+	 *  Метод формировует запрос по принципу JOIN
+	 * (На вход передаём: массив который пришёл, таблицу (здесь- обязательный параметр) и переменную: $new_where ( т.к. в этом методе будем вызывать метод: protected function createWhere()))				
+	 */
+	protected function createJoin($set, $table, $new_where = false)
 	{
-
 		$fields = '';
 		$join = '';
 		$where = '';
@@ -363,7 +405,7 @@ abstract class BaseModelMethods
 
 			foreach ($set['join'] as $key => $item) {
 
-				// проверим является ли числом ключ $key (чсловым массивом)
+				// проверим является ли числом ключ $key (числовым (нумерованным) массивом)
 				if (is_int($key)) {
 					// если не существует (или пустая) в массиве $item его ячейка table
 					if (!$item['table']) {
@@ -371,7 +413,7 @@ abstract class BaseModelMethods
 						continue;
 						// иначе
 					} else {
-						// в $key сохраним ячейку table массива $item
+						// в $key сохраним содержимое ячейки: table массива: $item
 						$key = $item['table'];
 					}
 				}
@@ -385,35 +427,39 @@ abstract class BaseModelMethods
 				}
 
 				// isset() — Определяет, была ли установлена переменная значением, отличным от null
-				// ячейка on в массиве $item- показывает по какому признаку объединять таблицы
+				// ячейка: on в массиве $item- показывает по какому признаку объединять таблицы (должна присутствовать в массиве обязательно)
 				if (isset($item['on']) && $item['on']) {
 
 					// обявим пустой массив в переменной $join_fields
 					$join_fields = [];
 
 					// isset() — Определяет, была ли установлена переменная значением, отличным от null
-					// проверим есть ли поле (ячейка) fields (в массиве $item, его ячейке on) и является ли это массивом и посчитаем
-					// элементы этого массива (равно ли их количество 2-ум)
+					// проверим есть ли поле (ячейка) fields (в массиве $item, его ячейке on) и является ли это массивом и 
+					// посчитаем элементы этого массива (равно ли их количество 2-ум)
 					if (isset($item['on']['fields']) && is_array($item['on']['fields']) && count($item['on']['fields']) === 2) {
 						// в переменную $join_fields положим то что пришло в массиве $item['on']['fields']
 						$join_fields = $item['on']['fields'];
 						// посчитаем поля массива в ячейке on (равно ли их количество двум)
+
 					} elseif (count($item['on']) === 2) {
+
 						// в переменную $join_fields положим то что пришло в массиве $item['on']
 						$join_fields = $item['on'];
 					} else {
+
 						// иначе переводим цикл на следующую итерацию
 						continue;
 					}
 
-					// определим тип присоединения
+					// Определим тип присоединения
 					// если тип JOIN не пришёл
 					if (empty($item['type'])) {
 
 						// то по умолчанию: к преременной $join конкатенируем (присоединяем) LEFT JOIN
 						$join .= 'LEFT JOIN ';
 					} else {
-						// иначе к преременной $join добавим строку приведённую к верхнему регистру (ф-ия: strtoupper()), далее через // пробел конкатенируем слово JOIN и снова поставим пробел 
+						// иначе к преременной $join добавим строку приведённую к верхнему регистру (ф-ия: strtoupper()), 
+						// далее через пробел конкатенируем слово JOIN и снова поставим пробел 
 						// trim()— Удаляет пробелы (или другие символы) из начала и конца строки
 						$join .= trim(strtoupper($item['type'])) . ' JOIN ';
 					}
@@ -422,11 +468,18 @@ abstract class BaseModelMethods
 					// сначала к переменной $join добавляем ключ $key, далее добавляем строку ON (метод присоединения) с пробелами в начале и в конце
 					$join .= $key . ' ON ';
 
-					// если существует переменная $item с массивом, в нём- ячека on с массивом, а в нём ячейка: table
+					// после метода присваивания: ON, мы должны указать таблицу с которой мы присоединяемся
+					// Таблица может быть указана в элементе массива: join (здесь- в $item, в ячейке: on, в ячейке: table), 
+					// если это объединение нужно Если таблица не указана, то по умолчанию стыковаться будем с предыдущей таблицей
+
+					// если таблица указана, т.е. существует и заполнена переменная $item  массивом, в нём ячека: on с 
+					// массивом, а в нём ячейка: table, то
 					if (!empty($item['on']['table'])) {
-						// сохраняем эту переменную
+
+						// сохраняем в переменную содержимое этой ячейки
 						$join_temp_table = $item['on']['table'];
 					} else {
+
 						// иначе присоединяем предыдущую таблицу
 						$join_temp_table = $join_table;
 					}
@@ -435,27 +488,32 @@ abstract class BaseModelMethods
 
 
 
-					// добавим поле таблицы, которую мы пристыковываем
+					// добавим поле таблицы, которую мы пристыковываем, где в $join_fields[0]- поле из предыдущей таблицы, 
+					// $join_fields[1]- поле из текущей таблицы
 					$join .= '.' . $join_fields[0] . '=' . $concatTable . '.' . $join_fields[1];
 
 					// занесём в переменную $join_table текущую таблицу (в переменной $key), что бы следующая итерация цикла могла работать с предыдущей таблицей (в итерации- текущая)
 					$join_table = $key;
 
-					// если пришла новая инструкция where
+					// если пришла новая инструкция where в $new_where (из основного метода класса BaseModel: get())
 					if ($new_where) {
+
 						// проверка: существует ли что-нибудь (дополнительное условие) в ячейке where, массива в переменной $item
 						if ($item['where']) {
+
 							$new_where = false;
 						}
 
 						// в переменную $group_condition запишем строку (инструкция) WHERE
 						$group_condition = 'WHERE';
 					} else {
-						// сохраним результат проврки в переменную $group_condition: если пришёл $item['group_condition'], то 
+
+						// сохраним результат проверки в переменную $group_condition: если пришёл $item['group_condition'], то 
 						// сохраним его (предварительно преобразовав в заглавные буквы), иначе сохраним слово: AND
 						$group_condition = (!empty($item['group_condition'])) ? strtoupper($item['group_condition']) : 'AND';
 					}
 
+					// для поля в $fields
 					$fields .= $this->createFields($item, $key, (!empty($set['join_structure'])));
 
 					$where .= $this->createWhere($item, $key, $group_condition);
@@ -464,16 +522,16 @@ abstract class BaseModelMethods
 		}
 
 		// ф-ия зhp: compact() — создание массива, содержащего переменные и их значения
-		// Для каждого из них compact() ищет переменную с таким именем в текущей таблице символов и добавляет ее в выходной 
-		//массив таким образом, что имя переменной становится ключом, а содержимое переменной становится значением для этого ключа
+		// Для каждого из них compact() ищет переменную с таким именем в текущей таблице символов и добавляет ее в 
+		// выходной массив таким образом, что имя переменной становится ключом, а содержимое переменной становится значением для этого ключа
 		return compact('fields', 'join', 'where');
-	} */
+	}
 
-	// метод createInsert() будет создавать массив вставки (единичной и множественной)
-	// переменная $except позволяет сбрасывать поле (для указания какие поля исключить и запрос не будет их отрабатывать)
+	/** 
+	 * Метод создаёт массив вставки (единичной и множественной)
+	 */
 	protected function createInsert($fields, $files, $except)
 	{
-
 		// массив $insert_arr- это ассоциативный массив, который возвращает массив с ячейками: fields (в которой хранится 
 		// строка и values (в которой хранятся значения))
 		// изначально он пустой
@@ -492,15 +550,18 @@ abstract class BaseModelMethods
 			// Структура запроса должна быть корректной (за это отвечают флаги, обявленные ниже)
 			// объявим флаг: check_fields и поставим его в false 
 			$check_fields = false;
+
 			// объявим флаг: count_fields и инициализируем нулём
 			$count_fields = 0;
 
 			foreach ($fields as $i => $item) {
+
 				// на каждой итерации цикла в массив $insert_arr (его ячейку: values) конкатенируем (добавим) скобку (открывающую)
 				$insert_arr['values'] .= '(';
 
 				// если ещё не посчитали количество элементов в первом элементе, который пришёл в $fields[$i] на первой итерации
 				if (!$count_fields) {
+
 					// сохраним в переменной: $count_fields, количество элементов в первом элементе (т.е. текущем, который попал на 
 					// первую итерацию массива $fields в его ячеёке: $i)
 					$count_fields = count($fields[$i]);
@@ -514,9 +575,9 @@ abstract class BaseModelMethods
 				// запускаем цикл по массива: $item, который попал в массив: $fields его ячейку: $i
 				foreach ($item as $row => $value) {
 
-					// если что то необходимо исключить (в массив: $except что то пришло) и в массиве: $except есть поле: $row, 
-					// которое надо исключить
+					// если что то необходимо исключить (в массив: $except что то пришло) и в массиве: $except есть поле: $row,  которое надо исключить
 					if ($except && in_array($row, $except)) {
+
 						// переходим на следующую итерацию цикла
 						continue;
 					}
@@ -526,13 +587,16 @@ abstract class BaseModelMethods
 
 					// если поля не заполнены
 					if (!$check_fields) {
+
 						// то в массив: $insert_arr (в ячейку: fields) добавим то, что пришло в ключ: $row (название поля) и поставить запятую 
 						$insert_arr['fields'] .= $row . ',';
 					}
 
 					// если в функциях: sqlFunc есть полученное значение: $value
 					if (in_array($value, $this->sqlFunc)) {
+
 						$insert_arr['values'] .= $value . ',';
+
 						// если полученное значение: $value равно строке: 'NULL' или строго равно NULL (пусто)
 					} elseif ($value == 'NULL' || $value === NULL) {
 
@@ -540,6 +604,7 @@ abstract class BaseModelMethods
 						// распознано как строка NULL)
 						$insert_arr['values'] .= "NULL" . ',';
 					} else {
+
 						// к тому что есть в $insert_arr['values'] конкатенируем (добавлем) то что есть в переменной: value 
 						// предварительно добавив слеши и заключив в одинарные кавычки и запятая в конце)
 						$insert_arr['values'] .= "'" . addslashes($value) . "',";
@@ -549,6 +614,7 @@ abstract class BaseModelMethods
 					$j++;
 
 					if ($j === $count_fields) {
+
 						// выход из цикла
 						break;
 					}
@@ -557,8 +623,10 @@ abstract class BaseModelMethods
 				// предусмотрим проверку при которой количесто элементов: $j в последующих элементах меньше количества элементов: 
 				// $count_fields в первом элементе, который попал на первую итерацию массива $fields
 				if ($j < $count_fields) {
+
 					// заполним эти поля "NULL", т.е пусто и запятая в конце
 					for (; $j < $count_fields; $j++) {
+
 						$insert_arr['values'] .= "NULL" . ',';
 					}
 				}
@@ -568,7 +636,9 @@ abstract class BaseModelMethods
 				$insert_arr['values'] = rtrim($insert_arr['values'], ',') . '),';
 
 				// если по окончании итерации цикла $check_fields = false (значит мы прошли первый элемент массива (в $insert_arr))
+
 				if (!$check_fields) {
+
 					// то поля (в $insert_arr['fields']) больше заполнять не надо
 					$check_fields = true;
 				}
@@ -585,7 +655,9 @@ abstract class BaseModelMethods
 
 					// если в $except что то пришло (указания на исключение полей) и
 					// ф-ия php: in_array() — проверяет, существует ли значение $row в массиве $except (т.е. указание: это ряд не добавлять)
+
 					if ($except && in_array($row, $except)) {
+
 						// переходим на следующую итерацию цикла
 						continue;
 					}
@@ -595,8 +667,10 @@ abstract class BaseModelMethods
 
 					// ф-ия php: in_array() — проверяет, существует ли значение $value в массиве, который хранится в свойстве: $sqlFunc 
 					if (in_array($value, $this->sqlFunc)) {
+
 						$insert_arr['values'] .= $value . ',';
 					} elseif ($value == 'NULL' || $value === NULL) {
+
 						$insert_arr['values'] .= "NULL" . ',';
 					} else {
 
@@ -642,6 +716,9 @@ abstract class BaseModelMethods
 		return $insert_arr;
 	}
 
+	/** 
+	 *  Иетод вернёт строку, которая войдёт в запрос на редактирование данных в БД
+	 */
 	protected  function createUpdate($fields, $files, $except)
 	{
 		// изначально переменную $update определим как пустую строку
@@ -778,11 +855,11 @@ abstract class BaseModelMethods
 	}
 
 
-	/* protected function getTotalCount($table, $where)
+	protected function getTotalCount($table, $where)
 	{
 
 		return $this->query("SELECT COUNT(*) as count FROM $table $where")[0]['count'];
-	} */
+	}
 
 
 

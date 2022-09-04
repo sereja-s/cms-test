@@ -5,8 +5,9 @@ namespace core\base\controller;
 
 /** 
  * Трейт с базовыми вспомогательными методами
+ * 
  * Методы: protected function clearStr(); protected function clearNum(); protected function isPost(); 
- * protected function isAjax(); protected function redirect(); protected function writeLog();
+ *         protected function isAjax(); protected function redirect(); protected function writeLog();
  */
 trait BaseMethods
 {

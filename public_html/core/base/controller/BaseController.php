@@ -10,8 +10,9 @@ use core\base\settings\Settings;
 
 /** 
  * Класс вытаскивает данные (формирует запросы к моделям), подключает виды и др.
+ * 
  * Методы: public function route(); public function request(); protected function render(); protected function getPage();
- *  protected function init()
+ *         protected function init()
  */
 abstract class BaseController
 {
@@ -299,7 +300,7 @@ abstract class BaseController
 
 	// метод который отвечает за проверку авторизации (на вход принимает флаг: $type (значение по умолчанию: false) 
 	// показывает: admin или нет)
-	protected function checkAuth($type = false)
+	/* protected function checkAuth($type = false)
 	{
 		// метод: checkUser()- делает проверку пользователя
 		// если в свойство: $userId ничего не пришло
@@ -314,5 +315,5 @@ abstract class BaseController
 			// в свойство: userModel вернётся объект класса: UserModel
 			$this->userModel = UserModel::instance();
 		}
-	}
+	} */
 }

@@ -42,7 +42,7 @@ class Model extends BaseModel
 	// метод модели формирования позиции вывода записей из базы данных
 	// на вход: 1- $table (таблица с которой работаем), 2- $row (по умолчанию: menu_position), 3- $where (инструкция 
 	// (если id пришёл в соответствующий метод в BaseAdmin)), 4- $end_pos (конечная позиция, на которую у нас встанет // текущая запись), 5- $update_rows (массив для сортировки (например относительно parent_id) )
-	/* public function updateMenuPosition($table, $row, $where, $end_pos, $update_rows = [])
+	public function updateMenuPosition($table, $row, $where, $end_pos, $update_rows = [])
 	{
 		if ($update_rows && isset($update_rows['where'])) {
 
@@ -166,10 +166,10 @@ class Model extends BaseModel
 		}
 		// вернём результат
 		return $this->query($query, 'u');
-	} */
+	}
 
 	// метод работы с поиском (3-ий параметр- кол-во показываемых подсказок (ссылок))
-	/* public function search($data, $currentTable = false, $qty = false)
+	public function search($data, $currentTable = false, $qty = false)
 	{
 		// получим все таблицы из БД
 		$dbTables = $this->showTables();
@@ -329,10 +329,10 @@ class Model extends BaseModel
 		}
 
 		return $result ?: [];
-	} */
+	}
 
 	// метод для формирования инструкций WHERE и ORDER для системы поиска
-	/* protected function createWhereOrder($searchRows, $searchArr, $orderRows, $table)
+	protected function createWhereOrder($searchRows, $searchArr, $orderRows, $table)
 	{
 		$where = '';
 		$order = [];
@@ -384,5 +384,5 @@ class Model extends BaseModel
 		}
 
 		return compact('where', 'order');
-	} */
+	}
 }
