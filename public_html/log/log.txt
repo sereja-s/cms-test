@@ -1,28 +1,88 @@
-Fault: 28-08-2022 19:23:53 - Не верное имя файла для подключения: core/admin/controller/ShowController
-file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
-In line 71
-
-Fault: 28-08-2022 19:24:09 - Не верное имя файла для подключения: core/admin/controller/ShowController
-file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
-In line 71
-
-Fault: 28-08-2022 19:24:26 - Не верное имя файла для подключения: core/admin/controller/ShowController
-file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
-In line 71
-
-Fault: 28-08-2022 19:24:28 - Не верное имя файла для подключения: core/admin/controller/ShowController
-file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
-In line 71
-
-Fault: 28-08-2022 19:24:53 - Не верное имя файла для подключения: core/admin/controller/ShowController
-file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
-In line 71
-
-Fault: 04-09-2022 12:11:28 - Отсутствует шаблон: core/admin/view/show
+Fault: 06-09-2022 20:17:28 - Отсутствует шаблон: core/admin/view/show
 file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
 In line 223
 
-Fault: 04-09-2022 15:16:41 - Отсутствует шаблон: core/admin/view/show
+Fault: 06-09-2022 21:33:40 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 06-09-2022 21:33:55 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 06-09-2022 21:34:11 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 08-09-2022 18:31:22 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 18:55:15 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:35:42 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:35:47 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:36:03 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:37:06 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:37:08 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:37:12 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 09-09-2022 19:39:43 - Отсутствует шаблон: core/admin/view/show
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 10:09:39 - Отсутствует шаблон: core/admin/view/include/header
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 10:16:41 - Отсутствует шаблон: core/admin/view/include/footer
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 15:12:52 - Не верное имя файла для подключения: core/user/controller/CoreController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 10-09-2022 16:31:29 - Не верное имя файла для подключения: core/admin/controller/EditController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 10-09-2022 16:31:35 - Не верное имя файла для подключения: core/admin/controller/EditController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 10-09-2022 19:45:47 - Отсутствует шаблон: core/admin/view/add
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 19:47:44 - Отсутствует шаблон: core/admin/view/add
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 19:48:47 - Отсутствует шаблон: core/admin/view/add
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
+In line 223
+
+Fault: 10-09-2022 19:50:13 - Отсутствует шаблон: core/admin/view/add
 file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
 In line 223
 

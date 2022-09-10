@@ -41,7 +41,10 @@ trait Singleton
 		// если объекта нет, то вернём это свойство в которое будет записан (сохранён) не объект нашего класса, а ссылка на объект (т.е.самого себя)
 		self::$_instance = new self;
 
+		// если у свойства: self::$_instance есть метод класса BaseModel: connect (метод в котором будем осуществлять подключения к БД)
 		if (method_exists(self::$_instance, 'connect')) {
+
+			// то вызовем его
 			self::$_instance->connect();
 		}
 

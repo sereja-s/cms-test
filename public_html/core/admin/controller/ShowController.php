@@ -26,8 +26,10 @@ class ShowController extends BaseAdmin
 		// вызовем метод, который будет получать необходимые для нашего шаблона-вывода данные из текущей таблицы
 		$this->createData(/* ['fields' => 'content'] */);
 
+		//exit(print_arr($this->data));
+
 		// вызываем метод, который будет расширять функционал нашего фреймвёрка (работа с расширениями)
-		//return $this->expansion();
+		return $this->expansion(/* ShopSettings::instance() */);
 	}
 
 	/** 
@@ -166,14 +168,16 @@ class ShowController extends BaseAdmin
 			}
 		}
 
+		// Получим необходимые для нашего шаблона-вывода данные (поля) из текущей таблицы:
+
 		// в свойство: $this->data вернём результат работы метода: get() модели 
-		// (на вход ему подаём: таблицу и массив, который нам надо собрать)
+		// (на вход ему подаём: таблицу и массив данных (полей), который нам надо собрать)
 		$this->data = $this->model->get($this->table, [
 			'fields' => $fields,
 			'order' => $order,
 			'order_direction' => $order_direction
 		]);
 
-		exit(print_arr($this->data));
+		//exit(print_arr($this->data));
 	}
 }
