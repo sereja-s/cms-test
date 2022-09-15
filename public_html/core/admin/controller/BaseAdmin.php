@@ -12,7 +12,9 @@ use libraries\FileEdit;
  * Класс отвечает за сборку шаблона (шапку и подвал сайта)
  * 
  * Методы: protected function sendNoCacheHeaders(); protected function execBase(): protected function createTableData();
- * 		  protected function expansion(); protected function createOutputData();
+ * 		  protected function expansion(); protected function createOutputData(); protected function createRadio() 
+ *         protected function createForeignProperty(); protected function createForeignData(); 
+ *         protected function createMenuPosition()
  */
 abstract class BaseAdmin extends BaseController
 {
@@ -44,7 +46,7 @@ abstract class BaseAdmin extends BaseController
 
 	protected $templateArr;
 	protected $formTemplates;
-	// свойство (флаг) для запрета (разрешения) на удаление данных из таблиц БД
+	// свойство (флаг) для запрета на удаление данных из таблиц БД
 	protected $noDelete;
 
 	protected function inputData()
@@ -292,7 +294,7 @@ abstract class BaseAdmin extends BaseController
 	}
 
 	/** 
-	 * Метод для создания выходных данных, который будет формировать наши данные (раскидывать их по блокам в админке)
+	 * Метод формирует расположение выходных данных по 3-м блокам в админке
 	 */
 	protected function createOutputData($settings = false)
 	{
@@ -392,7 +394,9 @@ abstract class BaseAdmin extends BaseController
 		return;
 	}
 
-	// метод формирования ключей и значений для input type radio (кнопок переключателей (да, нет и т.д.))
+	/** 
+	 * Метод формирует ключи и значения для input type radio (кнопок переключателей в админке (да, нет и т.д.))
+	 */
 	protected function createRadio($settings = false)
 	{
 		if (!$settings) {
@@ -796,7 +800,7 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод формирования позиции вывода записей из базы данных
+	// Метод формирования позиции вывода записей из базы данных
 	protected function updateMenuPosition($id = false)
 	{
 		if (isset($_POST['menu_position'])) {
@@ -1273,7 +1277,10 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод для получения свойств внешних данных
+	/** 
+	 * Метод для получения свойств внешних данных (из связанных таблиц)
+	 * (На вход: 1- массив, 2- св-во, в котором будет храниться информация о корневых таблицах, полученная из файла настроек)
+	 */
 	protected function createForeignProperty($arr, $rootItems)
 	{
 
@@ -1292,12 +1299,13 @@ abstract class BaseAdmin extends BaseController
 			// если ссылка идёт на самих себя
 			if ($arr['REFERENCED_TABLE_NAME'] === $this->table) {
 
-				//то сформируем условия: $where и $operand[]
+				// то сформируем условия: $where и $operand[]
 				$where[$this->columns['id_row']] = $this->data[$this->columns['id_row']];
 				$operand[] = '<>';
 			}
 		}
 
+		// сохраним выборку из БД в переменной
 		$foreign = $this->model->get($arr['REFERENCED_TABLE_NAME'], [
 
 			// сформируем массив полей (нам нужно то поле , на которое мы ссылаемся)
@@ -1323,7 +1331,9 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод для получения внешних данных
+	/** 
+	 * Метод получает внешние данные (из связанных таблиц)
+	 */
 	protected function createForeignData($settings = false)
 	{
 		if (!$settings) {
@@ -1341,6 +1351,8 @@ abstract class BaseAdmin extends BaseController
 			foreach ($keys as $item) {
 				$this->createForeignProperty($item, $rootItems);
 			}
+
+			// если ключи не пришли, но есть поле: parent_id, то
 		} elseif ($this->columns['parent_id']) {
 
 			// Формируем элементы массива:
@@ -1358,14 +1370,18 @@ abstract class BaseAdmin extends BaseController
 		return;
 	}
 
-	// метод для формирования первичных данных для сортировки информации в таблицах базы данных
+	/** 
+	 * Метод для формирования первичных данных для сортировки информации в таблицах БД (Выпуск №42)
+	 */
 	protected function createMenuPosition($settings = false)
 	{
 
 		// если ячейка: menu_position (в массиве: columns) существует (и в неё что то пришло)
 		if ($this->columns['menu_position']) {
+
 			// если настройки ещё не получены
 			if (!$settings) {
+
 				// то получим настройки
 				$settings = Settings::instance();
 			}
@@ -1377,10 +1393,13 @@ abstract class BaseAdmin extends BaseController
 
 				// если в массиве: rootItems (его ячейке: tables есть то,что хранится в свойстве: table (название таблицы))
 				if (in_array($this->table, $rootItems['tables'])) {
+
 					// в переменную положим строку
 					$where = 'parent_id IS NULL OR parent_id = 0';
+
 					// иначе
 				} else {
+
 					// запросим внешние ключи
 					// (в параметры ф-ии передаём: название таюлицы и ключ (в виде строки)), в конце указываем, что в $parent нам
 					// вся выборка не нужна (нужно вернуть нулевой элемент (здесь он или будет или не будет))
@@ -1388,16 +1407,21 @@ abstract class BaseAdmin extends BaseController
 
 					// если родитель пришёл
 					if ($parent) {
+
 						// если таблица указана в ключе (ссылается сама на себя)
 						if ($this->table === $parent['REFERENCED_TABLE_NAME']) {
+
 							$where = 'parent_id IS NULL OR parent_id = 0';
 						} else {
+
 							$columns = $this->model->showColumns($parent['REFERENCED_TABLE_NAME']);
 
 							if ($columns['parent_id']) {
+
 								// в элемент массива: order сохраним строку: parent_id
 								$order[] = 'parent_id';
 							} else {
+
 								// сортировать нужно по тем полям, на которые идёт ссылка
 								// в элемент массива: order получим то поле, которое является идентификатором
 								$order[] = $parent['REFERENCED_COLUMN_NAME'];
@@ -1417,6 +1441,7 @@ abstract class BaseAdmin extends BaseController
 							}
 						}
 					} else {
+
 						$where = 'parent_id IS NULL OR parent_id = 0';
 					}
 				}
@@ -1424,8 +1449,8 @@ abstract class BaseAdmin extends BaseController
 
 			$menu_pos = $this->model->get($this->table, [
 				// укажем какие поля из поданной на вход функции: get() таблицы (в св-ве: table) должны получить
-				'fields' => ['COUNT(*) as count'], // здесь в значении поля: fields указываем СУБД: посчитай всё и предоставь эту 
-				// выборку с псевдонимом: count
+				// (здесь в значении поля: fields указываем СУБД: посчитай всё и предоставь эту выборку с псевдонимом: count)
+				'fields' => ['COUNT(*) as count'],
 				'where' => $where,
 				'no_concat' => true // т.е. не пристыковывать имя таблицы
 			])[0]['count'] + (int)!$this->data; // укажем, что вернуть надо нулевой элемент той выборки, которая 
@@ -1435,7 +1460,9 @@ abstract class BaseAdmin extends BaseController
 			// а если $this->data не пришла, то !$this->data даёт true, а значит (int)!$this->data = 1 (для add)
 
 			for ($i = 1; $i <= $menu_pos; $i++) {
+
 				$this->foreignData['menu_position'][$i - 1]['id'] = $i;
+
 				$this->foreignData['menu_position'][$i - 1]['name'] = $i;
 			}
 		}

@@ -86,3 +86,15 @@ Fault: 10-09-2022 19:50:13 - Отсутствует шаблон: core/admin/vie
 file D:\OpenServer\domains\cms-test.my\public_html\core\base\controller\BaseController.php
 In line 223
 
+Fault: 11-09-2022 11:41:52 - Не верное имя файла для подключения: core/admin/controller/AdController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 12-09-2022 22:06:19 - Не верное имя файла для подключения: core/admin/controller/EditController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 14-09-2022 20:32:43 - Не верное имя файла для подключения: core/admin/controller/DeleteController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+

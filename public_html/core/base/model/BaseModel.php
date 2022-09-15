@@ -121,7 +121,7 @@ abstract class BaseModel extends BaseModelMethods
 	 * @param $table // пременная (таблица)
 	 * @param array $set // переменная (массив данных (настроек)) Далее пример массива $set:
 	 *           'fields' => ['id', 'name'],
-	 * 			 'no_concat' => false/true Если True не присоединяем имя таблицы к полям и Where
+	 * 			 'no_concat' => false/true (Если true не присоединяем имя таблицы к полям и where)- Выпуск №42
 	 *           'where' =>  ['fio'=>'Smirnova', 'name'=>'Masha', 'surname'=>'Sergeevna'],
 	 *           'operand' =>['=', '<>'],
 	 *           'condition'=>['ADN'],

@@ -42,7 +42,7 @@ a {
 
 .vg-input:hover {
     color: #2f3b4c;
-    background-color: #b0bec5;
+    background-color: #fdffb6;
 }
 
 @media (max-width: 500px) {
@@ -400,10 +400,6 @@ label.vg-element {
     background: #fff75e;
     /* border-left: 5px solid #00bfe8; */
 }
-.vg-menu a:active {
-    background: #5eff86;
-    border-right: 5px solid #00bfe8;
-}
 
 .vg-menu a .vg-half {
     flex-basis: 49.3%;
@@ -437,7 +433,8 @@ label.vg-element {
 }
 
 .active {
-    border-left: 2px solid #00bfe8;
+    border-left: 5px solid #00bfe8;
+	 background: #5eff86;    
 }
 
 

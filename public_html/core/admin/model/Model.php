@@ -9,12 +9,17 @@ use core\base\settings\Settings;
 
 /** 
  * Класс модели для административной части
+ * 
+ * Методы: public function showForeignKeys();
  */
 class Model extends BaseModel
 {
 	use Singleton;
 
-	// метод модели показывающий внешние ключи таблиц в БД
+	/**	  
+	 * Метод модели показывающий внешние ключи таблиц в БД
+	 * (Выпуск №39)	 	 
+	 */
 	public function showForeignKeys($table, $key = false)
 	{
 

@@ -26,20 +26,52 @@ class AddController extends BaseAdmin
 		$this->createTableData();
 
 		// вызовем метод для получения внешних данных
-		//$this->createForeignData();
+		$this->createForeignData();
 
 		// вызовем метод для формирования первичных данных для сортировки информации в таблицах базы данных
-		//$this->createMenuPosition();
+		$this->createMenuPosition();
 
 		// вызовем метод формирования ключей и значений для input type radio (кнопок переключателей (да, нет и т.д.))
-		//$this->createRadio();
+		$this->createRadio();
 
 		// вызовем метод, который будет формировать наши данные (раскидывать их по блокам)
 		// (создание выходных данных)
 		$this->createOutputData();
 
+		/* $this->data = [
+			'name' => 'Masha',
+			'keywords' => 'Ключевая',
+			'img' => '1.png',
+			'gallery_img' => json_encode(['1.jpg', '2.png'])
+		]; */
+
 		//$this->createManyToMany();
+
+		//$this->manyAdd();
+		//exit;
 
 		//return $this->expansion();
 	}
+
+	/* protected function manyAdd()
+	{
+
+		$fields = [
+
+			'name' => 'Zina', 'menu_position' => 11
+			//1 => ['name' => 'Marina', 'img' => '7.jpg', 'menu_position' => 1],
+			//2 => ['name' => 'Tania', 'img' => '8.jpg'],
+		];
+
+		$files = [
+			//'img' => '9.jpg',
+			'gallery_img' => ['15.jpg', '16.jpg']
+		];
+
+		$this->model->add('teachers', [
+
+			'fields' => $fields,
+			'files' => $files
+		]);
+	} */
 }

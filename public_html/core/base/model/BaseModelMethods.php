@@ -528,7 +528,7 @@ abstract class BaseModelMethods
 	}
 
 	/** 
-	 * Метод создаёт массив вставки (единичной и множественной)
+	 * Метод создаёт массив вставки (единичной и множественной (Выпуск №44))
 	 */
 	protected function createInsert($fields, $files, $except)
 	{
