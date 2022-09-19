@@ -265,6 +265,7 @@ abstract class BaseModel extends BaseModelMethods
 	{
 		// если это массив и не пуст, то сохраним его в результат, иначе сохраним суперглобальный массив $_POST
 		$set['fields'] = (is_array($set['fields']) && !empty($set['fields'])) ? $set['fields'] : $_POST;
+
 		// если это массив и не пуст, то сохраним его в результат, иначе вернём false
 		$set['files'] = (is_array($set['files']) && !empty($set['files'])) ? $set['files'] : false;
 

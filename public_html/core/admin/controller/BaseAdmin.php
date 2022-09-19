@@ -9,12 +9,18 @@ use core\base\settings\Settings;
 use libraries\FileEdit;
 
 /** 
- * Класс отвечает за сборку шаблона (шапку и подвал сайта)
+ * Класс отвечает за сборку шаблона админки (шапку и подвал сайта)
  * 
  * Методы: protected function sendNoCacheHeaders(); protected function execBase(): protected function createTableData();
- * 		  protected function expansion(); protected function createOutputData(); protected function createRadio() 
+ * 		  protected function expansion(); protected function createOutputData(); protected function createRadio();
+ * 		  protected function checkPost(); protected function addSessionData(); protected function countChar();
+ * 		  protected function emptyFields(); protected function clearPostFields(); protected function editData();
+ *         protected function checkExceptFields(); protected function createFiles(); protected function sortingFiles();
+ *         protected function createAlias(); protected function updateMenuPosition(); protected function checkAlias();
+ *         protected function createOrderData(); protected function createManyToMany(); 
+ *         protected function checkManyToMany();
  *         protected function createForeignProperty(); protected function createForeignData(); 
- *         protected function createMenuPosition()
+ *         protected function createMenuPosition(); protected function checkOldAlias(); protected function checkFiles();
  */
 abstract class BaseAdmin extends BaseController
 {
@@ -30,14 +36,17 @@ abstract class BaseAdmin extends BaseController
 
 	protected $adminPath;
 
-	// определим переменную в которую придёт боковое меню админки
+	// определим свойство в которую придёт боковое меню админки
 	protected $menu;
-	// переменная для заголовка страницы
+	// свойство для хранения заголовка страницы
 	protected $title;
 
+	// свойство для хранения ссылок
 	protected $alias;
+	// свойство для хранения файлов
 	protected $fileArray;
 
+	// свойство для хранения нформационных сообщений
 	protected $messages;
 	protected $settings;
 
@@ -105,10 +114,10 @@ abstract class BaseAdmin extends BaseController
 			$this->formTemplates = Settings::get('formTemplates');
 		}
 
-		/* if (!$this->messages) {
+		if (!$this->messages) {
 
 			$this->messages = include $_SERVER['DOCUMENT_ROOT'] . PATH . Settings::get('messages') . 'informationMessages.php';
-		} */
+		}
 
 		// вызовем метод, отправляющий браузеру заголовки файлов (здесь- админка), которые не надо кешировать 
 		$this->sendNoCacheHeaders();
@@ -411,6 +420,7 @@ abstract class BaseAdmin extends BaseController
 
 				// проверим существует ли в св-ве: radio, которое пришло, то поле , которое нам необхдимо шаблониизировать (здесь- visible) если такое поле есть (и в него что то пришло)
 				if ($radio[$name]) {
+
 					// то сохраним его в массиве: foreignData его ячейке: name
 					$this->foreignData[$name] = $radio[$name];
 				}
@@ -418,37 +428,52 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод, для определения пришло ли что-нибудь через массив: Post
+	/** 
+	 * Метод, для определения пришло ли что-нибудь через массив: Post (если пришло, то будет вызван метод добавления данных в БД)
+	 */
 	protected function checkPost($settings = false)
 	{
 		// если что то пришло постом
 		if ($this->isPost()) {
-			// вызываем метод: clearPostFields()
+
+			// вызываем метод валидатор: clearPostFields()
+			// (проверит заполнение полей в админке на соответствие указанным нами правилам в настройках): 
 			$this->clearPostFields($settings);
+
+			// узнаем в какую таблицу нам надо добавлять данные и сохраним её в свойство:
 			$this->table = $this->clearStr($_POST['table']);
 			// после того как получили таблицу (заполнили свойство: $this->table), поле $_POST['table'] нам больше не нужно
 			// (разрегестрируем эту ячейку массива)
 			// unset() удаляет перечисленные переменные
 			unset($_POST['table']);
 
-			// проверим пришло ли у нас что то с именем таблицы
+			// проверим заполнено ли свойство $this->table, т.е. пришло ли у нас что то с именем таблицы
 			if ($this->table) {
-				// вызовем метод: createTableData(), что бы заполнить свойство: $this->columns (поля таблицы)
+
+				// вызовем метод: createTableData(), что бы заполнить свойство: $this->columns (узнаем какие поля есть в таблице)
 				$this->createTableData($settings);
+
 				// вызовем метод добавления данных в БД
 				$this->editData();
 			}
 		}
 	}
 
-	// метод, который будет добавлять данные в сесссионный массив
+	/** 
+	 * Метод, который будет добавлять данные в сессионный массив
+	 * (в сесии (в $_SESSION['res']) создаст ключи одноимённые с массивом поданным на вход, что бы все заполненные
+	 * данные попали обратно в шаблон и не потерялись у пользователя )
+	 */
 	protected function addSessionData($arr = [])
 	{
 		if (!$arr) {
+
 			$arr = $_POST;
 		}
 
 		foreach ($arr as $key => $item) {
+
+			// добавляем данные в сессионный массив: в ячейку с именем таким же как у соответствующего ключа массива (здесь- в $arr) сохраняем его значение
 			$_SESSION['res'][$key] = $item;
 		}
 
@@ -456,33 +481,57 @@ abstract class BaseAdmin extends BaseController
 		$this->redirect();
 	}
 
+	/** 
+	 * Метод валидатора (проверка на допустимое количество символов в поле шаблона админки)
+	 */
 	protected function countChar($str, $counter, $answer, $arr)
 	{
+		// если количество символов в строке, больше счётчика (поданных на вход) 
 		if (mb_strlen($str) > $counter) {
+
+			// делаем замену символа: $1, на то что хранится в переменной: $answer (т.е. на название соответствующего поля 
+			// из шаблона админки), в сообщении: $this->messages['count'] (из соответствующего файла информационных 
+			// сообщений, путь к которому прописан в Settings.php)
 			$str_res = mb_str_replace('$1', $answer, $this->messages['count']);
+
+			// аналогично $2 меняем на количество символов счётчика, поданного на вход в полученной выше строке 
 			$str_res = mb_str_replace('$2', $counter, $str_res);
 
+			// в ячейку суперглобального массива сохраним: div с классом: 'ошибка', внутри которого вставим сообщение об 
+			// ошибке при проверке поля на допустимое количество символов из полученной строки (с уже подставленными значениями: $1 и $2)
 			$_SESSION['res']['answer'] = '<div class="error">' . $str_res . '</div>';
+
 			$this->addSessionData($arr);
 		}
 	}
 
+	/** 
+	 * Метод валидатора (проверка на пустоту поля в шаблоне админки)
+	 */
 	protected function emptyFields($str, $answer, $arr = [])
 	{
 		if (empty($str)) {
+
+			// в ячейку суперглобального массива сохраним: div с классом: 'ошибка', внутри которого вставим сообщение об 
+			// ошибке при проверке поля на пустоту (из соответствующего файла информационных сообщений, путь к которому прописан в Settings.php)			
 			$_SESSION['res']['answer'] = '<div class="error">' . $this->messages['empty'] . ' ' . $answer . '</div>';
-			// вызовем метод, который будет добавлять данные в сесссионный массив
+
+			// вызовем метод, который будет добавлять данные в сессионный массив			
 			$this->addSessionData($arr);
 		}
 	}
 
-	// основной метод валидатора
+	/** 
+	 * Основной метод валидатора
+	 */
 	protected function clearPostFields($settings, &$arr = [])
 	{
 		if (!$arr) {
+
 			$arr = &$_POST;
 		}
 		if (!$settings) {
+
 			$settings = Settings::instance();
 		}
 
@@ -490,57 +539,76 @@ abstract class BaseAdmin extends BaseController
 
 		// получим свойство для валидации
 		$validate = $settings::get('validation');
+
 		// если свойство: $this->translate не заполнено
 		if (!$this->translate) {
+
 			// получим его (что бы потом сравнивать с анологичными полями в свойстве: $validate и при нахождении совпадений, переводить их)
 			$this->translate = $settings::get('translate');
 		}
 
 		foreach ($arr as $key => $item) {
+
 			if (is_array($item)) {
+
 				$this->clearPostFields($settings, $item);
 			} else {
+
 				// проверим только ли из чисел состоит строка
 				if (is_numeric($item)) {
+
 					$arr[$key]  = $this->clearNum($item);
 				}
 
 				if ($validate) {
 					// если в массиве: $validate (его ячейке: $key) что то есть
 					if ($validate[$key]) {
+
 						if ($this->translate[$key]) {
 							// сформируем переменную: $answer (базовый ответ, который будем отдавать пользователю)
 							$answer = $this->translate[$key][0];
 						} else {
+
 							$answer = $key;
 						}
 
-						// проверим есть ли свойство: crypt (шифрование)
+						// сначала проверим есть ли свойство: crypt (шифрование)
 						if ($validate[$key]['crypt']) {
+
 							if ($id) {
+
+								// если пришло пустое поле
 								if (empty($item)) {
+
+									// разрегистрируем ячейку массива:
 									unset($arr[$key]);
+
 									continue;
 								}
 
+								// захешируем то, что лежит в $item и сохраним в ячейке массива:
 								$arr[$key] = md5($item);
 							}
 						}
 
-						// делаем валидацию
+						// делаем валидацию по остальным свойствам (если они указаны в настройках)
 						if ($validate[$key]['empty']) {
+
 							$this->emptyFields($item, $answer, $arr);
 						}
 
 						if ($validate[$key]['trim']) {
+
 							$arr[$key] = trim($item);
 						}
 
 						if ($validate[$key]['int']) {
+
 							$arr[$key] = $this->clearNum($item);
 						}
 
 						if ($validate[$key]['count']) {
+
 							$this->countChar($item, $validate[$key]['count'], $answer, $arr);
 						}
 					}
@@ -551,7 +619,10 @@ abstract class BaseAdmin extends BaseController
 		return true;
 	}
 
-	// метод редактирования данных
+	/** 
+	 * Метод редактирования данных (добавления: add, редактирования: edit)
+	 * (На вход подаётся параметр, показывающий возвращать ли id)
+	 */
 	protected function editData($returnId = false)
 	{
 		$id = false;
@@ -563,22 +634,29 @@ abstract class BaseAdmin extends BaseController
 		}
 
 		if ($_POST[$this->columns['id_row']]) {
+
 			// проверим: is_numeric() — определяет, является ли переменная числом или числовой строкой
 			$id = is_numeric($_POST[$this->columns['id_row']]) ?
 				$this->clearNum($_POST[$this->columns['id_row']]) :
 				$this->clearStr($_POST[$this->columns['id_row']]);
 
 			if ($id) {
+
 				$where = [$this->columns['id_row'] => $id];
+
 				$method = 'edit';
 			}
 		}
 
 		foreach ($this->columns as $key => $item) {
+
 			if ($key === 'id_row') continue;
+
 			if ($item['Type'] === 'date' || $item['Type'] === 'datetime') {
-				// сначала выполнится сравнение: !$_POST[$key] (если он пустой, сюда придёт не false (будет равно true)) и только 
-				// тогла выполнится строка: $_POST[$key] = 'NOW()'
+
+				// сначала выполнится сравнение: !$_POST[$key] (если он пустой, сюда придёт не false (будет равно true)) и 
+				// только тогда выполнится строка: $_POST[$key] = 'NOW()'
+				// (в MySQL функция NOW() возвращает текущую дату и время)
 				!$_POST[$key] && $_POST[$key] = 'NOW()';
 			}
 		}
@@ -589,30 +667,42 @@ abstract class BaseAdmin extends BaseController
 		// вызовем метод создания ссылок (ЧПУ)
 		$this->createAlias($id);
 
+		// вызовем метод формирования позиции вывода записей из базы данных
 		$this->updateMenuPosition($id);
 
-		// в переменную сохраним резултат работы метода, исключающего поля из добавления в адмиистративную панель
+		// в переменную сохраним резултат работы метода, исключающего поля из добавления в БД
 		$except = $this->checkExceptFields();
 
-		// в переменную: $res_id попадёт результат работы объкта модели: model, (метода, который хранится в переменной: $method 
-		// (или edit или add)) В параметрах передадим: с какой таблицей мы работаем: $this->table
+		// в переменную: $res_id попадёт результат работы объкта модели: model, (метода, который хранится в переменной: $method (или edit или add)) В параметрах передадим: с какой таблицей мы работаем: $this->table
 		$res_id = $this->model->$method($this->table, [
 			// далее укажем ячейки массива и что в них будет храниться
 			'files' => $this->fileArray,
 			'where' => $where,
-			'return_id' => true,
-			'except' => $except
+			'return_id' => true, // для edit не учитывается
+			'except' => $except // поля исключений (если такие будут)
 		]);
 
 		// если в переменной: $id ничего нет и если $method === 'add' (т.е добавляли данные)
 		if (!$id && $method === 'add') {
+
+			// создадим в суперглобальном массиве ячейку: $_POST[$this->columns['id_row']] и сохраним там переменную: $res_id
 			$_POST[$this->columns['id_row']] = $res_id;
-			// сформируем ответы (сообщения)
+
+			// Сформируем ответы (сообщения)
+
+			// ответ успеха добавления:
 			$answerSuccess = $this->messages['addSuccess'];
+
+			// ответ ошибки добавления:
 			$answerFail = $this->messages['addFail'];
-			// иначе
+
+			// иначе (при редактировании данных)
 		} else {
+
+			// ответ успеха редактирования:
 			$answerSuccess = $this->messages['editSuccess'];
+
+			// ответ ошибки редактирования:
 			$answerFail = $this->messages['editFail'];
 		}
 
@@ -621,29 +711,45 @@ abstract class BaseAdmin extends BaseController
 		// вызовем метод для работы с расширениями (на вход передадим все объявленные переменные (используем метод php: get_defined_vars()))
 		$this->expansion(get_defined_vars());
 
+		// в переменной сохраним результат работы метода проверки ссылок
+		// на вход подаём: $_POST[$this->columns['id_row']] т.к. id там будет в любом случае
 		$result = $this->checkAlias($_POST[$this->columns['id_row']]);
 
 		if ($res_id) {
+
+			// в ячейку суперглобального массива сохраним: div с классом: 'успех', внутри которого вставим сообщение об 
+			// успехе добавления или редактирования (из соответствующего файла информационных сообщений, путь к которому прописан в Settings.php)
 			$_SESSION['res']['answer'] = '<div class="success">' . $answerSuccess . '</div>>';
 
 			// если нам не нужно возвращать: Id
 			if (!$returnId) {
-				// сделаем возврат на ту же самую страницу
+
+				// сделаем возврат на ту же самую страницу и дальше код выполняться не будет
 				$this->redirect();
 			}
 
+			// если нам нужно возвращать: Id (т.е. $returnId пришло),то
 			return $_POST[$this->columns['id_row']];
-			// иначе если $res_id не пришёл
+
+			// иначе (если $res_id не пришёл)
 		} else {
+
+			// в ячейку суперглобального массива сохраним: div с классом: 'ошибка', внутри которого вставим сообщение об 
+			// ошибке при добавления или редактирования (из соответствующего файла информационных сообщений, путь к которому прописан в Settings.php)
 			$_SESSION['res']['answer'] = '<div class="error">' . $answerFail . '</div>>';
 
+			// и аналогично при
 			if (!$returnId) {
+
+				// сделаем возврат на ту же самую страницу
 				$this->redirect();
 			}
 		}
 	}
 
-	// метод, исключающий поля из добавления в адмиистративную панель
+	/** 
+	 * Метод, исключающий поля из добавления в БД
+	 */
 	protected function checkExceptFields($arr = [])
 	{
 		if (!$arr) {
@@ -653,9 +759,12 @@ abstract class BaseAdmin extends BaseController
 		$except = [];
 
 		if ($arr) {
+
 			foreach ($arr as $key => $item) {
+
 				// если поля: columns[$key] не существует или оно пустое
 				if (!$this->columns[$key]) {
+
 					// исключим поле: [$key] из добавления в БД
 					$except[] = $key;
 				}
@@ -665,7 +774,9 @@ abstract class BaseAdmin extends BaseController
 		return $except;
 	}
 
-	// метод создания файлов
+	/** 
+	 * Метод создания файлов
+	 */
 	protected function createFiles($id)
 	{
 
@@ -719,52 +830,65 @@ abstract class BaseAdmin extends BaseController
 		return $res;
 	}
 
-	// метод создания ссылок (ЧПУ)
+	/** 
+	 * Метод создания ссылок (ЧПУ)
+	 */
 	protected function createAlias($id = false)
 	{
+		// работать метод должен только, если в данной таблице есть поле: alias
 		if ($this->columns['alias']) {
 
-			// если в посте поле: alias не приходит, то мы должны его сформировать
+			// если в посте поле: alias не приходит (т.е. пользователь админки это поле не заполнил), то мы должны его сформировать автоматически
 			if (!$_POST['alias']) {
 
 				// если ячейка: ['name'] в посте есть
 				if ($_POST['name']) {
+
 					// то сформируем переменную: alias_str
 					$alias_str = $this->clearStr($_POST['name']);
-					// иначе
+
+					// иначе пройдёмся по всему посту и найдём что то, что связано с именем
 				} else {
+
 					foreach ($_POST as $key => $item) {
-						// если в ключе: key слово: name встречается и что то пришло в $item (не пусто)
+
+						// если в ключе: $key слово: name встречается и что то пришло в $item (не пусто)
 						if (strpos($key, 'name') !== false && $item) {
+
 							$alias_str = $this->clearStr($item);
+
 							break;
 						}
 					}
 				}
-				// иначе
+				// иначе (если в посте поле: alias пришло)
 			} else {
+
 				// сначала обработаем: $_POST (его ячейку: ['alias']): $this->clearStr($_POST['alias']), потом перезапишем 
 				// эти данные в исходном: $_POST['alias'] и затем сохраним в переменой: $alias_str
 				$alias_str = $_POST['alias'] = $this->clearStr($_POST['alias']);
 			}
 
-			// создадим объект класса: TextModify
+			// создадим объект класса: TextModify (библиотеки для работы с текстом)
 			$textModify = new \libraries\TextModify();
-			// в переменной: $alias сохраним результат работы метода: translit(), на вход которого подаём, то что хранится в 
-			// переменной: $alias_str
+
+			// в переменной: $alias (ссылка) сохраним результат работы метода: translit(), на вход которого подаём, то что хранится в переменной: $alias_str
 			$alias = $textModify->translit($alias_str);
 
 			// Проверим: не существует ли в таблице с которой мы работаем ещё такой ссылки
 
-			// в переменную: $where (её ячейку: ['alias']) положим то, что хранитс в переменной: $alias
+			// в переменную: $where (её ячейку: ['alias']) положим то, что хранится в переменной: $alias
 			$where['alias'] = $alias;
+
 			// в переменную: $operand положим знак равенства (=)
 			$operand[] = '=';
 
 			// Так как у нас один и тот же метод является обработчиком как для добавления данных, так и для редактирования,
 			// то если пришёл id значит идентификатор есть и мы редактируем данные, значит нам надо сделать ещё одну проверку:
 			if ($id) {
+
 				$where[$this->columns['id_row']] = $id;
+
 				$operand[] = '<>';
 			}
 
@@ -772,7 +896,7 @@ abstract class BaseAdmin extends BaseController
 
 			// в переменной: $res_alias сохраним результат работы метода модели: get() Вернём нулевой элемент массива, 
 			// сформированного из поданных на вход таблицы: $this->table и массива условий
-			// (имеем: если в $res_alias что то пришло, значит этот alias нам не подходит)
+			// (имеем: если в $res_alias что то пришло, значит этот alias нам не подходит, т.к. подобный уже существует)
 			$res_alias = $this->model->get($this->table, [
 				'fields' => ['alias'],
 				'where' => $where,
@@ -781,26 +905,36 @@ abstract class BaseAdmin extends BaseController
 			])[0];
 
 			if (!$res_alias) {
+
 				// перезапишем: $_POST['alias']
 				$_POST['alias'] = $alias;
+
 				// иначе
 			} else {
+
 				// в свойство: $this->alias запишем $alias (это будет необходимо для метода редактирования дальше мы будем 
 				// работать с этим свойством)
 				$this->alias = $alias;
-				// а $_POST['alias'] необходимо очистить, что бы туда не было попадания не нужной нам строки, не было дублирования // одного и того же alias страницы перезапишем его пустым
+
+				// а $_POST['alias'] необходимо очистить, что бы туда не было попадания не нужной нам строки, не было 
+				// дублирования  одного и того же alias страницы перезапишем его пустым
 				$_POST['alias'] = '';
 			}
 
 			// если всё отработало хорошо и что то пришло в $_POST['alias'] и есть id (т.е. работаем в системе редактирования)
 			if ($_POST['alias'] && $id) {
-				// ф-ия php: method_exists() — проверяет, существует ли в нашем объекте: $this метод класса: checkOldAlias(), то вызовем этот метод (для хранения старых ссылок (для корректной работы с поисковыми системами если сменился alias страницы) это нужно для SEO)
+
+				// здесь- ф-ия php: method_exists() — проверяет, существует ли в нашем объекте: $this метод :
+				//  checkOldAlias(), то вызовем этот метод (для хранения старых ссылок (для корректной работы с 
+				// поисковыми системами если сменился alias страницы) это нужно для SEO)
 				method_exists($this, 'checkOldAlias') && $this->checkOldAlias($id);
 			}
 		}
 	}
 
-	// Метод формирования позиции вывода записей из базы данных
+	/** 
+	 * Метод формирования позиции вывода записей из базы данных
+	 */
 	protected function updateMenuPosition($id = false)
 	{
 		if (isset($_POST['menu_position'])) {
@@ -823,13 +957,18 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод проверки ссылок (ЧПУ)
+	/** 
+	 * Метод проверки на отсутствие одинаковых ссылок(ЧПУ) 
+	 */
 	protected function checkAlias($id)
 	{
 		if ($id) {
+
 			if ($this->alias) {
+
 				$this->alias .= '-' . $id;
 
+				// вызываем метод модели для редактирования
 				$this->model->edit($this->table, [
 					'fields' => ['alias' => $this->alias],
 					'where' => [$this->columns['id_row'] => $id]
@@ -889,7 +1028,9 @@ abstract class BaseAdmin extends BaseController
 		return compact('name', 'parent_id', 'order', 'columns');
 	}
 
-	// метод, который будет создавать связи многие ко многим
+	/** 
+	 * Метод, который будет создавать связи многие ко многим
+	 */
 	protected function createManyToMany($settings = false)
 	{
 		if (!$settings) {
@@ -1204,7 +1345,9 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	// метод для добавления связей многие ко многим в БД
+	/** 
+	 * Метод для добавления связей многие ко многим в БД
+	 */
 	protected function checkManyToMany($settings = false)
 	{
 		if (!$settings) {
@@ -1470,7 +1613,9 @@ abstract class BaseAdmin extends BaseController
 		return;
 	}
 
-	// метод для хранения старых ссылок
+	/** 
+	 * Метод для хранения старых ссылок
+	 */
 	protected function checkOldAlias($id)
 	{
 		$tables = $this->model->showTables();
@@ -1507,7 +1652,9 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	//  метод для проверки файлов
+	/** 
+	 * Метод для проверки файлов
+	 */
 	protected function checkFiles($id)
 	{
 		if ($id) {

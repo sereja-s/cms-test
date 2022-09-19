@@ -5,9 +5,15 @@ namespace core\base\settings;
 use core\base\controller\Singleton;
 use core\base\settings\Settings;
 
+/** 
+ * трейт базовых настроек для работы с плагинами (Выпуск №53)
+ * 
+ * Методы: static public function get(); protected function setProperties()
+ */
 trait BaseSettings
 {
 	use Singleton {
+
 		// зададим псевдоним методу: instance трейта: Singleton и далее обращаться к этому методу по его псевлониму
 		instance as SingletonInstance;
 	}
@@ -15,6 +21,9 @@ trait BaseSettings
 	// определим (объявим) свойство
 	private $baseSettings;
 
+	/**
+	 * Метод возвращает свойства, описанные в трейте базовых настроек для работы с плагинами
+	 */
 	static public function get($property)
 	{
 		return self::instance()->$property;
@@ -38,6 +47,7 @@ trait BaseSettings
 		// обратились используя статическое свойство $_instance и затем свойство baseSettings (в котором хранится объект нашего класса)
 		// (функция (метод) clueProperties() описана в файле Settings.php)
 		$baseProperties = self::$_instance->baseSettings->clueProperties(get_class());
+
 		// у нашего свойства self::$_instance мы должны вызвать метод setProperties() и передать туда $baseProperties
 		self::$_instance->setProperties($baseProperties);
 
@@ -47,6 +57,7 @@ trait BaseSettings
 
 	// создадим метод чтобы получить доступ к свойствам, которые пришли в виде массива в свойство: $baseProperties и 
 	// создать их внутри объекта нашего класса (на вход приходит массив свойств)
+
 
 	/** 
 	 * Метод предоставит доступ к свойствам (поданным на вход) т.е. создаст их внутри объекта класса 

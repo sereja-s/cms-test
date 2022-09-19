@@ -7,7 +7,8 @@ use core\base\controller\Singleton;
 /** 
  *  Класс настроек
  * 
- * Методы: static public function get($property); public function clueProperties($class); public function arrayMergeRecursive()
+ * Методы: static public function get($property); public function clueProperties($class); 
+ * public function arrayMergeRecursive()
  */
 class Settings
 {
@@ -66,6 +67,9 @@ class Settings
 	// свойство: расширение (путь к папке где хранятся расширения) 
 	private $expansion = 'core/admin/expansion/';
 	//private $expansion = 'core/plugin/expansion/';
+
+	// свойство: сообщения (путь к папке где хранятся информационные сообщения)
+	private $messages = 'core/base/messages/';
 
 	// свойство с таблицей по умолчанию
 	private $defaultTable = 'teachers';
@@ -139,6 +143,17 @@ class Settings
 		'vg-rows' => [],
 		'vg-img' => ['img', 'gallery_img'],
 		'vg-content' => ['content']
+	];
+
+	// свойство, в котором будет храниться массив полей, которые мы будем валидировать
+	private $validation = [
+		'name' => ['empty' => true, 'trim' => true],
+		'price' => ['int' => true],
+		'discount' => ['int' => true],
+		'login' => ['empty' => true, 'trim' => true],
+		'password' => ['crypt' => true, 'empty' => true],
+		'keywords' => ['count' => 70, 'trim' => true],
+		'description' => ['count' => 160, 'trim' => true]
 	];
 
 	// Объявим метод, который будет возвращать указанные выше свойства

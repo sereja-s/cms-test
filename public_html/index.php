@@ -21,8 +21,8 @@ use core\base\exceptions\DbException;
 
 //use core\base\settings\Settings;
 
-//$S = Settings::get('routes');
-//$S1 = Settings::get('templateArr');
+//$S = Settings::instance();
+//$S1 = \core\base\settings\ShopSettings::instance();
 //exit();
 
 try {

@@ -1,0 +1,4 @@
+Fault: 18-09-2022 15:17:13 - Ошибка в SQL запросе: SHOW COLUMNS FROM students - 2006 MySQL server has gone away
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+

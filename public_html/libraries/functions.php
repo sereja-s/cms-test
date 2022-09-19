@@ -8,7 +8,11 @@ function print_arr($arr)
 	echo '</pre>';
 }
 
+// если не существует стандартной функции php (поданной на вход) 
 if (!function_exists('mb_str_replace')) {
+	/** 
+	 * Метод для замены символов в строке (мультибайтовый) Описан в libraries/functions.php 
+	 */
 	function mb_str_replace($needle, $text_replace, $haystack)
 	{
 		return implode($text_replace, explode($needle, $haystack));

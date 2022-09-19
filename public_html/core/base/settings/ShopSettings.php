@@ -5,6 +5,7 @@ namespace core\base\settings;
 // класс настроек плагинов
 class ShopSettings
 {
+	// импорт трейта для подключения и работы с плагинами
 	use BaseSettings;
 
 	private $routes = [
