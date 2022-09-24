@@ -67,6 +67,14 @@ class IndexController extends BaseUser
 		//exit();
 
 		//$post = $this->isPost();
+
+		// Выпуск №71
+		//строка, которую необходимо зашифровать и затем расшифровать
+		$str = '12ф';
+
+		$en_str = \core\base\model\Crypt::instance()->encrypt($str);
+		$dec_str = \core\base\model\Crypt::instance()->decrypt($en_str);
+
 		exit();
 	}
 

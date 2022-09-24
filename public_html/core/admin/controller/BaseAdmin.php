@@ -776,12 +776,14 @@ abstract class BaseAdmin extends BaseController
 
 	/** 
 	 * Метод создания файлов
+	 * (метод ничего не возвращает, а просто заполняет свойство: $fileArray, которое в методе: protected function editData() передаём в модель)
 	 */
 	protected function createFiles($id)
 	{
 
 		$fileEdit = new FileEdit();
 
+		// в массив сохраним результат работы метода: addFile (объекта класса: FileEdit)
 		$this->fileArray = $fileEdit->addFile($this->table);
 
 		if ($id) {
@@ -1614,7 +1616,8 @@ abstract class BaseAdmin extends BaseController
 	}
 
 	/** 
-	 * Метод для хранения старых ссылок
+	 * Метод для хранения старых ссылок 
+	 * Необходимо для поисковых систем что бы избежать повторной индексации (например если название страницы изменилось, а контент остался тем же)
 	 */
 	protected function checkOldAlias($id)
 	{
@@ -1623,7 +1626,7 @@ abstract class BaseAdmin extends BaseController
 		// проверим есть ли в массиве: $tables таблица: old_alias
 		if (in_array('old_alias', $tables)) {
 
-			// сохраним текущую ссылку в таблице для хранения старых ссылок
+			// Сохраним текущую ссылку в таблице для хранения старых ссылок
 			// в переменную: $old_alias получаем данные, с помощью метода модели: get() из текущей таблицы: table (подаётся на вход 1-ым параметром), какие данные (поля) необходимо получить и условие указываем 2-ым параметром
 			// (вернуть нужно только нулевой элемент массива (его ячейку: ['alias']))
 			$old_alias = $this->model->get($this->table, [
@@ -1644,7 +1647,8 @@ abstract class BaseAdmin extends BaseController
 					'where' => ['alias' => $_POST['alias'], 'table_name' => $this->table]
 				]);
 
-				// добавим то что хранится в переменной: $old_alias в текущую таблицу: $this->table с указанием идентификатора: id // (может использоваться для уникальности идентификатора ссылки)
+				// добавим то что хранится в переменной: $old_alias в текущую таблицу: $this->table с указанием 
+				// идентификатора: id (может использоваться для уникальности идентификатора ссылки)
 				$this->model->add('old_alias', [
 					'fields' => ['alias' => $old_alias, 'table_name' => $this->table, 'table_id' => $id]
 				]);

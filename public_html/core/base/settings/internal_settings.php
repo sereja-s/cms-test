@@ -24,7 +24,7 @@ const COOKIE_VERSION = '1.0.0';
 // Переходим по ссылке: https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
 // выбираем: Security level- 128-bit Чтобы ключ был посложнее выбираем: How many ?- 5 (по желанию можно и больше)
 // копируем их и вставляем в const CRYPT_KEY в качестве суммарного ключа (равняем в строку)
-const CRYPT_KEY = 't7w!z%C&F)J@NcRfYq3t6w9z$B&E)H@MgVkYp3s6v9y$B?E(NdRgUkXp2s5v8y/B)J@NcRfUjXn2r5u8';
+const CRYPT_KEY = 't7w!z%C&F)J@NcRfYq3t6w9z$B&E)H@MgVkYp3s6v9y$B?E(NdRgUkXp2s5v8y/B)J@NcRfUjXn2r5u8t7w!z%C&F)J@NcRfYq3t6w9z$B&E)@MgVkYp3s6v9y$B?E/';
 
 // константа для хранения времени в мин. (ограничение бездействия администратора), по истечении которого его выкинет из админки (разлогинит)
 const COOKIE_TIME = 60;

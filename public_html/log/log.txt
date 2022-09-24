@@ -1,0 +1,60 @@
+Fault: 22-09-2022 19:27:52 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 19:28:08 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 19:34:41 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 19:35:35 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 19:55:06 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 21:32:08 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 21:32:15 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 21:32:31 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 22-09-2022 21:35:26 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 23-09-2022 22:11:45 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 24-09-2022 11:42:46 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 24-09-2022 11:42:56 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 24-09-2022 11:43:06 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 24-09-2022 11:43:16 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+
+Fault: 24-09-2022 11:43:23 - Не верное имя файла для подключения: core/user/controller/UserfilesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 71
+

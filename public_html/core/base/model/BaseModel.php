@@ -11,7 +11,7 @@ use core\base\model\BaseModelMethods;
  * 
  *  Методы: protected function connect(); final public function query(); final public function get(); 
  * 			final public function add(); final public function edit(); public function delete(); 
- *          final public function showColumns(); 
+ *          final public function showColumns(); final public function showTables()
  */
 abstract class BaseModel extends BaseModelMethods
 {
@@ -655,7 +655,9 @@ abstract class BaseModel extends BaseModelMethods
 		return $this->tableRows[$table];
 	}
 
-	// метод который будет возвращать все таблицы из БД и будет проверять существуют ли вспомогательные таблицы
+	/** 
+	 * Метод озвращает все таблицы из БД и проверяет существуют ли вспомогательные таблицы (Выпуск №54)
+	 */
 	final public function showTables()
 	{
 		// в переменной сохраним запрос
@@ -668,6 +670,7 @@ abstract class BaseModel extends BaseModelMethods
 		// создадим массив таблиц вида: нумерованный ключ => название таблицы
 
 		if ($tables) {
+
 			foreach ($tables as $table) {
 
 				// reset() перематывает внутренний указатель на первый элемент и возвращает значение первого элемента массива

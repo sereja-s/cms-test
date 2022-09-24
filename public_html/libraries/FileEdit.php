@@ -32,8 +32,10 @@ class FileEdit
 		$this->setDirectory($directory);
 
 		foreach ($_FILES as $key => $file) {
+
 			// is_array() — определяет, является ли переменная: $file['name'] массивом Если да
 			if (is_array($file['name'])) {
+
 				// то обрабатываем как массив
 				$file_arr = [];
 
@@ -42,7 +44,7 @@ class FileEdit
 					// проверим не пустой ли пришёл $file['name'] его [$i]- элемент
 					if (!empty($file['name'][$i])) {
 
-						// начинаем формировать нужный нам массив: $file_arr
+						// начинаем формировать нужный нам массив: $file_arr (с такими же полями как в глобальном массиве: $_FILES)
 						$file_arr['name'] = $file['name'][$i];
 						$file_arr['type'] = $file['type'][$i];
 						$file_arr['tmp_name'] = $file['tmp_name'][$i];
@@ -50,18 +52,20 @@ class FileEdit
 						$file_arr['size'] = $file['size'][$i];
 
 						// Далее формируем корректное имя файла и отправляем данный файл на сервер
-
 						$res_name = $this->createFile($file_arr);
 
 						// если в переменую: $res_name пришло имя перемещённого файла
 						if ($res_name) {
+
 							$this->imgArr[$key][$i] = $directory . $res_name;
 						}
 					}
 				}
 				// иначе обрабатываем как единичный файл
 			} else {
+
 				if ($file['name']) {
+
 					$res_name = $this->createFile($file);
 
 					if ($res_name) {
@@ -80,12 +84,14 @@ class FileEdit
 	 */
 	protected function createFile($file)
 	{
-		// explode()— разбирает строку (имя файла из $file['name']) на массив по заданному разделителю (получим все элементы 
-		// через разделитель точка (.))
+		// explode()— разбирает строку (имя файла из $file['name']) на массив по заданному разделителю (получим все 
+		// элементы через разделитель- точка (.))
 		$fileNameArr = explode('.', $file['name']);
+
 		// и получим его расширение
 		// (в переменную: $ext положим последний элемент массива: $fileNameArr)
 		$ext = $fileNameArr[count($fileNameArr) - 1];
+
 		// далее разрегестрируем (удалим) полученное расширение файла
 		unset($fileNameArr[count($fileNameArr) - 1]);
 
@@ -104,6 +110,7 @@ class FileEdit
 		// вызовем метод: uploadFile, которая переместит файл (на вход передаём: 1-ый параметр: ячейку массива где файл 
 		// находится сейчас: $file['tmp_name'] и 2-ой параметр: путь куда мы хотим переместить этот файл: $fileFullName)
 		if ($this->uploadFile($file['tmp_name'], $fileFullName)) {
+
 			return $fileName;
 		}
 
@@ -111,12 +118,13 @@ class FileEdit
 	}
 
 	/** 
-	 * Метод, который перемещает файл (на вход получает временное имя файла и путь куда его надо переместить)
+	 * Метод который перемещает файл (на вход получает временное имя файла и путь куда его надо переместить)
 	 */
 	protected function uploadFile($tmpName, $dest)
 	{
 		// move_uploaded_file() — перемещает загруженный файл в новое расположение
 		if (move_uploaded_file($tmpName, $dest)) {
+
 			return true;
 		}
 
@@ -163,6 +171,9 @@ class FileEdit
 		}
 	}
 
+	/** 
+	 * Метод получения данных о файлах
+	 */
 	public function getFiles()
 	{
 		return $this->imgArr;
