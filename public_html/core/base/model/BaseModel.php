@@ -208,12 +208,14 @@ abstract class BaseModel extends BaseModelMethods
 			return $query; // вернём запрос, а не выборку
 		}
 
-		// в переменную $res вернём результат работы метода query() На вход 1- переменная: $query ($crud = 'r' не указываем т.к. это значение по умолчанию)
+		// в переменную $res вернём результат работы метода query() На вход 1- переменная: $query (2-здесь- $crud = 'r' не 
+		// указываем т.к. это значение по умолчанию) Выпуск №75
 		$res = $this->query($query);
 
 		// проверим существует ли у нас флаг (join_structure) по которому мы будем определять: надо ли нам 
-		// структурировать данные
+		// структурировать данные (результирующую выборку из БД)
 		if (isset($set['join_structure']) && $set['join_structure'] && $res) {
+
 			$res = $this->joinStructure($res, $table);
 		}
 
@@ -595,17 +597,20 @@ abstract class BaseModel extends BaseModelMethods
 	}
 
 	/** 
-	 * Метод даёт информацию о колонках с полями БД
+	 * Метод даёт информацию о колонках с полями БД (+Выпуск №75)
 	 */
 	final public function showColumns($table)
 	{
-
 		// если ячейка: tableRows[$table] не существует или пустая
 		if (!isset($this->tableRows[$table]) || !$this->tableRows[$table]) {
+
+			// +Выпуск №78
 			$checkTable = $this->createTableAlias($table);
 
-			// если что то пришло в ячейку: 
+			// если что то пришло в ячейку (т.е. проверим: не существует ли в св-ве: $this->tableRows в соответствующей 
+			// ячейке, такого элемента, который хранится в $checkTable (его ячейке: ['table'])): 
 			if (!empty($this->tableRows[$checkTable['table']])) {
+
 				// то в в массиве: tableRows, создадим ячейку массива с псевдонимом таблицы, которая будет равна ячейке 
 				// массива с названием таблицы ( без псевдонима)
 				return $this->tableRows[$checkTable['alias']] = $this->tableRows[$checkTable['table']];
@@ -615,6 +620,7 @@ abstract class BaseModel extends BaseModelMethods
 			// чтобы массив в запросе (внутри двойных кавычек) преобразовать в строку, мы должны заключить его в 
 			// фигурные скобки
 			$query = "SHOW COLUMNS FROM {$checkTable['table']}";
+
 			// в переменную $res придёт результат работы метода query(), на вход ему передаём переменную $query
 			$res = $this->query($query);
 
@@ -623,10 +629,11 @@ abstract class BaseModel extends BaseModelMethods
 
 			// если в переменную $res что то пришло
 			if ($res) {
+
 				foreach ($res as $row) {
 
-					// примечание: название ячеек, которые приходят из базы данных начинаются с большой буквы: $row['Field'] Здесь делаем ячейку Field массива $row ассоциативной в результирующем массиве: tableRows[$checkTable['table']]
-					// выстраиваем ассоциативный массив и перемещем в него $row
+					// примечание: название ячеек, которые приходят из базы данных начинаются с большой буквы: $row['Field'] 
+					// выстраиваем ассоциативный массив и перемещаем в него $row
 					$this->tableRows[$checkTable['table']][$row['Field']] = $row;
 
 					// если ячейка Key массива $row строго равна значению PRI (является первичным ключём)
@@ -638,8 +645,15 @@ abstract class BaseModel extends BaseModelMethods
 							// в корень результирующего массива: $this->tableRows[$checkTable['table']] в его ячейку id_row, положим ту ячейку $row и её поле Field, которая является первичным ключём (т.е. Key=PRI), а именно название поля
 							$this->tableRows[$checkTable['table']]['id_row'] = $row['Field'];
 						} else {
+
+							// если не существует соответствующей ячейки (составного ключа: multi_id_row, которая обычно 
+							// появляется при реализации связи: многие ко многим через третью таблицу)
 							if (!isset($this->tableRows[$checkTable['table']]['multi_id_row'])) {
+
+								// добавим в массив в ячейке: $this->tableRows[$checkTable['table']]['multi_id_row'] содержимое ячейки: $this->tableRows[$checkTable['table']]['id_row']
 								$this->tableRows[$checkTable['table']]['multi_id_row'][] = $this->tableRows[$checkTable['table']]['id_row'];
+
+								// и затем туда же последовательно добавим содержимое ячейки: $row['Field']
 								$this->tableRows[$checkTable['table']]['multi_id_row'][] = $row['Field'];
 							}
 						}
@@ -648,10 +662,15 @@ abstract class BaseModel extends BaseModelMethods
 			}
 		}
 
+		// +Выпуск №78
 		if (isset($checkTable) && $checkTable['table'] !== $checkTable['alias']) {
+
+			// то в в массиве: tableRows, создадим ячейку массива с псевдонимом таблицы, которая будет равна (указывать) по ссылке на ячейку массива с названием таблицы ( без псевдонима)
 			return $this->tableRows[$checkTable['alias']] = &$this->tableRows[$checkTable['table']];
 		}
 
+		// имеем: если в запросе (в join) задали псевдоним, то результат вернётся в соответствующую ячейку
+		// остальные поля вернутся как обычно 
 		return $this->tableRows[$table];
 	}
 

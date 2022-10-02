@@ -72,7 +72,7 @@ class Settings
 	private $messages = 'core/base/messages/';
 
 	// свойство с таблицей по умолчанию
-	private $defaultTable = 'teachers';
+	private $defaultTable = 'goods';
 
 	// свойство в котором хранится путь к шаблонам админки
 	private $formTemplates = PATH . 'core/admin/view/include/form_templates/';
@@ -81,7 +81,15 @@ class Settings
 	private $projectTables = [
 
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png'],
-		'students' => ['name' => 'Студенты']
+		'students' => ['name' => 'Студенты'],
+		'goods' => ['name' => 'Товары'],
+		'filters' => ['name' => 'Фильтры'],
+		'filters_test' => ['name' => 'Фильтры_2'],
+		'filters_categories' => ['name' => 'Категории фильтров'],
+		'test' => ['name' => 'Тест'],
+		'product' => ['name' => 'Продукты'],
+		'pages' => ['name' => 'Страницы'],
+		'articles' => ['name' => 'Статьи']
 	];
 
 	// свойство: массив шаблонов
@@ -90,10 +98,15 @@ class Settings
 		'text' => ['name'],
 		'textarea' => ['content', 'keywords'],
 		'radio' => ['visible'],
+		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: товары (они прописаны 
+		// в массиве: в свойстве: private $manyToMany)
 		'select' => ['menu_position', 'parent_id'],
-		'img' => ['img'],
+		'img' => ['img', 'main_img'],
 		'gallery_img' => ['gallery_img']
 	];
+
+	// св-во, в котором будет храниться массив шаблонов в которых выводятся файлы
+	private $fileTemplates = ['img', 'gallery_img'];
 
 	// св-во, позволяющее переводить поля административной панели из файла настроек
 	private $translate = [
@@ -123,7 +136,8 @@ class Settings
 		'discount' => ['Скидка'],
 		'price' => ['Цена'],
 		'parent_id' => ['Выбрать категорию', '(К чему относится?)'],
-		'promo_img' => ['Изображение для главной страницы']
+		'promo_img' => ['Изображение для главной страницы'],
+		//'filters' => ['Категории фильтров']
 	];
 
 	// св-во, в котором будут храниться значения для input type radio (кнопок переключателей (да, нет и т.д.))
@@ -134,14 +148,22 @@ class Settings
 	// св-во, в котором будет храниться информация о корневых таблицах
 	private $rootItems = [
 		'name' => 'Корневая',
-		'tables' => ['teachers', 'articles']
+		'tables' => ['teachers', 'pages', 'goods', 'filters']
+	];
+
+	// свойство для автоматизации связей многие ко многим
+	private $manyToMany = [
+		// массив содержит название таблиц, которые связаны в БД
+		'goods_filters' => ['goods', 'filters', 'type' => 'child'], // 'type' => 'child' || 'root' - необязательный 3-ий элемент массива: 
+		// показывает только дочерние элементы или только родительские категории Без него (по умолчанию) будет показано всё
+		'goods_filters_test' => ['goods', 'filters_test']
 	];
 
 	// св-во, в котором будут храниться названия блоков админки (левого, правого, центрального) и их содержимое 
 	// (по умолчанию содержимое разделов адмики занимает левый блок: vg-rows) 
 	private $blockNeedle = [
 		'vg-rows' => [],
-		'vg-img' => ['img', 'gallery_img'],
+		'vg-img' => ['img', 'main_img', 'gallery_img'],
 		'vg-content' => ['content']
 	];
 

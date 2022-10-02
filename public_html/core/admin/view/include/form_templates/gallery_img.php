@@ -8,24 +8,22 @@
 				<span class="vg-text vg-firm-color5"><?= $this->translate[$row][1] ?></span><span class="vg_subheader"></span>
 			</div>
 		</div>
+
 		<div class="vg-wrap vg-element vg-full gallery_container">
 			<label class="vg-dotted-square vg-center" draggable="false">
 				<img src="<?= PATH . ADMIN_TEMPLATE ?>img/add.png" alt="plus" draggable="false">
 				<input class="gallery_img" style="display: none;" type="file" name="<?= $row ?>[]" multiple="" accept="image/*,image/jpeg,image/png,image/gif" draggable="false">
 			</label>
 
-			<?php if ($this->data[$row]) : ?>
-
-				<?php $this->data[$row] = json_decode($this->data[$row]); ?>
-
+			<?php if (!empty($this->data[$row])) : ?>
+				<?php $this->data[$row] = json_decode($this->data[$row], true); ?>
 				<?php foreach ($this->data[$row] as $item) : ?>
 
-					<a href="/admin/delete/goods/53/gallery_img/Zm90bzEucG5n" class="vg-dotted-square vg-center" draggable="true">
+					<a href="<?= $this->adminPath . 'delete/' . $this->table . '/' . $this->data[$this->columns['id_row']] . '/' . $row . '/' . base64_encode($item) ?>" class="vg-dotted-square vg-center" draggable="true">
 						<img class="vg_delete" src="<?= PATH . UPLOAD_DIR . $item ?>" draggable="false">
 					</a>
 
 				<?php endforeach; ?>
-
 				<?php
 
 				for ($i = 0; $i < 2; $i++) {

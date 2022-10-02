@@ -7,7 +7,8 @@ namespace core\base\model;
  * Класс с методами для базовой модели
  * 
  * Методы: protected function createFields(); protected function createOrder(); protected function createWhere();
- *  		  protected function createJoin(); protected function createInsert(); protected  function createUpdate()
+ *  		  protected function createJoin(); protected function createInsert(); protected  function createUpdate();
+ *         protected function joinStructure(); protected function createTableAlias()
  */
 abstract class BaseModelMethods
 {
@@ -23,35 +24,44 @@ abstract class BaseModelMethods
 	protected $totalCount;
 
 	protected $sqlFunc = ['NOW()', 'RAND()'];
+	// свойство для полей таблицы
 	protected $tableRows;
 	// свойство используемое в методах модели для формирования UNION запросов к базе данных
 	protected $union = [];
 
 	/** 
-	 *  Метод вернёт строку с полями, в которой будут пристыкованы названия таблиц с псевдонимами
+	 *  Метод вернёт строку с полями, в которой будут пристыкованы названия таблиц с псевдонимами (+Выпуск №75)
 	 */
 	protected function createFields($set, $table = false, $join = false)
 	{
-		// Проверим существует ли в массиве в $set, ячейка: ['fields'] и пришло ли в неё что-нибудь
+		// (+Выпуск №78)
 		// array_key_exists() — проверяет, существует ли в массиве заданный ключ или индекс
+		// Проверим существует ли в массиве в $set, ячейка (ключ): ['fields'] и если в ней пусто (т.е. даём возможность 
+		// передавать в эту ячейку- null)		
 		if (array_key_exists('fields', $set) && $set['fields'] === null) {
+
+			// то вернём пустую строку
 			return '';
 		}
 
 		$concat_table = '';
+
 		$alias_table = $table;
 
 		if (empty($set['no_concat'])) {
 
 			$arr = $this->createTableAlias($table);
+
 			$concat_table = $arr['alias'] . '.';
+
 			$alias_table = $arr['alias'];
 		}
 
 
 		// в переменную $fields сохраним пустую строку
 		$fields = '';
-		// объявим флаг и поставим ему значение по умолчаанию
+
+		// объявим флаг и поставим ему значение по умолчанию: (т.е. ничего джойнить нам не надо)
 		$join_structure = false;
 
 		// если у нас пришёл: $join или значение в ячейке: $set['join_structure'] установлено отличным от null
@@ -60,9 +70,11 @@ abstract class BaseModelMethods
 
 			// поставим флаг структуризации джоинов в значение: true
 			$join_structure = true;
+
 			$this->showColumns($table);
 
 			if (isset($this->tableRows[$table]['multi_id_row'])) {
+
 				// обнуляем поле
 				$set['fields'] = [];
 			}
@@ -70,30 +82,40 @@ abstract class BaseModelMethods
 
 		// сделаем проверку:
 		if (!isset($set['fields']) || !is_array($set['fields']) || !$set['fields']) {
+
 			// если ничего не пришло в $join (т.е. или отсутствует ячейка: join_structure и 3-им параметром в метод: 
 			// createFields() придёт: $join = false, или когда метод: createFields() вызывается из основного метода 
-			// модели: get() В этом случае нам не нужно объявлять псевдонимы, т.к. это выборка для основных полей (идёт // с основными именами))
+			// модели: get() В этом случае нам не нужно объявлять псевдонимы, т.к. это выборка для основных полей (идёт 
+			// с основными именами))
 			if (!$join) {
+
 				$fields = $concat_table . '*,';
+
 				// иначе надо собирать только поля с псевдонимами
 			} else {
+
 				foreach ($this->tableRows[$alias_table] as $key => $item) {
+
 					// если ключ не равен служебным полям: id_row и не равен полям: multi_id_row
 					if ($key !== 'id_row' && $key !== 'multi_id_row') {
+
 						// в пустую строку: $fields добавим:
 						$fields .= $concat_table . $key . ' as TABLE' . $alias_table . 'TABLE_' . $key . ',';
 					}
 				}
 			}
 		} else {
+
 			// сделаем флаг и установим значение по умолчанию: false
 			$id_field = false;
 
 			// проходим по массиву $set (его ячейке fields) как $field 
 			// На каждой итерации значение текущего элемента массива $set['fields'] присваивается переменной $field
 			foreach ($set['fields'] as $field) {
+
 				// если флаг: $join_structure стоит в true (т.е. нам необходимо структурировать данные) и никакое из полей не является первичным ключём (т.е. !$id_field), и ячейка: tableRows[$alias_table] равна $field
 				if ($join_structure && !$id_field && $this->tableRows[$alias_table] === $field) {
+
 					// поставим флаг в true (теперь знаем, что первичный ключ добавлен в наш запрос)
 					$id_field = true;
 				}
@@ -111,9 +133,12 @@ abstract class BaseModelMethods
 
 					// если нам необходимо присоединять (join) таблицы и структурировать
 					if ($join && $join_structure) {
+
+						// (+Выпуск №76)
 						// проверим на соответствие регулярному выраению (найдём определён ли псевдоним уже в $field)
 						// если переменная: $field пришла уже с псевдонимом
 						if (preg_match('/^(.+)?\s+as\s+(.+)/i', $field, $matches)) {
+
 							// значит нам не надо одно и тоже поле два раза выбирать
 							// если $matches подаётся на вход (3-ий параметр), то он заполняется результатами поиска. 
 							// (будет содержать текст, который соответствовал полному шаблону Или будет иметь текст, 
@@ -137,26 +162,31 @@ abstract class BaseModelMethods
 
 			// если в ячейке: $set['fields'] не было поля из $id_field и нам необходимо осуществлять структуризацию джоина (т.е. $join_structure = true)
 			if (!$id_field && $join_structure) {
-				// в $join что то пришло (т.е. метод: createFields() вызвали из метода: createJoin())
+
+				// если в $join что то пришло (т.е. метод: createFields() вызвали из метода: createJoin())
 				if ($join) {
+
 					$fields .= $concat_table . $this->tableRows[$alias_table]['id_row']
 						. ' as TABLE' . $alias_table . 'TABLE_' . $this->tableRows[$alias_table]['id_row'] . ',';
+
 					// иначе (т.е. метод: createFields() вызвали из основного метода модели: get())
 				} else {
+
 					$fields .= $concat_table . $this->tableRows[$alias_table]['id_row'] . ',';
 				}
 			}
 		}
 
-		// вернётся строка с полями, в которой будут пристыкованы названия таблиц с псевдонимами 
+		// вернётся строка с полями, в которой будут пристыкованы названия таблиц с псевдонимами (если есть)
 		return $fields;
 	}
 
 	/** 
-	 *  Метод вернёт строку с сортировкой (укажет по какому полю сортировать и направление сортировки)
+	 *  Метод вернёт строку с сортировкой (укажет по какому полю сортировать и направление сортировки) (+Выпуск №79)
 	 */
 	protected function createOrder($set, $table = false)
 	{
+		// +Выпуск №79
 		$table = ($table && (!isset($set['no_concat']) || !$set['no_concat']))
 
 			// вызовем метод: createTableAlias(), ему на вход передадим переменную: $table и вернём то что будет 
@@ -167,8 +197,10 @@ abstract class BaseModelMethods
 		// сформируем пустую строковую переменную $order_by
 		$order_by = '';
 
+		// (+Выпуск №79)
 		// если $set['order'] существует и в нём есть значение
 		if (isset($set['order']) && $set['order']) {
+
 			// если order придёт как строка, тогда сделаем явное приведение типов и строка попадёт в нулевой элемент 
 			// массива и вернётся в $set['order']
 			$set['order'] = (array)$set['order'];
@@ -198,6 +230,7 @@ abstract class BaseModelMethods
 					// то в переменную $order_direction сохраним этот элемент массива
 					// ф-ия php: strtoupper()  — Преобразует строку в верхний регистр
 					$order_direction = strtoupper($set['order_direction'][$direct_count]);
+
 					// затем увеличиваем счётчик
 					$direct_count++;
 				} else {
@@ -208,14 +241,17 @@ abstract class BaseModelMethods
 
 				// если переменная: $order есть в св-ве: $sqlFunc (sql-функции)
 				if (in_array($order, $this->sqlFunc)) {
+
 					$order_by .= $order . ',';
+
 					// is_int() — Проверим является ли переменная: $order целым числом (например при сортировке с UNION т.е.объединённых запросов)
 				} elseif (is_int($order)) {
+
 					$order_by .= $order . ' ' . $order_direction . ',';
 				} else {
 
-					// в переменную $order_by добавим (конкатенируем): переменную $table, переменную $order (укажет по какому 
-					// полю сортировать), далее добавим(конкатенируем): пробел, переменную $order_direction (направление сортировки) и запятую
+					// в переменную $order_by добавим (конкатенируем): переменную $table, переменную $order (укажет по 
+					// какому полю сортировать), далее добавим(конкатенируем): пробел, переменную $order_direction (направление сортировки) и запятую
 					$order_by .= $table . $order . ' ' . $order_direction . ',';
 				}
 			}
@@ -223,12 +259,13 @@ abstract class BaseModelMethods
 			// здесь обрежем запятую
 			$order_by = rtrim($order_by, ',');
 		}
+
 		return $order_by;
 	}
 
 	/** 
 	 * Метод формирует строку запроса для инструкций WHERE в MySQL
-	 * (На вход передаём: массив который пришёл, таблицу, инструкцию с значением по умолчанию: WHERE)
+	 * (На вход передаём: массив который пришёл, таблицу, инструкцию с значением по умолчанию: WHERE) (+Выпуск №79)
 	 */
 	protected function createWhere($set, $table = false, $instruction = 'WHERE')
 	{
@@ -367,6 +404,8 @@ abstract class BaseModelMethods
 					if (strpos($item, 'SELECT') === 0) {
 
 						$where .= $table . $key . $operand . '(' . $item . ") $condition";
+
+						// (+Выпуск №87- В данном видео мы с вами реализуем методы для сортировки очередности вывода)
 					} elseif ($item === null || $item === 'NULL') {
 
 						if ($operand === '=') {
@@ -390,7 +429,7 @@ abstract class BaseModelMethods
 	}
 
 	/** 
-	 *  Метод формировует запрос по принципу JOIN
+	 *  Метод формировует запрос по принципу JOIN (+Выпуск №79)
 	 * (На вход передаём: массив который пришёл, таблицу (здесь- обязательный параметр) и переменную: $new_where ( т.к. в этом методе будем вызывать метод: protected function createWhere()))				
 	 */
 	protected function createJoin($set, $table, $new_where = false)
@@ -401,6 +440,7 @@ abstract class BaseModelMethods
 
 		// если в массиве $set его ячейка join не пустая (что то пришло)
 		if (!empty($set['join'])) {
+
 			$join_table = $table;
 
 			foreach ($set['join'] as $key => $item) {
@@ -418,16 +458,18 @@ abstract class BaseModelMethods
 					}
 				}
 
+				// (+Выпуск №79)
 				$concatTable = $this->createTableAlias($key)['alias'];
 
 				// если в переменной $join что то есть
 				if ($join) {
+
 					// то конкатенируем к ней пробел
 					$join .= ' ';
 				}
 
 				// isset() — Определяет, была ли установлена переменная значением, отличным от null
-				// ячейка: on в массиве $item- показывает по какому признаку объединять таблицы (должна присутствовать в массиве обязательно)
+				// ячейка: on в массиве $item- показывает по какому признаку объединять таблицы (должна присутствовать в массиве обязательно) (+Выпуск №79)
 				if (isset($item['on']) && $item['on']) {
 
 					// обявим пустой массив в переменной $join_fields
@@ -472,11 +514,11 @@ abstract class BaseModelMethods
 					// Таблица может быть указана в элементе массива: join (здесь- в $item, в ячейке: on, в ячейке: table), 
 					// если это объединение нужно Если таблица не указана, то по умолчанию стыковаться будем с предыдущей таблицей
 
-					// если таблица указана, т.е. существует и заполнена переменная $item  массивом, в нём ячека: on с 
+					// если таблица указана, т.е. существует и заполнена переменная $item  массивом, в нём ячейка: on с 
 					// массивом, а в нём ячейка: table, то
 					if (!empty($item['on']['table'])) {
 
-						// сохраняем в переменную содержимое этой ячейки
+						// сохраняем в переменную содержимое этой ячейки (+Выпуск №79)
 						$join_temp_table = $item['on']['table'];
 					} else {
 
@@ -485,8 +527,6 @@ abstract class BaseModelMethods
 					}
 
 					$join .= $this->createTableAlias($join_temp_table)['alias'];
-
-
 
 					// добавим поле таблицы, которую мы пристыковываем, где в $join_fields[0]- поле из предыдущей таблицы, 
 					// $join_fields[1]- поле из текущей таблицы
@@ -744,7 +784,7 @@ abstract class BaseModelMethods
 					// то к переменной $update добавляем значение переменной $value и конкатенируем к нему запятую
 					$update .= $value . ',';
 
-					// если значение в переменной $value строго равно NULL или 'NULL'
+					// если значение в переменной $value строго равно NULL или 'NULL' (+Выпуск №90)
 				} elseif ($value === NULL || $value === 'NULL') {
 
 					// то к переменной $update добавим слово NULL в двойных кавычках (что и будет означать нулевое значение) и потом конкатенируем запятую
@@ -783,17 +823,23 @@ abstract class BaseModelMethods
 		return rtrim($update, ',');
 	}
 
-	// метод который будет структурировать данные в выборке из БД
+	/** 
+	 * Метод который будет структурировать данные в выборке из БД
+	 */
 	protected function joinStructure($res, $table)
 	{
 		// объявим путой по умолчанию массив
 		$join_arr = [];
+		// (+Выпуск №79)
 		$id_row = $this->tableRows[$this->createTableAlias($table)['alias']]['id_row'];
 
 		foreach ($res as $value) {
+
 			if ($value) {
+
 				// если не существует ячейка: $join_arr[$value[$id_row]]
 				if (!isset($join_arr[$value[$id_row]])) {
+
 					// то создадим её и объявим, что это массив
 					$join_arr[$value[$id_row]] = [];
 				}
@@ -805,13 +851,16 @@ abstract class BaseModelMethods
 					// в ф-ию: preg_match() 3-им параметром передаём массив вхождений: $matches
 					// (если такая ячейка есть, значит это сджойненная таблица)
 					if (preg_match('/TABLE(.+)?TABLE/u', $key, $matches)) {
+
 						// то получим нормализованное имя таблицы, которое будет равняться ячейке массива: $matches[1] в 
 						// которую прийдёт: 1-ая переменная: .+ (т.е. то что в шаблоне заключено в круглые скобки) 
-						// (а в ячейку: $matches[0] придёт вхождение всей подстроки, соответствующей указанному шаблону, а // именно TABLE(.+)?TABLE)
+						// (а в ячейку: $matches[0] придёт вхождение всей подстроки, соответствующей указанному шаблону, а 
+						// именно TABLE(.+)?TABLE)
 						$table_name_normal = $matches[1];
 
 						// если в таблице которую мы джойним ($table_name_normal) нет мультиключей, т.е. составных (multi_id_row),а  пришёл нормальный первичный ключ (id_row)
 						if (!isset($this->tableRows[$table_name_normal]['multi_id_row'])) {
+
 							// получим значение первичного ключа сджойненной таблицы в переменную $join_id_row
 							// запись обращения к ячейки с первичным ключём образована исходя из того как формировались 
 							// поля для выборки из таблицы в методе: createFields() Там между 2-я словами: TABLE хранится 
@@ -820,8 +869,10 @@ abstract class BaseModelMethods
 							// (поэтому мы можем обратиться к имени таблицы, а затем к значению, которое лежит в поле с 
 							// первичным ключём)
 							$join_id_row = $value[$matches[0] . '_' . $this->tableRows[$table_name_normal]['id_row']];
+
 							// иначе (т.е. мультиключи есть)
 						} else {
+
 							// в переменную положим пустую строку
 							$join_id_row = '';
 
@@ -838,6 +889,7 @@ abstract class BaseModelMethods
 						// проверим: если у нас первичный ключ сджойненной таблицы (в $join_id_row) есть и не существует 
 						// такое поле в результирующем массиве (что бы его не продублировать)
 						if ($join_id_row && !isset($join_arr[$value[$id_row]]['join'][$table_name_normal][$join_id_row][$row])) {
+
 							// создадим  ячейку результирующего массива и в неё сохраним значение из $item
 							$join_arr[$value[$id_row]]['join'][$table_name_normal][$join_id_row][$row] = $item;
 						}
@@ -923,26 +975,32 @@ abstract class BaseModelMethods
 
 
 
-	// метод, для создания алиасов таблиц
+	/** 
+	 * Метод, для создания алиасов таблиц (если совпадают названия таблиц в запросе (чаще всего используется в инструкции: JOIN))
+	 */
 	protected function createTableAlias($table)
 	{
 		$arr = [];
 
 		// в регулярном выражении ищем пробел один или более раз
-		// если есть пробел в таблице ( в $table)
+		// если есть пробел в названии таблицы ( в $table)
 		if (preg_match('/\s+/i', $table)) {
+
 			// Ищем символ пробела в переменной: $table, встречающегося 2-а или более раз и заменяем его на один пробел и сохраняем в переменной: $table
 			$table = preg_replace('/\s{2,}/i', ' ', $table);
+
 			// разбиваем строку (из $table) на массив строк по заданному разделителю (пробелу) и сохраняем в переменной: $table_name
 			$table_name = explode(' ', $table);
 
-			// trim()— удаление пробелов (или других символов, если они указаны 2-ым параметром) из начала и конца строки
+			// trim()— удаление пробелов (или других символов, если они указаны 2-ым параметром на входе) из начала и конца строки
 			$arr['table'] = trim($table_name[0]);
 			$arr['alias'] = trim($table_name[1]);
 		} else {
+
 			$arr['alias'] = $arr['table'] = $table;
 		}
 
+		// получим результирующий массив (с алиасом (псевдонимом)) или без него
 		return $arr;
 	}
 }

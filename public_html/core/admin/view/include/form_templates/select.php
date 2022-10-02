@@ -11,6 +11,8 @@
 			<div class="select-arrow-3 select-arrow-31"></div>
 			<select name="<?= $row ?>" class="vg-input vg-text vg-full vg-firm-color1">
 
+
+
 				<?php foreach ($this->foreignData[$row] as $item) : ?>
 
 					<option value="<?= $item['id'] ?>" <?= $this->data[$row] == $item['id'] ? 'selected' : '' ?>>
@@ -20,6 +22,8 @@
 					</option>
 
 				<?php endforeach; ?>
+
+
 
 			</select>
 		</div>

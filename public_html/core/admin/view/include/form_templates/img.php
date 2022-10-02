@@ -9,14 +9,24 @@
 			</div>
 		</div>
 		<div class="vg-wrap vg-element vg-full">
+
 			<label for="<?= $row ?>" class="vg-wrap vg-full file_upload vg-left">
-				<span class="vg-element vg-full vg-input vg-text vg-left vg-button" style="float: left; margin-right: 10px">Выбрать
+
+				<span class="vg-element vg-full vg-input vg-text vg-firm-color4 vg-firm-background-color1-2 vg-left vg-button" style="float: left; padding: 3px 5px; margin-right: 10px">Выбрать
 				</span>
-				<a href="" class="vg-element vg-full vg-input vg-text vg-left vg-button vg_delete">
-					<span>Удалить</span>
-				</a>
+
+				<?php if (!empty($this->data[$row])) : ?>
+
+					<a href="<?= $this->adminPath . 'delete/' . $this->table . '/' . $this->data[$this->columns['id_row']] . '/' . $row . '/' . base64_encode($this->data[$row]) ?>" class="vg-element vg-full vg-input vg-text vg-text vg-firm-color4 vg-firm-background-color2-2 vg-left vg-button vg_delete">
+						<span style="padding: 2px 5px;">Удалить</span>
+					</a>
+
+				<?php endif; ?>
+
 				<input id="<?= $row ?>" type="file" name="<?= $row ?>" class="single_img" accept="image/*,image/jpeg,image/png,image/gif">
+
 			</label>
+
 		</div>
 		<div class="vg-wrap vg-element vg-full">
 			<div class="vg-element vg-left img_show main_img_show">

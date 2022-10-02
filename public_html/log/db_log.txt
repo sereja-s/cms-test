@@ -1,2 +1,62 @@
 
 
+Fault: 24-09-2022 18:17:11 - Ошибка в SQL запросе: SHOW COLUMNS FROM stud_teach - 2006 MySQL server has gone away
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:12:21 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters ON goods_filters.filters_id=filters.id LEFT JOIN filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:21:27 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters ON goods_filters.filters_id=filters.id LEFT JOIN filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:22:10 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters ON goods_filters.filters_id=filters.id LEFT JOIN filters filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:22:23 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters ON goods_filters.filters_id=filters.id LEFT JOIN filters filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:22:43 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters filters ON goods_filters.filters_id=filters.id LEFT JOIN filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 25-09-2022 13:23:07 - Ошибка в SQL запросе: SELECT goods.*,goods_filters.goods_id as TABLEgoods_filtersTABLE_goods_id,goods_filters.filters_id as TABLEgoods_filtersTABLE_filters_id,filters.name as TABLEfiltersTABLE_filter_name,filters.content as TABLEfiltersTABLE_content,filters.id as TABLEfiltersTABLE_id,filters.id as TABLEfiltersTABLE_id,filters.name as TABLEfiltersTABLE_name,filters.content as TABLEfiltersTABLE_content,filters.visible as TABLEfiltersTABLE_visible,filters.parent_id as TABLEfiltersTABLE_parent_id,filters.menu_position as TABLEfiltersTABLE_menu_position FROM goods LEFT JOIN goods_filters ON goods.id=goods_filters.goods_id LEFT JOIN filters filters ON goods_filters.filters_id=filters.id LEFT JOIN filters ON filters.parent_id=filters.id WHERE goods.id IN ('15','16','17')    - 1066 Not unique table/alias: 'filters'
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 27-09-2022 16:40:49 - Ошибка в SQL запросе: UPDATE articles SET menu_position = menu_position - 1 WHERE parent_id IS NULL  AND menu_position <= 2 AND menu_position >  - 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 27-09-2022 16:41:34 - Ошибка в SQL запросе: UPDATE articles SET menu_position = menu_position - 1 WHERE parent_id='3'  AND menu_position <= 1 AND menu_position >  - 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 27-09-2022 16:42:30 - Ошибка в SQL запросе: UPDATE articles SET menu_position = menu_position - 1 WHERE parent_id='3'  AND menu_position <= 1 AND menu_position >  - 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 27-09-2022 16:49:57 - Ошибка в SQL запросе: UPDATE articles SET menu_position = menu_position - 1 WHERE parent_id='1'  AND menu_position <= 1 AND menu_position >  - 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 27-09-2022 17:10:59 - Ошибка в SQL запросе: INSERT INTO test (name) VALUES ('тест1') - 1366 Incorrect integer value: 'тест1' for column 'name' at row 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 30-09-2022 20:22:18 - Ошибка в SQL запросе: SELECT COUNT(*) as count FROM goods     - 2006 MySQL server has gone away
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 02-10-2022 13:14:06 - Ошибка в SQL запросе: SELECT COUNT(*) as count FROM goods     - 2006 MySQL server has gone away
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+
+Fault: 02-10-2022 17:57:01 - Ошибка в SQL запросе: UPDATE students SET menu_position = menu_position - 1 WHERE parent_id IS NULL  AND menu_position <= 2 AND menu_position >  - 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\model\BaseModel.php
+In line 72
+

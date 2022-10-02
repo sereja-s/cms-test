@@ -31,12 +31,18 @@ class AddController extends BaseAdmin
 		// вызовем метод для формирования первичных данных для сортировки информации в таблицах базы данных
 		$this->createMenuPosition();
 
-		// вызовем метод формирования ключей и значений для input type radio (кнопок переключателей (да, нет и т.д.))
+		// вызовем метод для формирования ключей и значений для input type radio (кнопок переключателей (да, нет и т.д.))
 		$this->createRadio();
 
 		// вызовем метод, который будет формировать наши данные (раскидывать их по блокам)
 		// (создание выходных данных)
 		$this->createOutputData();
+
+		// вызовем метод, который будет создавать связи многие ко многим 
+		$this->createManyToMany();
+
+		// вызываем метод, который будет расширять функционал нашего фреймвёрка (работа с расширениями)
+		return $this->expansion();
 
 		/* $this->data = [
 			'name' => 'Masha',
@@ -44,13 +50,9 @@ class AddController extends BaseAdmin
 			'img' => '1.png',
 			'gallery_img' => json_encode(['1.jpg', '2.png'])
 		]; */
-
-		//$this->createManyToMany();
-
 		//$this->manyAdd();
 		//exit;
 
-		//return $this->expansion();
 	}
 
 	/* protected function manyAdd()

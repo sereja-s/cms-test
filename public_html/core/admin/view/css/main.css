@@ -1,5 +1,6 @@
 body {
     margin: 0;
+	 margin: 5px 0px 5px 10px;
     background-color: #eceef2;
     font-family: Helvetica, sans-serif;
     color: #2f3b4c;
@@ -219,14 +220,23 @@ label.vg-element {
 }
 
 .vg-firm-background-color1 {
-    background-color: #fcbf49;
+    /* background-color: #fcbf49; */
 }
 .vg-firm-background-color1-1 {
     background-color: #04c454;
 }
+.vg-firm-background-color1-2 {
+    background-color: #63e90a;
+}
 
 .vg-firm-background-color2 {
     background-color: #fdab06;
+}
+.vg-firm-background-color2-1 {
+    background-color: #af06fd;
+}
+.vg-firm-background-color2-2 {
+    background-color: #fd06e8;
 }
 
 .vg-firm-background-color3 {
@@ -364,6 +374,7 @@ label.vg-element {
 .vg-menu {
     position: absolute;
     height: 100%;
+	 height: auto;
     left: 0;
     width: 6.8%;
 }
@@ -413,7 +424,7 @@ label.vg-element {
 
 .vg-hide .vg-menu a {
     width: auto;
-    padding: 14%;
+    padding: 14%;	 
 }
 
 @media (max-width: 768px) {
@@ -423,17 +434,17 @@ label.vg-element {
 }
 
 .vg-hide .vg-menu a:hover {
-    width: 15vw;
+    width: 15vw;	 
     position: relative;
     z-index: 2;
 }
 
-.vg-hide .vg-menu a:hover .vg_hidden {
+/* .vg-hide .vg-menu a:hover .vg_hidden {
     display: flex;
-}
+} */
 
 .active {
-    border-left: 5px solid #00bfe8;
+    /* border-left: 5px solid #00bfe8; */
 	 background: #5eff86;    
 }
 
@@ -689,7 +700,7 @@ textarea {
 
 .option_wrap {
     display: -webkit-flex;
-    display: none;
+    /* display: none; */
     -webkit-flex-direction: column;
     flex-direction: column;
 }
@@ -899,4 +910,32 @@ video{
     padding:1px;
     border: 1px solid grey;
     color: #000;
+}
+
+@media (max-width: 2560px) {
+	.text-min {
+		 font-size: 1.3vw;
+		 font-weight: 500;
+	}
+}
+@media (max-width: 768px) {
+	.text-min {
+		 font-size: 1.5vw;		 
+	}
+}
+@media (max-width: 575px) {
+	.text-min {
+		 font-size: 1.8vw;
+		 font-weight: 700;		 
+	}
+}
+@media (max-width: 425px) {
+	.text-min {
+		 font-size: 2vw;		 
+	}
+}
+@media (max-width: 375px) {
+	.text-min {
+		 font-size: 2.1vw;		 
+	}
 }
