@@ -24,6 +24,14 @@
 
 			</div>
 
+			<!--  Подключим скрипты (Выпуск №67)-->
+			<script>
+				const PATH = '<?= PATH ?>';
+				const ADMIN_MODE = 1; /* объявили админ. режим */
+			</script>
+
+			<?php $this->getScripts(); ?>
+
 			</body>
 
 			</html>

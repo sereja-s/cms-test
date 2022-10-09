@@ -2,7 +2,9 @@
 
 namespace core\base\controller;
 
-// класс который будет осуществлять проверку: синхронный запрос пришёл или асинхронный
+/** 
+ * Класс который будет осуществлять проверку: синхронный запрос пришёл или асинхронный (Выпуск №67)
+ */
 class BaseRoute
 {
 	use Singleton, BaseMethods;
@@ -16,10 +18,10 @@ class BaseRoute
 		// сделаем проверку выполнения условия: если запрос пришёл- Ajax	
 		// (как только мы записали конструкцию: self::instance() тут же выполнился метод: instance() трейта Singleton 
 		// и в свойстве: $_instance сохранился объект нашего класса)		
-		/* if (self::instance()->isAjax()) {
+		if (self::instance()->isAjax()) {
 			// подключим Ajax контроллер
 			exit((new BaseAjax())->route());
-		} */
+		}
 		// иначе идём по основному маршруту через RouteController
 		RouteController::instance()->route();
 	}

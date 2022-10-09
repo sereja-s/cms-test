@@ -8,13 +8,9 @@
 	<meta type="description" content="...">
 	<title>Админка</title>
 
-	<?php
+	<!-- Подключим стили (Выпуск №67) -->
+	<?php $this->getStyles() ?>
 
-	use core\base\settings\Settings;
-
-	foreach ($this->styles as $style) : ?>
-		<link rel="stylesheet" href="<?= $style ?>">
-	<?php endforeach; ?>
 	<!-- <link rel="stylesheet" href="/template/admin/css/jquery.Jcrop.min.css"> -->
 </head>
 
@@ -42,16 +38,19 @@
 						</div>
 						<form method="post" action="<?= PATH . \core\base\settings\Settings::get('routes')['admin']['alias'] ?>/search" autocomplete="off">
 							<input type="text" name="search" class="vg-input vg-text">
-							<div class="vg-element vg-firm-background-color4 vg-box-shadow search_links search_res"></div>
+							<div class="vg-element vg-firm-background-color4 vg-box-shadow search_links search_res">
+
+								<a href="">link-1</a>
+								<a href="">link-2</a>
+								<a href="">link-3</a>
+								<a href="">link-4</a>
+								<a href="">link-5</a>
+
+							</div>
 						</form>
 					</div>
 				</div>
-				<!--кнопка-->
-				<a href="<?= PATH . \core\base\settings\Settings::get('routes')['admin']['alias'] ?>/createsitemap" class="vg-element vg-box-shadow sitemap-button">
-					<span class="vg-text vg-firm-color1">
-						Create sitemap
-					</span>
-				</a>
+
 				<!--/кнопка-->
 				<div class="vg-element vg-fifth">
 					<div class="vg-element vg-half vg-right">

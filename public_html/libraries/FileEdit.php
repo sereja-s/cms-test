@@ -39,6 +39,7 @@ class FileEdit
 				// то обрабатываем как массив
 				$file_arr = [];
 
+				// (+Выпуск №95 )
 				foreach ($file['name'] as $i => $value) {
 
 					// проверим не пустой ли пришёл $file['name'] его [$i]- элемент

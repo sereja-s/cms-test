@@ -44,8 +44,10 @@ const ADMIN_CSS_JS = [
 	// ячейка массива styles отвечает за css-файлы
 	'styles' => ['css/main.css'],
 	// ячейка массива scripts отвечает за js-файлы
-	'scripts' => []
-
+	'scripts' => [
+		'js/frameworkfunctions.js',
+		'js/scripts.js'
+	]
 ];
 
 

@@ -102,7 +102,7 @@ class Settings
 		// в массиве: в свойстве: private $manyToMany)
 		'select' => ['menu_position', 'parent_id'],
 		'img' => ['img', 'main_img'],
-		'gallery_img' => ['gallery_img']
+		'gallery_img' => ['gallery_img', 'new_gallery_img']
 	];
 
 	// св-во, в котором будет храниться массив шаблонов в которых выводятся файлы
@@ -148,7 +148,7 @@ class Settings
 	// св-во, в котором будет храниться информация о корневых таблицах
 	private $rootItems = [
 		'name' => 'Корневая',
-		'tables' => ['teachers', 'pages', 'goods', 'filters']
+		'tables' => ['teachers', 'pages', 'goods', 'filters', 'articles']
 	];
 
 	// свойство для автоматизации связей многие ко многим

@@ -25,8 +25,12 @@ use core\base\exceptions\DbException;
 //$S1 = \core\base\settings\ShopSettings::instance();
 //exit();
 
+//if ($_POST) exit('это запрос: POST');
+//if ($_POST) hahaha();
+
 try {
-	// вызовем статический метод routeDirection() у класса BaseRoute (что бы им пользоваться, не нужно создавать объект класса При этом мы работаем внутри класса)
+	// вызовем статический метод routeDirection() у класса BaseRoute (что бы им пользоваться, не нужно создавать объект 
+	// класса При этом мы работаем внутри класса) Выпуск №67
 	BaseRoute::routeDirection();
 
 
@@ -39,5 +43,6 @@ try {
 	exit($e->getMessage());
 	// перехватываем исключение класса DbException
 } catch (DbException $e) {
+
 	exit($e->getMessage());
 }

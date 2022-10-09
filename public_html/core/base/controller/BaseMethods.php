@@ -7,24 +7,30 @@ namespace core\base\controller;
  * Трейт с базовыми вспомогательными методами
  * 
  * Методы: protected function clearStr(); protected function clearNum(); protected function isPost(); 
- *         protected function isAjax(); protected function redirect(); protected function writeLog();
+ *         protected function isAjax(); protected function redirect(); protected function getStyles(); 
+ *         protected function getScripts(); protected function writeLog();
  */
 trait BaseMethods
 {
 
 	/** 
-	 * Метод очистки данных (для строковых данных, а также массивов)
+	 * Метод очистки данных (для строковых данных, а также массивов) +Выпуск №98
 	 */
 	protected function clearStr($str)
 	{
+		// если массив
 		if (is_array($str)) {
+
 			// Конструкция foreach предоставляет простой способ перебора массивов (работает только с массивами и объектами)
 			// присвоит ключ текущего элемента переменной $key. а значение текущего элемента присваивается переменной $item
 			foreach ($str as $key => $item) {
 
 				$str[$key] = $this->clearStr($item);
 			}
+
 			return $str;
+
+			// если пришёл не массив, а строка
 		} else {
 			// trim — Удаляет пробелы (или другие символы) из начала и конца строки
 			// strip_tags — Удаляет теги HTML и PHP из строки
@@ -61,7 +67,8 @@ trait BaseMethods
 	}
 
 	/** 
-	 * Проверочный метод: пришли ли данные при помощи метода XMLHttpRequest (используется при передаче данных Ajax (асинхронной отправке запроса из браузера))
+	 * Проверочный метод: пришли ли данные при помощи метода XMLHttpRequest (используется при передаче данных Ajax 
+	 * (асинхронной отправке запроса из браузера))
 	 */
 	protected function isAjax()
 	{
@@ -103,7 +110,9 @@ trait BaseMethods
 		exit;
 	}
 
-	// вывод стилей
+	/** 
+	 * Метод для вывода стилей (Выпуск №67)
+	 */
 	protected function getStyles()
 	{
 		if ($this->styles) {
@@ -113,7 +122,9 @@ trait BaseMethods
 		}
 	}
 
-	// вывод скриптов
+	/** 
+	 * Метод для вывода скриптов (Выпуск №67)
+	 */
 	protected function getScripts()
 	{
 		if ($this->scripts) {
