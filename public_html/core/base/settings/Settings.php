@@ -81,15 +81,15 @@ class Settings
 	private $projectTables = [
 
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png'],
-		'students' => ['name' => 'Студенты'],
+		//'students' => ['name' => 'Студенты'],
 		'goods' => ['name' => 'Товары'],
-		'filters' => ['name' => 'Фильтры'],
-		'filters_test' => ['name' => 'Фильтры_2'],
-		'filters_categories' => ['name' => 'Категории фильтров'],
-		'test' => ['name' => 'Тест'],
-		'product' => ['name' => 'Продукты'],
-		'pages' => ['name' => 'Страницы'],
-		'articles' => ['name' => 'Статьи']
+		//'filters' => ['name' => 'Фильтры'],
+		//'filters_test' => ['name' => 'Фильтры_2'],
+		//'filters_categories' => ['name' => 'Категории фильтров'],
+		//'test' => ['name' => 'Тест'],
+		//'product' => ['name' => 'Продукты'],
+		//'pages' => ['name' => 'Страницы'],
+		//'articles' => ['name' => 'Статьи']
 	];
 
 	// свойство: массив шаблонов

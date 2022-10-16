@@ -46,7 +46,9 @@ const ADMIN_CSS_JS = [
 	// ячейка массива scripts отвечает за js-файлы
 	'scripts' => [
 		'js/frameworkfunctions.js',
-		'js/scripts.js'
+		'js/scripts.js',
+		'js/tinymce/tinymce.min.js',
+		'js/tinymce/tinymce_init.js'
 	]
 ];
 

@@ -787,9 +787,10 @@ abstract class BaseAdmin extends BaseController
 
 		$fileEdit = new FileEdit();
 
-		// в массив сохраним результат работы метода: addFile (объекта класса: FileEdit)
+		// в массив сохраним результат работы метода: addFile (объекта класса: FileEdit) Выпуск №107
 		$this->fileArray = $fileEdit->addFile($this->table);
 
+		// Выпуск №104 | создание метода сортировки изображений
 		if ($id) {
 
 			$this->checkFiles($id);
@@ -812,6 +813,9 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
+	/** 
+	 * Метод сортировки файлов (изображений) Выпуск №104 
+	 */
 	protected function sortingFiles($fileArr, $arr)
 	{
 		$res = [];
@@ -1802,7 +1806,7 @@ abstract class BaseAdmin extends BaseController
 	}
 
 	/** 
-	 * Метод для проверки файлов (+Выпуск №90,95)
+	 * Метод для проверки файлов (+Выпуск №90, 95, 104)
 	 */
 	protected function checkFiles($id)
 	{
@@ -1818,7 +1822,7 @@ abstract class BaseAdmin extends BaseController
 			if (!empty($_POST['js-sorting'])) {
 
 				// array_merge()- объединяет элементы одного или нескольких массивов таким образом, чтобы значения одного 
-				// из них добавлялись в конец предыдущего. Он возвращает результирующий масси
+				// из них добавлялись в конец предыдущего. Он возвращает результирующий массив
 				$arrKeys = array_merge($arrKeys, array_keys($_POST['js-sorting']));
 			}
 

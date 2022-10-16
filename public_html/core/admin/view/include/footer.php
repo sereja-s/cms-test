@@ -28,6 +28,9 @@
 			<script>
 				const PATH = '<?= PATH ?>';
 				const ADMIN_MODE = 1; /* объявили админ. режим */
+
+				// Выпуск №106- javascript подключение визуального редактора tinymce 5
+				const tinyMceDefaultAreas = '<?= implode(',', $this->blocks['vg-content']) ?>'
 			</script>
 
 			<?php $this->getScripts(); ?>

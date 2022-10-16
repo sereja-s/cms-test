@@ -381,7 +381,7 @@ label.vg-element {
 
 .vg-menu a {
     padding: 3.5%;
-    background: #fefae0; 
+    background: #faf9f9; 
     width: 25vw;
     padding: 1vw 0;
     border-right: 1px solid rgba(24, 30, 38, 0.1);
@@ -410,7 +410,7 @@ label.vg-element {
 }
 
 .vg-menu a:hover {
-    background: #fff75e;
+    background: #f7fff7;
     /* border-left: 5px solid #00bfe8; */
 }
 
@@ -512,7 +512,7 @@ textarea {
     height: 300px;
 }
 
-.mce-tinymce.mce-container.mce-panel {
+.mce-tinymce.mce-container.mce-panel, .tox-tinymce {
     width: 100%;
     max-width: 98vw;
 }

@@ -43,11 +43,14 @@ class AjaxController extends BaseAdmin
 					return $this->changeParent();
 					break;
 
+					// Выпуск №105 php | js | поиск по административной панели
 				case 'search':
 					return $this->search();
 					break;
 
+					// Выпуск №107- осуществим загрузку файлов на сервер, добавляемых через визуальный редактор TinyMce 5
 				case 'wyswyg_file':
+					$a = 1;
 					$fileEdit = new FileEdit();
 					$fileEdit->setUniqueFile(false);
 					$file = $fileEdit->addFile($this->clearStr($this->ajaxData['table']) . '/content_file/');
@@ -59,10 +62,13 @@ class AjaxController extends BaseAdmin
 		return json_encode(['success' => '0', 'message' => 'No ajax variable']);
 	}
 
-	// метод работы поиска в админке
+	/** 
+	 * Метод работы поиска в админке ( Выпуск №105)
+	 */
 	protected function search()
 	{
 		$data = $this->clearStr($this->ajaxData['data']);
+
 		$table = $this->clearStr($this->ajaxData['table']);
 
 		// вызовем метод модели
@@ -71,7 +77,7 @@ class AjaxController extends BaseAdmin
 	}
 
 	/** 
-	 * Метод работающий при смене родительской категории у элемента в админке
+	 * Метод работающий при смене родительской категории у элемента в админке (Выпуск №96)
 	 */
 	protected function changeParent()
 	{

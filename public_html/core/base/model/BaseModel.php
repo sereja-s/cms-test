@@ -11,6 +11,7 @@ use core\base\model\BaseModelMethods;
  * 
  *  Методы: protected function connect(); final public function query(); final public function get(); 
  * 			final public function add(); final public function edit(); public function delete(); 
+ *          public function buildUnion(); public function getUnion();
  *          final public function showColumns(); final public function showTables()
  */
 abstract class BaseModel extends BaseModelMethods
@@ -202,7 +203,7 @@ abstract class BaseModel extends BaseModelMethods
 
 		//exit($query);
 
-		// если не пусто в ячейке: $set['return_query']
+		// (+Выпуск №111) если не пусто в ячейке: $set['return_query']
 		if (!empty($set['return_query'])) {
 
 			return $query; // вернём запрос, а не выборку
@@ -443,7 +444,9 @@ abstract class BaseModel extends BaseModelMethods
 		return $this->query($query, 'u');
 	}
 
-	// метод модели для формирования UNION запросов к базе данных
+	/** 
+	 * Метод модели для формирования UNION запросов к базе данных (Выпуск №111)
+	 */
 	public function buildUnion($table, $set)
 	{
 		if (array_key_exists('fields', $set) && $set['fields'] === null) {
@@ -460,11 +463,11 @@ abstract class BaseModel extends BaseModelMethods
 			// удалим служебные поля
 			unset($columns['id_row'], $columns['multi_id_row']);
 
-			// проходимся в цикле по всем колонкам и заполняем массив
+			// проходимся в цикле по всем колонкам 
 			foreach ($columns as $row => $item) {
 
 				// и заполняем массив
-				// (кол-во полей, которые мы выбираем из БД должно во всех union быть одинаковым (соответствовать) То что не 
+				// (кол-во полей, которые мы выбираем из БД во всех union должно быть одинаковым (соответствовать) То что не 
 				// соответствут будем дополнять: null )
 				$set['fields'][] = $row;
 			}
@@ -478,7 +481,16 @@ abstract class BaseModel extends BaseModelMethods
 		return $this; // возвращаем указатель на контекст (на текущий объект данного класса)
 	}
 
-	// метод для генерации UNION запросов и их выполнения
+	// (Выпуск №111)
+	/* public function test()
+	{
+		$a = 1;
+	} */
+
+
+	/** 
+	 * Метод для генерации UNION запросов и их выполнения (Выпуск №112- ORM builder UNION запросов ч.2)
+	 */
 	public function getUnion($set = [])
 	{
 		if (!$this->union) {
@@ -509,11 +521,14 @@ abstract class BaseModel extends BaseModelMethods
 					if (array_key_exists('fields', $data) && $data['fields']) {
 
 						$count += count($data['fields']);
+
 						$joinFields = $table;
+
 						// иначе если
 					} elseif (!array_key_exists('fields', $data) || (!$joinFields['data'] || $data['fields'] === null)) {
 
 						$columns = $this->showColumns($table);
+
 						unset($columns['id_row'], $columns['multi_id_row']);
 
 						$count += count($columns);
@@ -526,6 +541,8 @@ abstract class BaseModel extends BaseModelMethods
 						$joinFields = $table;
 					}
 				}
+
+				// иначе если ($item['join'] - пусто)
 			} else {
 
 				$this->union[$key]['no_concat'] = true;
@@ -544,18 +561,17 @@ abstract class BaseModel extends BaseModelMethods
 			$this->union[$key]['countFields'] = $count;
 		}
 
-		// выстроим необходимый запрос к БД:
+		// После того как выполнили цикл (весь union готов), выстроим необходимый запрос к БД:
 
 		$query = '';
 
-
 		if ($maxCount && $maxTableCount) {
 
+			// вставим их в запрос первыми (в скобках)
 			$query .= '(' . $this->get($maxTableCount, $this->union[$maxTableCount]) . ')';
 
 			unset($this->union[$maxTableCount]);
 		}
-
 
 		foreach ($this->union as $key => $item) {
 
@@ -565,8 +581,10 @@ abstract class BaseModel extends BaseModelMethods
 				for ($i = 0; $i < $maxCount - $item['countFields']; $i++) {
 
 					if ($item['lastJoinTable']) {
+
 						$item['join'][$item['lastJoinTable']]['fields'][] = null;
 					} else {
+
 						$item['fields'][] = null;
 					}
 				}
@@ -578,15 +596,16 @@ abstract class BaseModel extends BaseModelMethods
 			$query .= '(' . $this->get($key, $item) . ')';
 		}
 
+		// сформируем переменную
 		$order = $this->createOrder($set);
 
 		$limit = !empty($set['limit']) ? 'LIMIT ' . $set['limit'] : '';
 
 
-		if (method_exists($this, 'createPagination')) {
+		/* if (method_exists($this, 'createPagination')) {
 
 			$this->createPagination($set, "($query)", $limit);
-		}
+		} */
 
 		$query .= " $order $limit";
 

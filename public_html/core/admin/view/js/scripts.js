@@ -122,7 +122,15 @@ function createFile() {
 							// того что лежит в переменной: ${attributeName}) в обратных кавычках, 2- значение атрибута: elId
 							container[i].setAttribute(`data-deleteFileId-${attributeName}`, elId);
 
-							showImage(this.files[i], container[i]);
+							// добавив 3-им параметром: колбэк ф-ию (Выпуск №103), получаем возможность сортировки картинок сразу после добавления
+							showImage(this.files[i], container[i], function () {
+
+								// на элементе: parentContainer вызовем сортировку (т.е. ф-ию: sortable())
+								parentContainer.sortable({
+
+									excludedElements: 'label .empty_container'
+								});
+							});
 
 							// вызовем метод отвечающий за удаление новых файлов (картинок)
 							// на вход: 1- значение атрибута, 2- элемент, который будем искать, 3-атрибут, 4- ячейку: container[i]
@@ -173,10 +181,11 @@ function createFile() {
 			//(на вход функции- объект: событие (e))
 			form.onsubmit = function (e) {
 
-				//e.preventDefault();
-				//console.log(isEmpty(fileStore))
+				// Выпуск №103 | подготовка сортируемых данных для отправки на сервер
+				createJsSortable(form);
 
-				//createJsSortable(form);
+				//e.preventDefault();
+				//return false;
 
 				// проверим не пуст ли массив при помощи нашей ф-ии: isEmpty()
 				// Если массив не пуст
@@ -276,7 +285,7 @@ function createFile() {
 
 		/**
 		 * Метод, который будет осуществлять показ загруженных изображений, при помощи объкта: FileReader // Выпуск №92
-		 *   (на вход: 1- конкретный элемент массива, 2- контейнер)
+		 *   (на вход: 1- конкретный элемент массива, 2- контейнер, 3- колбэк-функция (функция обратного вызова — функция, *   предназначенная для отложенного выполнения)Выпуск №103)
 		 */
 		function showImage(item, container, calcback) {
 
@@ -591,7 +600,7 @@ function showHideMenuSearch() {
 	// организуем закрытие поиска при потере фокуса (щелчке на другом месте, переключении вкладок): вешаем событие: blur
 	searchInput.addEventListener('blur', e => {
 
-		// организуем в поиске переход по подсказке (ссылке) при нажатии на неё
+		// организуем в поиске переход по подсказке (ссылке) при нажатии на неё (Выпуск №113)
 		if (e.relatedTarget && e.relatedTarget.tagName === 'A') {
 
 			return
@@ -629,9 +638,11 @@ let searchResultHover = (() => {
 	 */
 	function searchKeyDown(e) {
 
-		// если элемент с id = searchButton не содержит класса: vg-search-reverse или нажата не кнопка: вверх и не кнопка: вниз
+		// если элемент с id = searchButton не содержит класса: vg-search-reverse (т.е. не активен) или не нажата кнопка:
+		// стрелка-вверх и не кнопка: стрелка-вниз (в объекте: е- событие, есть свойство: key, которое и показывает какую кнопку нажали)
 		if (!(document.querySelector('#searchButton').classList.contains('vg-search-reverse')) ||
 			(e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) {
+
 			// завершаем работу скрипта
 			return;
 		}
@@ -644,30 +655,35 @@ let searchResultHover = (() => {
 			// скинем действия по умолчанию 
 			e.preventDefault();
 
-			// получим активный элемент
-			let activeItem = searchRes.querySelector('.search_act');
-			// сформируем переменную по условию
-			let activeIndex = activeItem ? children.indexOf(activeItem) : -1;
+			// получим активный элемент (выделенная ссылка в выпадающем меню подсказок при поиске)
+			// если querySelector() ничего не найдёт, то по умолчанию вернёт: null 
+			let activeItem = searchRes.querySelector('.search_act')
 
-			// если нажата кнопка: стрелка вниз
+			// сформируем переменную по условию и получим индекс элемента, который лежит в activeItem, иначе: -1
+			let activeIndex = activeItem ? children.indexOf(activeItem) : -1
+
+			// если нажата кнопка: стрелка-вниз
 			if (e.key === 'ArrowUp') {
 
 				// сформируем переменную по условию
 				// здесь (children.length - 1) означает последний элемент массива
-				activeIndex = activeIndex <= 0 ? children.length - 1 : --activeIndex;
+				activeIndex = activeIndex <= 0 ? children.length - 1 : --activeIndex
+
 				// если не нажата
 			} else {
+
 				// сформируем переменную по другому условию
-				activeIndex = activeIndex === children.length - 1 ? 0 : ++activeIndex;
+				activeIndex = activeIndex === children.length - 1 ? 0 : ++activeIndex
 			}
 
 			// у всех элементов: children необходимо убрать класс: search_act (если он есть)
-			children.forEach(item => item.classList.remove('search_act'));
+			children.forEach(item => item.classList.remove('search_act'))
 
 			// обратимся к массиву в переменной: children (его ячейке: [activeIndex])  и добавим класс: search_act
-			children[activeIndex].classList.add('search_act');
+			children[activeIndex].classList.add('search_act')
 
 
+			// +Выпуск №113
 			// в элемент: searchInput (в его значение: value) занесём значение: innerText из children[activeIndex]
 			searchInput.value = children[activeIndex].innerText.replace(/\(.+?\)\s*$/, '');
 		}
@@ -728,7 +744,194 @@ let searchResultHover = (() => {
 
 })()
 
-searchResultHover();
+searchResultHover()
+
+
+/**
+ * Метод работы поиска в админке (вывод подсказок(ссылок)) Выпуск №105
+ */
+function search() {
+
+	let searchInput = document.querySelector('input[name=search]');
+
+	//console.log(searchInput);
+
+	if (searchInput) {
+
+		searchInput.oninput = () => {
+
+			// сделаем ограничение (подсказки (ссылки) появятся при вводе более одного символа в поисковой строке)
+			if (searchInput.value.length > 1) {
+
+				Ajax(
+					{
+						// в Ajax нам нужен объект: data
+						data: {
+							// в котором будет три поля (свойства)
+							data: searchInput.value, // в поле: data отправляем: searchInput.value
+							table: document.querySelector('input[name="search_table"]').value, // ищем с приоритетом по таблицам (получим соответствующее поле)
+							ajax: 'search' // управляющий флаг (для Ajax-контроллера)
+						}
+					}
+				).then(res => {
+					console.log(res);
+
+					// Выпуск №113
+					try {
+
+						res = JSON.parse(res);
+						console.log(res);
+						//console.log('success');
+
+						let resBlok = document.querySelector('.search_res');
+
+						let counter = res.length > 20 ? 20 : res.length;
+
+						if (resBlok) {
+
+							resBlok.innerHTML = '';
+
+							for (let i = 0; i < counter; i++) {
+
+								// на вход: 1- параметр: вставляем в конец, 2-ой: что вставляем
+								resBlok.insertAdjacentHTML('beforeend', `<a href="${res[i]['alias']}">${res[i]['name']}</a>`);
+							}
+
+							searchResultHover();
+						}
+					} catch (e) {
+
+						console.log(e);
+						alert('Ошибка в системе поиска в админ панели');
+					}
+				})
+			} else {
+				//console.log(123)
+			}
+
+		}
+	}
+}
+
+search();
+
+
+// Выпуск №102
+// вызываем метод: sortable() для сортировки галереи в админке
+let galleries = document.querySelectorAll('.gallery_container')
+
+if (galleries.length) {
+
+	galleries.forEach(item => {
+
+		// вызываем метод:
+		item.sortable({
+
+			// добавим в исключения (запретим перетаскивать): ячейку с крестиком и пустые ячейки
+			excludedElements: 'label .empty_container',
+
+			stop: function (dragEl) {
+
+				console.log(this)
+				console.log(dragEl)
+			}
+		})
+	})
+}
+
+// вызываем метод: sortable() для сортировки блоков админки (результат не сохраняется без дополнительного функционала фреймворка) 
+//document.querySelector('.vg-rows > div').sortable()
+
+/**
+ * Выпуск №103 | Метод подготовки сортируемых данных для отправки на сервер
+ * @param {*} form 
+ */
+function createJsSortable(form) {
+
+	if (form) {
+
+		// получим все блоки, которые надо сортирвоать (т.е. input с [type=file] и с атрибутом: multiple)
+		let sortable = form.querySelectorAll('input[type=file][multiple]');
+
+		if (sortable.length) {
+
+			sortable.forEach(item => {
+
+				// получим контейнер для item
+				let container = item.closest('.gallery_container');
+
+				// получим атрибут: name для item
+				let name = item.getAttribute('name');
+
+				if (name && container) {
+
+					// удалим все скобки (здесь- квадратные) из name (меняем их на пустую строку)
+					name = name.replace(/\[\]/g, '');
+
+					// далее в форму будем вставлять input, который будет называться: js-sorting и следующая его ячйка будет называться: name (тем самым на сервер придёт массив полей отсортированных элементов)
+					let inputSorting = form.querySelector(`input[name="js-sorting[${name}]"]`);
+
+					if (!inputSorting) {
+
+						// создадим элемент
+						inputSorting = document.createElement('input');
+
+						// установим его атрибут
+						inputSorting.name = `js-sorting[${name}]`;
+
+						// закинем созданный элемент в форму
+						form.append(inputSorting);
+					}
+
+					// создадим массив, который будем в него (элемент из inputSorting) помещать
+					let res = [];
+
+					for (let i in container.children) {
+
+						if (container.children.hasOwnProperty(i)) {
+
+							// проверим на наличие элементов которые в сортировке не учавствуют: label и empty_container
+							if (!container.children[i].matches('label') && !container.children[i].matches('.empty_container')) {
+
+								// если равно А (ссылка- большая буква (так тег лежит в свойстве: tagName)): здесь- новодобавленный элемент
+								if (container.children[i].tagName === 'A') {
+
+									// формируем записи в массиве: в res
+									res.push(container.children[i].querySelector('img').getAttribute('src'));
+
+									// иначе это div с атрибутом: data-deletefileid (т.е. был добавлен ранее)
+								} else {
+
+									// и res формируем по другому
+									res.push(container.children[i].getAttribute(`data-deletefileid-${name}`));
+								}
+							}
+						}
+					}
+					console.log(res);
+
+					// stringify()- из массива или объекта сделает строку
+					inputSorting.value = JSON.stringify(res);
+				}
+			})
+		}
+	}
+}
+
+// реализуем функционал закрытия всплывающих информационных сообщений в админке
+/* document.addEventListener('DOMContentLoaded', () => {
+
+	function hideMessages() {
+
+		document.querySelectorAll('.success, .error').forEach(item => item.remove());
+
+		document.removeEventListener('click', hideMessages)
+		//console.log(111333);
+	}
+
+	document.addEventListener('click', hideMessages)
+}) */;
+
 
 
 

@@ -10,7 +10,8 @@ use core\base\settings\Settings;
 /** 
  * Класс модели для административной части
  * 
- * Методы: public function showForeignKeys(); public function updateMenuPosition();
+ * Методы: public function showForeignKeys(); public function updateMenuPosition(); public function search();
+ *         protected function createWhereOrder()
  */
 class Model extends BaseModel
 {
@@ -197,18 +198,23 @@ class Model extends BaseModel
 		return $this->query($query, 'u');
 	}
 
-	// метод работы с поиском (3-ий параметр- кол-во показываемых подсказок (ссылок))
+	/** 
+	 * Метод работы с поиском (3-ий параметр- кол-во показываемых подсказок (ссылок)) Выпуск №105
+	 */
 	public function search($data, $currentTable = false, $qty = false)
 	{
 		// получим все таблицы из БД
 		$dbTables = $this->showTables();
 
+		// экранируем слешами (для корректного поиска)
 		$data = addslashes($data);
 
 		// разбираем поисковую строку и строим поисковый массив (систему уточнений)
 		// (т.е. сначала ищем всю строку (длину), потом ищем уменьшенную на один элемент и т.д)
 
 		$arr = preg_split('/(,|\.)?\s+/', $data, 0, PREG_SPLIT_NO_EMPTY);
+
+		// Сформируем поисковый массив
 
 		$searchArr = [];
 
@@ -230,36 +236,44 @@ class Model extends BaseModel
 			unset($arr[count($arr) - 1]);
 		}
 
-		// определим переменную (флаг) и установим ей значение по умолчанию
+		// определим переменную (флаг) и установим ей значение по умолчанию (Выпуск №108)
 		// (понадобится при выводе подсказок поиска с приоритетом той таблицы (категории) из которой осуществляется поиск)
 		$correctCurrentTable = false;
 
-		// получим свойство с таблицами проекта
+		// получим свойство с таблицами проекта, в которых будет проходить поиск (связующие и т.д. исключаются) Св-во
+		// применяется для проверки: существует ли указанная в нём таблица в БД 
 		$projectTables = Settings::get('projectTables');
 
 		if (!$projectTables) {
-			throw new RouteException('Ошибка поиска нет разделов в админ панели');
+			throw new RouteException('Ошибка поиска: нет разделов в админ панели');
 		}
 
 		foreach ($projectTables as $table => $item) {
 
-			// проверка на существование таблицы
+			// проверка на существование таблицы в БД
 			if (!in_array($table, $dbTables)) {
 				continue;
 			}
 
 			$searchRows = [];
-			// массив по которому будем сортировать
+
+			// массив по которому будем сортировать (кол-во полей для сортировки можно менять)
 			$orderRows = ['name'];
+
 			// массив полей по которорым будем искать
 			$fields = [];
+
 			// поля, которые есть в БД
 			$columns = $this->showColumns($table);
 
+			// поля, которые понадобятся для поиска (поле с первичным ключом)
 			$fields[] = $columns['id_row'] . ' as id';
 
-			// сформируем переменую:
-			// если существует ячейка: $columns['name'], то будем исползовать конструкцию: CASE и через WHEN и THEN заполнять // поле: name из таблицы по указанным условиям (здесь если имя не равно пустой строке, то в переменную: $fieldName сохраним строку с именем (и названием таблицы впереди) иначе - пустую строку )
+			// +Выпуск №113
+			// сформируем переменую с названием поля для выпадающего меню с результатом поиска:
+			// если существует ячейка: $columns['name'], то будем исползовать конструкцию: CASE и через WHEN и THEN 
+			// заполнять поле: name из таблицы по указанным условиям (здесь если имя не равно пустой строке, то в 
+			// переменную: $fieldName сохраним строку с именем (и названием таблицы впереди) иначе - пустую строку )
 			$fieldName = isset($columns['name']) ? "CASE WHEN {$table}.name <> '' THEN {$table}.name " : '';
 
 			foreach ($columns as $col => $value) {
@@ -267,9 +281,11 @@ class Model extends BaseModel
 				if ($col !== 'name' && stripos($col, 'name') !== false) {
 
 					if (!$fieldName) {
+
 						$fieldName = 'CASE ';
 					}
 
+					// +Выпуск №113
 					$fieldName .= "WHEN {$table}.$col <> '' THEN {$table}.$col ";
 				}
 
@@ -279,25 +295,31 @@ class Model extends BaseModel
 					(stripos($value['Type'], 'char') !== false ||
 						stripos($value['Type'], 'text') !== false)
 				) {
+
 					$searchRows[] = $col;
 				}
 			}
 
 			if ($fieldName) {
+
 				// сохраним в массиве, то что пришло в переменную и закроем конструкцию: CASE (описана выше) конструкцией: END и далее укажем: как псевдоним имени
 				$fields[] = $fieldName . 'END as name';
+
+				// иначе (если в $fieldName ничего не пришло)
 			} else {
 
+				// сохраним в массиве идентификатор как псевдоним имени
 				$fields[] = $columns['id_row'] . ' as name';
 			}
 
-			// чтобы понимать из какой таблицы получены данные
+			// чтобы понимать из какой таблицы получены данные (исходя из этого значения будем фоормировать алиас)
 			// добавим в массив ещё поле (с названием таблицы)
 			$fields[] = "('$table') AS table_name";
 
 			$res = $this->createWhereOrder($searchRows, $searchArr, $orderRows, $table);
 
 			$where = $res['where'];
+
 			// если $order ещё не заполнялось
 			!$order && $order = $res['order'];
 
@@ -306,13 +328,13 @@ class Model extends BaseModel
 
 				$correctCurrentTable = true;
 
-				$fields[] = "('current_table') AS current_table";
+				$fields[] = "('$currentTable') AS current_table";
 			}
 
 
 			if ($where) {
 
-				// обратимся к методу модели для формирования UNION запросов к базе данных
+				// обратимся к методу модели для формирования UNION запросов к базе данных (Выпуск №111)
 				$this->buildUnion($table, [
 					'fields' => $fields,
 					'where' => $where,
@@ -320,6 +342,8 @@ class Model extends BaseModel
 				]);
 			}
 		}
+
+		//$this->test();
 
 		$orderDirection = null;
 
@@ -333,6 +357,7 @@ class Model extends BaseModel
 			$orderDirection = 'DESC';
 		}
 
+		// Выпуск №112- ORM builder UNION запросов ч.2
 		$result = $this->getUnion([
 			//'type' => 'all',
 			//'pagination' => [],
@@ -341,17 +366,21 @@ class Model extends BaseModel
 			'order_direction' => $orderDirection
 		]);
 
-		// произведём вывод поиска (подсказки (ссылки))
+		//$a = 1;
+
+		// произведём вывод поиска (подсказки (ссылки)) (+Выпуск №113)
 
 		if ($result) {
 
 			foreach ($result as $index => $item) {
 
+				// корректно сформируем алиасы и name
 				$result[$index]['name'] .= '(' .
 					(isset($projectTables[$item['table_name']]['name'])
 						? $projectTables[$item['table_name']]['name']
 						: $item['table_name']) . ')';
 
+				// сформируем готовый алиас на редактирование
 				$result[$index]['alias'] = PATH .
 					Settings::get('routes')['admin']['alias'] . '/edit/' . $item['table_name'] . '/' . $item['id'];
 			}
@@ -360,7 +389,9 @@ class Model extends BaseModel
 		return $result ?: [];
 	}
 
-	// метод для формирования инструкций WHERE и ORDER для системы поиска
+	/** 
+	 * Метод для формирования инструкций WHERE и ORDER для системы поиска (Выпуск №109)
+	 */
 	protected function createWhereOrder($searchRows, $searchArr, $orderRows, $table)
 	{
 		$where = '';
@@ -377,7 +408,7 @@ class Model extends BaseModel
 
 				foreach ($searchRows as $row) {
 
-					// на каждой итерации добавляем ещё одну скобку
+					// на каждой итерации добавляем ещё одну скобку (будут группы запросов)
 					$where .= '(';
 
 					foreach ($searchArr as $item) {
@@ -394,6 +425,7 @@ class Model extends BaseModel
 						}
 
 
+						// +Выпуск №113
 						if (isset($columns[$row])) {
 
 							$where .= "{$table}.$row LIKE '%$item%' OR ";
@@ -407,7 +439,7 @@ class Model extends BaseModel
 					$where = preg_replace('/\)?\s*or\s*\(?$/i', '', $where) . ') OR ';
 				}
 
-				// обработаем переменную ещё раз
+				// обработаем переменную ещё раз (обрежем лишний OR с пробелом в конце и добавим закрыващую скобку в конце запроса)
 				$where && $where = preg_replace('/\s*or\s*$/i', '', $where) . ')';
 			}
 		}

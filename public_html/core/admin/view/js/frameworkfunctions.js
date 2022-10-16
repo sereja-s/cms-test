@@ -212,3 +212,167 @@ Element.prototype.slideToggle = function (time, callback) {
 	}
 }
 
+
+/**
+ * Опишем самовызывающуюся функцию сортировки: sortable (метод для сортировки данных использует технологию javascript drag and drop) Выпуск №102
+ */
+Element.prototype.sortable = (function () {
+
+	// инициализируем переменные для элемента, который перемещается и элемента, который стоит за ним по умолчанию
+	let dragEl, nextEl;
+
+	/**  
+	 * Метод будет по условию ставить потомкам и всем их вложенным потомкам свойство: draggable = false
+	 */
+	function _unDraggable(elements) {
+
+		if (elements && elements.length) {
+
+			for (let i = 0; i < elements.length; i++) {
+
+				// если текущий элемент не имеет атрибут: draggable 
+				if (!elements[i].hasAttribute('draggable')) {
+
+					// то установим ему свойство: draggable = false
+					elements[i].draggable = false;
+
+					// рекурсивно запускаем функцию
+					_unDraggable(elements[i].children);
+				}
+			}
+		}
+	}
+
+
+	function _onDragStart(e) {
+
+		// блокируем всплытие событий
+		e.stopPropagation();
+
+		this.tempTarget = null;
+
+		// в переменную: dragEl положим элемент который начинаем тащить (e.target)
+		dragEl = e.target;
+
+		//в переменную положим св-во: nextSibling (lkz dragEl)
+		// (Доступное только для чтения свойство nextSibling интерфейса Node возвращает узел, следующий сразу за указанным 
+		// в childNodes их родителя, или возвращает значение null, если указанный узел является последним дочерним 
+		// элементом в родительском элементе)
+		nextEl = dragEl.nextSibling;
+
+		// установим св-во в значение: перемещать
+		e.dataTransfer.dropEffect = 'move';
+
+		// добавим два слушателя событий
+		// т.к. мы работаем на прототипе элемента (Element.prototype), то сам элемент, к которому будем обращаться, находится в св-ве: this
+		this.addEventListener('dragover', _onDragOver, false);
+		this.addEventListener('dragend', _onDragEnd, false);
+	}
+
+
+	function _onDragOver(e) {
+
+		// скинем действия по умолчанию 
+		e.preventDefault();
+
+		// блокируем всплытие событий
+		e.stopPropagation();
+
+		// установим св-во в значение: перемещать
+		e.dataTransfer.dropEffect = 'move';
+
+		let target;
+
+		if (e.target !== this.tempTarget) {
+
+			// здесь в e.target приходит элемент над которым мы тащим злемент, который хранится в переменной: dragEl
+			this.tempTarget = e.target;
+
+			// в переменую сохраним: e.target с атрибутом: draggable = true
+			target = e.target.closest('[draggable=true]');
+		}
+
+
+
+		if (target && target !== dragEl && target.parentElement === this) {
+
+			let rect = target.getBoundingClientRect();
+
+			// в переменную положим результат расчёта координат
+			// здесь- clientY- координата по оси Y
+			//        rect.top- то, что мы получили из target (верхней его координаты)
+			//			 rect.bottom- то, что мы получили из target (нижней его координаты)
+			// (если результат выражения > 0,5, то в let next придёт true, иначе false)
+			let next = (e.clientY - rect.top) / (rect.bottom - rect.top) > .5;
+
+			// обращаемся к this, вызываем у него метод: insertBefore()
+			// на вход: 1- указыаваем что вставляем: здесь- dragEl, 2- куда вствляем (по условию: если next (true), то 
+			// вставим после target.nextSibling иначе вставим после target)
+			this.insertBefore(dragEl, next && target.nextSibling || target);
+		}
+	}
+
+	function _onDragEnd(e) {
+
+		// отменим действие по умолчанию
+		e.preventDefault();
+
+		// скинем два слушателя событий
+		this.removeEventListener('dragover', _onDragOver, false);
+		this.removeEventListener('dragend', _onDragEnd, false);
+
+		if (nextEl !== dragEl.nextSibling) {
+
+			// св-во this.onUpdate определяется ниже
+			this.onUpdate && this.onUpdate(dragEl);
+		}
+	}
+
+	// реализуем замыкание
+	return function (options) {
+
+		// в переменную положим: options (если туда что то пришло иначе- пустой объект)
+		options = options || {};
+
+		// определим свойство: this.onUpdate
+		this.onUpdate = options.stop || null;
+
+		// в переменную сохраним элементы, которые необходмо исключить из процесса: сортировки (перетаскивания)
+		// Метод split() разбивает объект String на массив строк, путём разделения строки указанной подстрокой
+		// (Если в options.excludedElements что то пришло, то в переменную положим options.excludedElements (строку с CSS-селекторами, которую разделим через несколько пробелов или запятая-пробел Иначе запишем в переменную: null))
+		let excludedElements = options.excludedElements && options.excludedElements.split(/,*\s+/) || null;
+
+		[...this.children].forEach(item => {
+
+			let draggable = 'true';
+
+			if (excludedElements) {
+
+				for (let i in excludedElements) {
+
+					// метод: hasOwnProperty() проверяет, является ли св-во поданное на вход, собственным свойством элемента
+					// метод: matches() проверяет элемент на соответствие заданному селектору 
+					if (excludedElements.hasOwnProperty(i) && item.matches(excludedElements[i])) {
+
+						draggable = false;
+
+						// зщавершение работы цикла
+						break;
+					}
+				}
+			}
+
+			item.draggable = draggable;
+
+			// вызываем метод, что бы всем элементам внутри нашего сортируемого поставить значение: draggable = false (для
+			// сортировки только тех элементов, которые нужны)
+			_unDraggable(item.children);
+		});
+
+		// сбосим слушатель события: dragstart, 2-ым параметром передаётся метод: _onDragStart, 3-ий параметр: false (т.е с теми же option)
+		this.removeEventListener('dragstart', _onDragStart, false);
+
+		this.addEventListener('dragstart', _onDragStart, false);
+	}
+})();
+
