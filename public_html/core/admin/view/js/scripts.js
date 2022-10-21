@@ -918,19 +918,21 @@ function createJsSortable(form) {
 	}
 }
 
-// реализуем функционал закрытия всплывающих информационных сообщений в админке
-/* document.addEventListener('DOMContentLoaded', () => {
+// реализуем функционал закрытия всплывающих информационных сообщений в админке (Выпуск №118)
+document.addEventListener('DOMContentLoaded', () => {
 
 	function hideMessages() {
 
 		document.querySelectorAll('.success, .error').forEach(item => item.remove());
 
+		console.log(111333);
+
 		document.removeEventListener('click', hideMessages)
-		//console.log(111333);
+
 	}
 
 	document.addEventListener('click', hideMessages)
-}) */;
+});
 
 
 

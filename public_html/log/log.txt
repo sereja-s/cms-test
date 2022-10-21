@@ -1,0 +1,140 @@
+Fault: 21-10-2022 20:12:07 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:12:07 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:12:07 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:17:15 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:17:15 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:17:15 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:19:28 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:19:28 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:19:28 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:26:31 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:26:31 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:26:32 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:24 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:24 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:25 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:25 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:29:25 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:31:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:31:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:31:11 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:31:35 - Не верное имя файла для подключения: core/user/controller/TemplatesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:32:35 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:32:36 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:32:36 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:32:39 - Не верное имя файла для подключения: core/user/controller/TemplatesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:36:57 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:36:57 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:36:57 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:36:59 - Не верное имя файла для подключения: core/user/controller/TemplatesController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:39:55 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:39:55 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+
+Fault: 21-10-2022 20:39:55 - Не верное имя файла для подключения: core/user/controller/AssetsController
+file D:\OpenServer\domains\cms-test.my\public_html\core\base\settings\internal_settings.php
+In line 100
+

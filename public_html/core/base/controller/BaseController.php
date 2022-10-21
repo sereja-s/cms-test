@@ -12,7 +12,7 @@ use core\base\settings\Settings;
  * Класс вытаскивает данные (формирует запросы к моделям), подключает виды и др.
  * 
  * Методы: public function route(); public function request(); protected function render(); protected function getPage();
- *         protected function init()
+ *         protected function init(); protected function checkAuth()
  */
 abstract class BaseController
 {
@@ -248,11 +248,10 @@ abstract class BaseController
 		exit();
 	}
 
-	// Выпуск №12
 	// Метод init() будет инициализировать стили и скрипты указанные в сore>base>settings>internal_settings.php в константах (для административной и пользовательской части)	
 	// (в качестве не обязательного парметра на вход передадим переменную $admin и поставим её в значение false)
 	/** 
-	 * Метод инициализирует стили и скрипты
+	 * Метод инициализирует стили и скрипты (Выпуск №12)
 	 */
 	protected function init($admin = false)
 	{
@@ -265,10 +264,10 @@ abstract class BaseController
 				foreach (USER_CSS_JS['styles'] as $item) {
 
 					// к массиву в свойстве $this->styles добавим  элемент (обозначается символами []) описаный после знака =
-					// в котором прописано условие, где ф-ия php: preg_match() — Выполняет проверку на соответствие регулярному 
-					// выражению На вход подаётся: 1- Искомый шаблон в виде строки 2- Входная строка (здесь- $item) 
-					// т.е. Ищет в заданном тексте $item совпадения с шаблоном /^\s*https?:\/\//i
-					// а ф-ия php: trim()- Удаляет пробелы (или другие символы) из начала и конца строки (1-ый параметр), а также  обрезает символ поданный 2-ым параметром (здесь- /)
+					// в котором прописано условие, где ф-ия php: preg_match() — Выполняет проверку на соответствие 
+					// регулярному выражению На вход подаётся: 1- Искомый шаблон в виде строки 2- Входная строка (здесь- 
+					// $item) т.е. Ищет в заданном тексте $item совпадения с шаблоном /^\s*https?:\/\//i
+					// а ф-ия php: trim()- Удаляет пробелы (или другие символы) из начала и конца строки (1-ый параметр), а также  обрезает символ поданный 2-ым параметром (здесь- /) -Выпуск №119
 					$this->styles[] = (!preg_match('/^\s*https?:\/\//i', $item) ? PATH . TEMPLATE : '') . trim($item, '/');
 				}
 			}
@@ -298,13 +297,16 @@ abstract class BaseController
 		}
 	}
 
-	// метод который отвечает за проверку авторизации (на вход принимает флаг: $type (значение по умолчанию: false) 
-	// показывает: admin или нет)
-	/* protected function checkAuth($type = false)
+	/**
+	 * Метод который отвечает за проверку авторизации (показывает: admin или нет) Выпуск №117
+	 * (на вход принимает флаг: $type (значение по умолчанию: false)	 
+	 */
+	protected function checkAuth($type = false)
 	{
 		// метод: checkUser()- делает проверку пользователя
 		// если в свойство: $userId ничего не пришло
 		if (!($this->userId = UserModel::instance()->checkUser(false, $type))) {
+
 			// то если это admin делаем редирект на корень сайта
 			$type && $this->redirect(PATH);
 		}
@@ -312,8 +314,9 @@ abstract class BaseController
 		// сформируем модель пользователя (понадобится в пользовательской части)
 		// property_exists() — проверяет, имеет ли объект (или класс): $this свойство: userModel
 		if (property_exists($this, 'userModel')) {
+
 			// в свойство: userModel вернётся объект класса: UserModel
 			$this->userModel = UserModel::instance();
 		}
-	} */
+	}
 }

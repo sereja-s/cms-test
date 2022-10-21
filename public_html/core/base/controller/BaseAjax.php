@@ -6,10 +6,13 @@ use core\base\settings\Settings;
 
 /**
  * Класс распределит запросы учитывая административная это панель или пользовательская часть сайта (Выпуск №67)
+ * Методы: public function route(); protected function generateToken()
  */
 class BaseAjax extends BaseController
 {
-	// метод определит какой контроллер подключать
+	/** 
+	 * Метод определит какой контроллер подключать 
+	 */
 	public function route()
 	{
 		$route = Settings::get('routes');
@@ -20,8 +23,10 @@ class BaseAjax extends BaseController
 		$data = $this->isPost() ? $_POST : $_GET;
 
 
+		// +Выпуск №116
 		// сделаем проверку и сгенерируем уникальный токен (применим на странице: login.php для защиты от роботизированного подбора пароля)
 		if (!empty($data['ajax']) && $data['ajax'] === 'token') {
+
 			return $this->generateToken();
 		}
 
@@ -65,7 +70,9 @@ class BaseAjax extends BaseController
 		return $res;
 	}
 
-	// функция генерирующая уникальный токен
+	/** 
+	 * Метод генерирующая уникальный токен (Выпуск №116)
+	 */
 	protected function generateToken()
 	{
 		return $_SESSION['token'] = md5(mt_rand(0, 999999) . microtime());
