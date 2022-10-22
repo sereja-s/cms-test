@@ -72,34 +72,27 @@ class Settings
 	private $messages = 'core/base/messages/';
 
 	// свойство с таблицей по умолчанию
-	private $defaultTable = 'goods';
+	private $defaultTable = 'catalog';
 
 	// свойство в котором хранится путь к шаблонам админки
 	private $formTemplates = PATH . 'core/admin/view/include/form_templates/';
 
 	// свойство с таблицами, названия которых будут показаны в боковом меню админки
 	private $projectTables = [
-
+		'catalog' => ['name' => 'Каталог'],
+		'settings' => ['name' => 'Настройки системы'],
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png'],
-		//'students' => ['name' => 'Студенты'],
 		'goods' => ['name' => 'Товары'],
-		//'filters' => ['name' => 'Фильтры'],
-		//'filters_test' => ['name' => 'Фильтры_2'],
-		//'filters_categories' => ['name' => 'Категории фильтров'],
-		//'test' => ['name' => 'Тест'],
-		//'product' => ['name' => 'Продукты'],
-		//'pages' => ['name' => 'Страницы'],
-		//'articles' => ['name' => 'Статьи']
 	];
 
 	// свойство: массив шаблонов
 	private $templateArr = [
 		// массив вида: 'название шаблона' => массив с полями для которых должен быть подключен соответствующий шаблон
-		'text' => ['name'],
-		'textarea' => ['content', 'keywords'],
+		'text' => ['name', 'phone', 'email', 'alias'],
+		'textarea' => ['content', 'keywords', 'address', 'description'],
 		'radio' => ['visible'],
-		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: товары (они прописаны 
-		// в массиве: в свойстве: private $manyToMany)
+		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: 
+		// товары (они прописаны в массиве: в свойстве: private $manyToMany)
 		'select' => ['menu_position', 'parent_id'],
 		'img' => ['img', 'main_img'],
 		'gallery_img' => ['gallery_img', 'new_gallery_img']
@@ -148,7 +141,7 @@ class Settings
 	// св-во, в котором будет храниться информация о корневых таблицах
 	private $rootItems = [
 		'name' => 'Корневая',
-		'tables' => ['teachers', 'pages', 'goods', 'filters', 'articles']
+		'tables' => ['catalog', 'teachers', 'goods']
 	];
 
 	// свойство для автоматизации связей многие ко многим

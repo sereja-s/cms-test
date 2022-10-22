@@ -188,18 +188,21 @@ abstract class BaseController
 			// поиска на строку замены (здесь ищем \, меняем на /, ищем в пространстве имён класса (здесь- IndexController) 
 			// и в конце конкатенируем: \) При этом символ: \ экранируем символом: \						
 			$space = str_replace('\\', '/', $class->getNamespaceName() . '\\');
+
 			// в переменной $routes сохраним полученное в классе Settings свойство routes
 			$routes = Settings::get('routes');
 
 			// проверим равно ли то что получили в пременную $space пути к пользовательской части
 			if ($space === $routes['user']['path']) {
+
 				// то подключаем путь к пользовательскому шаблону (по умолчанию)
 				$template = TEMPLATE;
 			} else {
+
 				$template = ADMIN_TEMPLATE;
 			}
 
-			// укажем путь для подключения шаблона по умолчанию
+			// укажем путь для подключения шаблона по умолчанию (+Выпуск №121)
 			$path = $template . $this->getController();
 		}
 

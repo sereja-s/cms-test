@@ -8,7 +8,7 @@ namespace core\base\controller;
  * 
  * Методы: protected function clearStr(); protected function clearNum(); protected function isPost(); 
  *         protected function isAjax(); protected function redirect(); protected function getStyles(); 
- *         protected function getScripts(); protected function writeLog();
+ *         protected function getScripts(); protected function writeLog(); protected function getController()
  */
 trait BaseMethods
 {
@@ -153,13 +153,15 @@ trait BaseMethods
 		file_put_contents('log/' . $file, $str, FILE_APPEND);
 	}
 
-	// метод для получения контроллера
+	/** 
+	 * Метод для получения контроллера (Выпуск №120)
+	 */
 	protected function getController()
 	{
 		// вернём $this->controller (если он есть)
 		return $this->controller ?:
 
-			// или вернём то что положим в $this->controller
+			// или вернём то что положим в $this->controller, а именно:
 
 			// preg_split() — разделение строки регулярным выражением
 
@@ -174,7 +176,7 @@ trait BaseMethods
 			// 3-им параметром подаём строку в которой делается замена: (new \ReflectionClass($this))->getShortName())
 			// здесь- getShortName() получаем короткое имя контроллера (без namespace)  
 
-			// 4-ым параметром подаём кол-во элементов,которое необходимо вернуть (limit = 0 т.е. все) 
+			// 4-ым параметром подаём кол-во элементов,которое необходимо вернуть (limit = 0, т.е. все) 
 
 			// 5-ым- флаг: PREG_SPLIT_NO_EMPTY, т.е. не показывать пустые элементы
 
