@@ -72,15 +72,18 @@ class Settings
 	private $messages = 'core/base/messages/';
 
 	// свойство с таблицей по умолчанию
-	private $defaultTable = 'catalog';
+	private $defaultTable = 'sales';
 
 	// свойство в котором хранится путь к шаблонам админки
 	private $formTemplates = PATH . 'core/admin/view/include/form_templates/';
 
 	// свойство с таблицами, названия которых будут показаны в боковом меню админки
 	private $projectTables = [
-		'catalog' => ['name' => 'Каталог'],
-		'settings' => ['name' => 'Настройки системы'],
+		'sales' => ['name' => 'Акции'],
+		'catalog' => ['name' => 'Каталог (меню)'],
+		'information' => ['name' => 'Информация (меню)'],
+		'settings' => ['name' => 'Настройки (о сайте)'],
+		'socials' => ['name' => 'Соц.сети'],
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png'],
 		'goods' => ['name' => 'Товары'],
 	];
@@ -88,13 +91,13 @@ class Settings
 	// свойство: массив шаблонов
 	private $templateArr = [
 		// массив вида: 'название шаблона' => массив с полями для которых должен быть подключен соответствующий шаблон
-		'text' => ['name', 'phone', 'email', 'alias'],
-		'textarea' => ['content', 'keywords', 'address', 'description'],
-		'radio' => ['visible'],
+		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years'],
+		'textarea' => ['content', 'keywords', 'address', 'description', 'short_content'],
+		'radio' => ['visible', 'show_top_menu'],
 		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: 
 		// товары (они прописаны в массиве: в свойстве: private $manyToMany)
 		'select' => ['menu_position', 'parent_id'],
-		'img' => ['img', 'main_img'],
+		'img' => ['img', 'main_img', 'img_years'],
 		'gallery_img' => ['gallery_img', 'new_gallery_img']
 	];
 
@@ -135,7 +138,8 @@ class Settings
 
 	// св-во, в котором будут храниться значения для input type radio (кнопок переключателей (да, нет и т.д.))
 	private $radio = [
-		'visible' => ['НЕТ', 'ДА', 'default' => 'ДА']
+		'visible' => ['НЕТ', 'ДА', 'default' => 'ДА'],
+		'show_top_menu' => ['НЕТ', 'ДА', 'default' => 'ДА']
 	];
 
 	// св-во, в котором будет храниться информация о корневых таблицах
@@ -156,7 +160,7 @@ class Settings
 	// (по умолчанию содержимое разделов адмики занимает левый блок: vg-rows) 
 	private $blockNeedle = [
 		'vg-rows' => [],
-		'vg-img' => ['img', 'main_img', 'gallery_img'],
+		'vg-img' => ['img', 'main_img', 'gallery_img', 'img_years', 'number_of_years'],
 		'vg-content' => ['content']
 	];
 

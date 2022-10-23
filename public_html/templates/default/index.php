@@ -1,3 +1,5 @@
+<?php  ?>
+
 <section class="slider">
 	<div class="slider__container swiper-container">
 

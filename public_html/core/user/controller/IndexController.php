@@ -13,5 +13,14 @@ class IndexController extends BaseUser
 	{
 		// Выпуск №120
 		parent::inputData();
+
+		// Выпуск №124- Пользовательская часть | вывод акций (слайдер под верхним меню)
+		$sales = $this->model->get('sales', [
+			'where' => ['visible' => 1],
+			'order' => ['menu_position']
+		]);
+
+		// собираем переменные в массив и возвращаем
+		return compact('sales');
 	}
 }

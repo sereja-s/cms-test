@@ -7,6 +7,7 @@ use core\user\model\Model;
 /** 
  * Пользовательский контроллер с базовым функционалом (абстрактный класс) -Выпуск №120
  *  Методы: protected function img(); protected function alias()
+ *          protected function wordsForCounter();
  */
 abstract class BaseUser extends \core\base\controller\BaseController
 {
@@ -22,7 +23,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 	protected $breadcrumbs;
 
-	/*Проектные свойства*/
+	// Проектные свойства (Выпуск №123)
 	protected $socials;
 
 
@@ -48,6 +49,18 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		// получим в св-во: $this->menu, в ячейку: ['catalog'], то что хранится в соответствующей таблице БД
 		$this->menu['catalog'] = $this->model->get('catalog', [
 			'where' => ['visible' => 1, 'parent_id' => null],
+			'order' => ['menu_position']
+		]);
+
+		// получим в св-во: $this->menu, в ячейку: ['information'], то что хранится в соответствующей таблице БД
+		$this->menu['information'] = $this->model->get('information', [
+			'where' => ['visible' => 1, 'show_top_menu' => 1],
+			'order' => ['menu_position']
+		]);
+
+		// получим в св-во: $this->socials, то что хранится в соответствующей таблице БД
+		$this->socials = $this->model->get('socials', [
+			'where' => ['visible' => 1],
 			'order' => ['menu_position']
 		]);
 	}
@@ -198,5 +211,51 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 		// ищем слеш повторяющийся 2-а и более раз и меняем на единичный слеш, и выводить это будем в готовом пути
 		return preg_replace('/\/{2,}/', '/', PATH . $alias . END_SLASH . $str);
+	}
+
+	/** 
+	 * Метод, для автоматической подстановки слов рядом с цифрой (кол-во лет на рынке) Выпуск №124
+	 */
+	protected function wordsForCounter($counter, $arrElement = 'years')
+	{
+		$arr = [
+			'years' => [
+				'лет',
+				'год',
+				'года'
+			]
+		];
+
+		if (is_array($arrElement)) {
+
+			$arr = $arrElement;
+		} else {
+
+			// в переменную положим то что лежит в ячейке: $arr[$arrElement] (если что то в неё пришло) или возьмём 1-ый 
+			// элемент массива (при этом он удаляется из массива и все ключи массива будут изменены, чтобы начать отсчет с нуля)
+			$arr = $arr[$arrElement] ?? array_shift($arr);
+		}
+
+		if (!$arr)
+
+			return null;
+
+		// сохраним в переменную: приведённый к целому числу, обрезанный из содержимого переменной: $counter последний символ
+		$char = (int)substr($counter, -1);
+
+		// аналогично для переменной: $counter (но обрезаем с конца два символа)
+		$counter = (int)substr($counter, -2);
+
+		if (($counter >= 10 && $counter <= 20) || ($char >= 5 && $char <= 9) || !$char) {
+
+			// вернём то что лежит в ячейке: $arr[0] (если там что то есть) или null
+			return $arr[0] ?? null;
+		} elseif ($char === 1) {
+
+			return $arr[1] ?? null;
+		} else {
+
+			return $arr[2] ?? null;
+		}
 	}
 }

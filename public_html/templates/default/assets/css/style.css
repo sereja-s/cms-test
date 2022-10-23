@@ -598,7 +598,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .header__logo {
 	display: flex;
-    align-items: flex-end;
+    align-items: center;
+	 justify-content: center;
     width: 100%;
     max-width: 304px;
     height: -webkit-max-content;
@@ -616,7 +617,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	.header__logo {
 		padding-top: 0;
 		flex-direction: row;
-		align-items: flex-end;
+		/* align-items: flex-end */;
 		flex-shrink: 0
 	}
 }
@@ -629,9 +630,9 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .header__logo a {
 	width: 100%;
-    max-width: 87px;
+    max-width: 100px;
     height: auto;
-    margin-right: auto;
+    /* margin-right: auto; */	 
 }
 
 @media screen and (max-width: 1260px) {
@@ -646,41 +647,46 @@ input[type='search'], input[type='text'], input[type='email'] {
     max-width: 100%;
     -o-object-fit: contain;
     object-fit: contain;
+	 justify-content: center;
+	 align-items: center;
 }
 
-@media screen and (max-width: 1600px) {
+/* @media screen and (max-width: 1600px) {
 	.header__logo img {
 		width: 60px;
 		height: 70px
 	}
-}
+} */
 
-@media screen and (max-width: 1366px) {
+/* @media screen and (max-width: 1366px) {
 	.header__logo img {
 		width: 135px;
 		padding-right: 20px
 	}
-}
+} */
 
-@media screen and (max-width: 1260px) {
+/* @media screen and (max-width: 1260px) {
 	.header__logo img {
 		height: 47px;
 		width: 80px
 	}
-}
+} */
 
 .header__logo span {
     width: 160px;
     font-size: 20px;
-    letter-spacing: 4.9px;
-    margin-top: 11px;
+	 font-weight: 900;
+	 color: rgb(47, 11, 252);
+    letter-spacing: 1.2px;
+    /* margin-top: 11px; */
+	 text-align: center;
 }
 
 @media screen and (max-width: 1600px) {
 	.header__logo span {
 		font-size: 18px;
 		width: 150px;
-		margin-top: 12px
+		/* margin-top: 12px */
 	}
 }
 
@@ -816,7 +822,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .header__nav-list a {
-	color: #2D3033;
+	color: rgb(47, 11, 252);
 	text-decoration: none;
 	font-weight: 800;
 	text-transform: uppercase;
@@ -869,7 +875,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 .header__nav-sublist a {
 	font-weight: 500;
 	text-transform: unset;
-	line-height: 36px
+	line-height: 36px;
 }
 
 .header__sidebar {
@@ -878,7 +884,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	position: fixed;
 	top: 0;
 	right: 0;
-	z-index: 900
+	z-index: 900;
+	background: #335252;
 }
 
 @media screen and (max-width: 1600px) {
@@ -1188,7 +1195,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	top: 0;
 	z-index: 12;
 	padding: 220px 200px 80px 118px;
-	transition: .3s
+	transition: .3s;
+	overflow: auto
 }
 
 @media screen and (max-width: 1600px) {

@@ -45,6 +45,10 @@ class IndexTestController extends BaseUser
 		// Выпуск №120
 		parent::inputData();
 
+		// Выпуск №124
+		/* $years = $this->wordsForCounter(50384);
+		$a = 1; */
+
 		// Выпуск №121
 		//$alias = '';
 		//$res = $this->alias('catalog//auto', '?page=2');
