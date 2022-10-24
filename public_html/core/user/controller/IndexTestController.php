@@ -45,6 +45,9 @@ class IndexTestController extends BaseUser
 		// Выпуск №120
 		parent::inputData();
 
+		// Выпуск №125
+		$goods = $this->model->getGoods();
+
 		// Выпуск №124
 		/* $years = $this->wordsForCounter(50384);
 		$a = 1; */

@@ -81,17 +81,17 @@ class Settings
 	private $projectTables = [
 		'sales' => ['name' => 'Акции'],
 		'catalog' => ['name' => 'Каталог (меню)'],
+		'goods' => ['name' => 'Товары'],
 		'information' => ['name' => 'Информация (меню)'],
 		'settings' => ['name' => 'Настройки (о сайте)'],
 		'socials' => ['name' => 'Соц.сети'],
-		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png'],
-		'goods' => ['name' => 'Товары'],
+		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png']
 	];
 
 	// свойство: массив шаблонов
 	private $templateArr = [
 		// массив вида: 'название шаблона' => массив с полями для которых должен быть подключен соответствующий шаблон
-		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years'],
+		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years', 'discount', 'price'],
 		'textarea' => ['content', 'keywords', 'address', 'description', 'short_content'],
 		'radio' => ['visible', 'show_top_menu'],
 		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: 

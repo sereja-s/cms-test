@@ -20,6 +20,8 @@ class IndexController extends BaseUser
 			'order' => ['menu_position']
 		]);
 
+
+
 		// собираем переменные в массив и возвращаем
 		return compact('sales');
 	}

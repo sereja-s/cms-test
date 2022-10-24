@@ -917,6 +917,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 	}
 }
 
+@media screen and (max-width: 320px) {
+	.header__sidebar {		
+		width: 55px;		
+	}
+}
+
 .header__sidebar._bg-opened .header__sidebar_btn {
 	display: none
 }
@@ -2684,6 +2690,13 @@ input[type='search'], input[type='text'], input[type='email'] {
 		padding: 0 60px 72px 48px
 	}
 }
+@media screen and (max-width: 800px) {
+	.slider__item {
+		flex-direction: column-reverse;
+		justify-content: center;
+		align-items: center;
+	}
+}
 
 @media screen and (max-width: 560px) {
 	.slider__item {
@@ -2722,9 +2735,9 @@ input[type='search'], input[type='text'], input[type='email'] {
 @media screen and (max-width: 1024px) {
 	.slider__item-image {
 		max-width: calc(50% - 20px);
-		position: absolute;
+		/* position: absolute;
 		top: 0;
-		right: 60px
+		right: 60px */
 	}
 }
 
@@ -2763,21 +2776,21 @@ input[type='search'], input[type='text'], input[type='email'] {
 	}
 }
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
 	.slider__item-image img {
 		max-height: calc(100vw - 120px);
 		min-height: 470px
 	}
-}
+} */
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 800px) {
 	.slider__item-image img {
 		max-height: unset;
 		min-height: unset;
 		width: 100%;
 		height: 100%;
 		-o-object-fit: cover;
-		object-fit: cover
+		object-fit: cover;		
 	}
 }
 
@@ -2787,8 +2800,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	height: 100%;
 	position: absolute;
 	background: #D4DDE1;
-	left: -20px;
-	bottom: -20px
+	left: -10px;
+	bottom: -7px
 }
 
 @media screen and (max-width: 560px) {
@@ -2830,34 +2843,44 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1024px) {
 	.slider__item-description {
-		background: #ffffffb3;
+		/* background: #ffffffb3; */
 		min-width: 380px;
 		min-height: calc(50vw - 34px);
-		width: 100%;
-		padding-right: 25%;
-		padding-top: 40px;
+		/* width: 100%; */
+		/* padding-right: 25%; */
+		/* padding-top: 40px; */
 		z-index: 1
 	}
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
+	.slider__item-description {
+		justify-content: center;
+		align-items: center;
+		padding: 10px 15px;		
+	}
+}
+/* @media screen and (max-width: 768px) {
 	.slider__item-description {
 		padding-right: 60px
 	}
-}
+} */
 
 @media screen and (max-width: 600px) {
 	.slider__item-description {
-		padding: 20px;
-		min-height: 470px;
-		margin-left: 31px
+		padding: 20px 110px 10px 110px;	
 	}
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 470px) {
 	.slider__item-description {
-		margin-left: 0;
-		min-width: unset
+		padding: 20px 150px 10px 150px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	.slider__item-description {
+		padding: 20px 175px 10px 170px;
 	}
 }
 
@@ -2886,7 +2909,10 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 520px) {
 	.slider__item-prev-text {
-		margin-bottom: 10px
+		margin-bottom: 10px;
+		font-size: 12px;
+		letter-spacing: normal;
+		color: blue;
 	}
 }
 
@@ -2929,8 +2955,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 520px) {
 	.slider__item-header {
-		font-size: 24px;
-		line-height: 26px
+		font-size: 18px;
+		line-height: 20px
 	}
 }
 
@@ -2984,9 +3010,10 @@ input[type='search'], input[type='text'], input[type='email'] {
 	}
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 520px) {
 	.slider__item-text {
-		line-height: 22px
+		font-size: 16px;
+		line-height: 20px
 	}
 }
 
@@ -3059,6 +3086,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 		line-height: 15px
 	}
 }
+@media screen and (max-width: 520px) {
+	.slider__item-15yrs p {
+		font-size: 14px;
+		padding-left: 5px;		
+	}
+}
 
 .slider__item-15yrs p span {
 	display: block;
@@ -3072,6 +3105,11 @@ input[type='search'], input[type='text'], input[type='email'] {
 @media screen and (max-width: 1600px) {
 	.slider__item-15yrs p span {
 		font-size: 25px
+	}
+}
+@media screen and (max-width: 520px) {
+	.slider__item-15yrs p span {
+		font-size: 15px
 	}
 }
 
