@@ -6,7 +6,7 @@ use core\base\controller\Singleton;
 
 /** 
  * Пользовательская модель (Выпуск №120)
- * Методы: public function getGoods()
+ * Методы: public function getGoods(); public function applyDiscount();
  */
 class Model extends \core\base\model\BaseModel
 {
@@ -160,11 +160,14 @@ class Model extends \core\base\model\BaseModel
 
 				//$a = 1;
 
+				// Этот код перенесли выше
 				/* if (!empty($this->showColumns('goods')['discount'])) {
 					foreach ($goods as $key => $item) {
 						$this->applyDiscount($goods[$key], $item['discount']);
 					}
 				} */
+
+				// Сделаем подсчёт количества товаров в конкретном фильтре (относительно категории в которой находимся) отдельным запросом:
 
 				if ($filters) {
 
@@ -172,13 +175,19 @@ class Model extends \core\base\model\BaseModel
 					// (Возвращает строку, содержащую строковое представление всех элементов массива в одном порядке со 
 					// строкой-разделителем (здесь- запятая) между каждым элементом)
 					// array_column() — возвращает значения из одного столбца во входном массиве
+
+					// Получим все уникальные id для фильтров и товаров из массива в переменной: $filters
+
 					$filtersIds = implode(',', array_unique(array_column($filters, 'id')));
 
 					$goodsIds = implode(',', array_unique(array_column($filters, 'goods_id')));
 
 					$query = "SELECT `filters_id` as id, COUNT(goods_id) as count FROM goods_filters WHERE filters_id IN ($filtersIds) AND goods_id IN ($goodsIds) GROUP BY filters_id";
 
+					// количество товаров в конкретных фильтрах (относительно категории в которой находимся) отдельным запросом (придёт: id для каждого фильтра и кол-во товаров, для которых он применён):
 					$goodsCountDb = $this->query($query);
+
+					// $a = 1;
 
 					$goodsCount = [];
 
@@ -186,6 +195,7 @@ class Model extends \core\base\model\BaseModel
 
 						foreach ($goodsCountDb as $item) {
 
+							// в ячейку с ключём: id (для каждого фильтра) положим значение (массив): его id и кол-во товаров, для которых он применён
 							$goodsCount[$item['id']] = $item;
 						}
 					}
@@ -201,17 +211,22 @@ class Model extends \core\base\model\BaseModel
 
 						foreach ($item as $row => $rowValue) {
 
-							// определим родительскую категорию
+							// определим родительскую категорию (в массиве: её данные с префиксом: f_): фильтр
 							if (strpos($row, 'f_') === 0) {
 
 								$name = preg_replace('/^f_/', '', $row);
 
+								// в ячейку с именем родителя положим его значение
 								$parent[$name] = $rowValue;
+
+								// иначе это данные дочерней категории: значения фильтра
 							} else {
 
+								// в ячейку с именем дочерней категории положим соответственно её значение
 								$child[$row] = $rowValue;
 							}
 						}
+
 
 						if (isset($goodsCount[$child['id']]['count'])) {
 
@@ -226,6 +241,7 @@ class Model extends \core\base\model\BaseModel
 							$catalogFilters[$parent['id']]['values'] = [];
 						}
 
+						// сформируем фильтры
 						$catalogFilters[$parent['id']]['values'][$child['id']] = $child;
 
 						if (isset($goods[$item['goods_id']])) {
@@ -246,19 +262,19 @@ class Model extends \core\base\model\BaseModel
 		return $goods ?? null;
 	}
 
+	/** 
+	 * Метод применения скидок (Выпуск №126)
+	 */
 	public function applyDiscount(&$data, $discount)
 	{
 
 		if ($discount) {
-
-			//if (isset($data['price'])) {
 
 			$data['old_price'] = $data['price'];
 
 			$data['discount'] = $discount;
 
 			$data['price'] = $data['old_price'] - ($data['old_price'] / 100 * $discount);
-			//}
 		}
 	}
 }

@@ -68,18 +68,7 @@ $(function () {
 		wrapperClass: 'offers__tabs_wrapper',
 		slideClass: 'offers__tabs_card',
 		watchOverflow: true,
-		loop: true,
-		// Автопрокрутка
-		autoplay: {
-			/* пауза между прокруткой */
-			delay: 7000,
-			/* закончить на последнем слайде */
-			//stopOnLastSlide: true,
-			/* отключить после ручного переключения */
-			//disableOnInteraction: false,
-		},
-		// скорость
-		speed: 5000,
+
 		breakpoints: {
 			1251: {
 				slidesPerView: 4,

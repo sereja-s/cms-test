@@ -84,6 +84,7 @@ class Settings
 		'goods' => ['name' => 'Товары'],
 		'information' => ['name' => 'Информация (меню)'],
 		'settings' => ['name' => 'Настройки (о сайте)'],
+		'advantages' => ['name' => 'Преимущества'],
 		'socials' => ['name' => 'Соц.сети'],
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png']
 	];
@@ -93,11 +94,11 @@ class Settings
 		// массив вида: 'название шаблона' => массив с полями для которых должен быть подключен соответствующий шаблон
 		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years', 'discount', 'price'],
 		'textarea' => ['content', 'keywords', 'address', 'description', 'short_content'],
-		'radio' => ['visible', 'show_top_menu'],
+		'radio' => ['visible', 'show_top_menu', 'hit', 'sale', 'new', 'hot'],
 		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: 
 		// товары (они прописаны в массиве: в свойстве: private $manyToMany)
 		'select' => ['menu_position', 'parent_id'],
-		'img' => ['img', 'main_img', 'img_years'],
+		'img' => ['img', 'main_img', 'img_years', 'promo_img'],
 		'gallery_img' => ['gallery_img', 'new_gallery_img']
 	];
 
@@ -139,7 +140,11 @@ class Settings
 	// св-во, в котором будут храниться значения для input type radio (кнопок переключателей (да, нет и т.д.))
 	private $radio = [
 		'visible' => ['НЕТ', 'ДА', 'default' => 'ДА'],
-		'show_top_menu' => ['НЕТ', 'ДА', 'default' => 'ДА']
+		'show_top_menu' => ['НЕТ', 'ДА', 'default' => 'ДА'],
+		'hit' => ['НЕТ', 'ДА', 'default' => 'НЕТ'],
+		'sale' => ['НЕТ', 'ДА', 'default' => 'НЕТ'],
+		'new' => ['НЕТ', 'ДА', 'default' => 'НЕТ'],
+		'hot' => ['НЕТ', 'ДА', 'default' => 'НЕТ'],
 	];
 
 	// св-во, в котором будет храниться информация о корневых таблицах
@@ -153,14 +158,14 @@ class Settings
 		// массив содержит название таблиц, которые связаны в БД
 		'goods_filters' => ['goods', 'filters', 'type' => 'child'], // 'type' => 'child' || 'root' - необязательный 3-ий элемент массива: 
 		// показывает только дочерние элементы или только родительские категории Без него (по умолчанию) будет показано всё
-		'goods_filters_test' => ['goods', 'filters_test']
+		//'goods_filters_test' => ['goods', 'filters_test']
 	];
 
 	// св-во, в котором будут храниться названия блоков админки (левого, правого, центрального) и их содержимое 
 	// (по умолчанию содержимое разделов адмики занимает левый блок: vg-rows) 
 	private $blockNeedle = [
 		'vg-rows' => [],
-		'vg-img' => ['img', 'main_img', 'gallery_img', 'img_years', 'number_of_years'],
+		'vg-img' => ['img', 'main_img', 'gallery_img', 'img_years', 'number_of_years', 'promo_img'],
 		'vg-content' => ['content']
 	];
 

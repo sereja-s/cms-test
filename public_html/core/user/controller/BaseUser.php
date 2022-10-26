@@ -7,7 +7,7 @@ use core\user\model\Model;
 /** 
  * Пользовательский контроллер с базовым функционалом (абстрактный класс) -Выпуск №120
  *  Методы: protected function img(); protected function alias()
- *          protected function wordsForCounter();
+ *          protected function wordsForCounter(); protected function showGoods()
  */
 abstract class BaseUser extends \core\base\controller\BaseController
 {
@@ -256,6 +256,19 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		} else {
 
 			return $arr[2] ?? null;
+		}
+	}
+
+	/** 
+	 * Метод для вывода карточки товара с возможностью внесения изменений посредством изменения передаваемых параметров (Выпуск №127)
+	 * На вход: 1-элемент который приходит; 2-массив параметров, согласно которым будут делаться корректировки внутри
+	 *            шаблона; 3-имя шаблона (чтобы могли его переключать (по умолчанию: goodsItem))
+	 */
+	protected function showGoods($data, $parameters = [], $template = 'goodsItem')
+	{
+		if (!empty($data)) {
+
+			echo $this->render(TEMPLATE . 'include/' . $template, compact('data', 'parameters'));
 		}
 	}
 }

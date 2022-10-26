@@ -96,7 +96,8 @@ function autoloadMainClasses($class_name)
 
 	// условие: если не подключается данный файл
 	// (знак @ блокирует вывод ошибок, которые генерирует функция, когда пытается подключить файл и его подключить не может)
-	if (!include_once ($class_name) . '.php') {
+	if (!@include_once ($class_name) . '.php') {
+
 		// небходимо выбросить исключение с указанным текстом сообщения
 		// (конструкция throw ищет ближайший catch класса RouteException (здесь это в файле catch))
 		throw new RouteException('Не верное имя файла для подключения: ' . $class_name);
