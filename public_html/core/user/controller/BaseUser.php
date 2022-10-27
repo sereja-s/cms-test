@@ -21,6 +21,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 	// свойство с данными для меню (каталог)
 	protected $menu;
 
+	// Выпуск №129 (св-во для хлебных крошек)
 	protected $breadcrumbs;
 
 	// Проектные свойства (Выпуск №123)
@@ -67,13 +68,14 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 	protected function outputData()
 	{
-
+		// +Выпуск №129
 		// в переменной сохраним результат работы ф-ии php: func_get_arg()- Возвращает указанный аргумент из списка 
 		// аргументов пользовательской функции (здесь- порядковый номер: 0)
 		$args = func_get_arg(0);
 		$vars = $args ? $args : [];
 
-		//$this->breadcrumbs = $this->render(TEMPLATE . 'include/breadcrumbs');
+		// +Выпуск №129 (добавили в шаблон путь к файлу с хлебными крошками)
+		$this->breadcrumbs = $this->render(TEMPLATE . 'include/breadcrumbs');
 
 		if (!$this->content) {
 
