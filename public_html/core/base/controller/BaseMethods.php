@@ -8,7 +8,8 @@ namespace core\base\controller;
  * 
  * Методы: protected function clearStr(); protected function clearNum(); protected function isPost(); 
  *         protected function isAjax(); protected function redirect(); protected function getStyles(); 
- *         protected function getScripts(); protected function writeLog(); protected function getController()
+ *         protected function getScripts(); protected function writeLog(); protected function getController()$
+ *         protected function dateFormat()
  */
 trait BaseMethods
 {
@@ -185,7 +186,7 @@ trait BaseMethods
 	}
 
 	/**
-	 * метод для отображения даты 
+	 * метод для формирования даты Выпуск №128 | Вывод новостей 
 	 * (по умолчанию на вход принимает строку: $date)
 	 */
 	protected function dateFormat($date)
@@ -235,8 +236,8 @@ trait BaseMethods
 
 		$dateArr['time'] = $dateData->format('H:i:s');
 
+		// форматированная строка
 		$dateArr['format'] = mb_strtolower($dateArr['day']) . ' ' . $dateArr['monthFormat'] . ' ' . $dateArr['year'];
-
 
 		return $dateArr;
 	}

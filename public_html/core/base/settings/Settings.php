@@ -81,7 +81,9 @@ class Settings
 	private $projectTables = [
 		'sales' => ['name' => 'Акции'],
 		'catalog' => ['name' => 'Каталог (меню)'],
+		'filters' => ['name' => 'Фильтры'],
 		'goods' => ['name' => 'Товары'],
+		'news' => ['name' => 'Новости'],
 		'information' => ['name' => 'Информация (меню)'],
 		'settings' => ['name' => 'Настройки (о сайте)'],
 		'advantages' => ['name' => 'Преимущества'],
@@ -150,13 +152,13 @@ class Settings
 	// св-во, в котором будет храниться информация о корневых таблицах
 	private $rootItems = [
 		'name' => 'Корневая',
-		'tables' => ['catalog', 'teachers', 'goods']
+		'tables' => ['catalog', 'teachers', 'goods', 'filters']
 	];
 
 	// свойство для автоматизации связей многие ко многим
 	private $manyToMany = [
 		// массив содержит название таблиц, которые связаны в БД
-		'goods_filters' => ['goods', 'filters', 'type' => 'child'], // 'type' => 'child' || 'root' - необязательный 3-ий элемент массива: 
+		'goods_filters' => ['goods', 'filters', 'type' => 'root'], // 'type' => 'child' || 'root' - необязательный 3-ий элемент массива: 
 		// показывает только дочерние элементы или только родительские категории Без него (по умолчанию) будет показано всё
 		//'goods_filters_test' => ['goods', 'filters_test']
 	];

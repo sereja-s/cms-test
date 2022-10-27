@@ -1522,13 +1522,16 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1260px) {
 	.footer__top_logo {
-		display: none
+		/* display: none; */
+		text-align: center;
+		justify-content: center;
+		padding: 0 10px 10px 0;
 	}
 }
 
 .footer__top_logo img {
-	width: 87px;
-	height: 108px
+	width: 100px;
+	/* height: 108px */
 }
 
 .footer__top_menu {

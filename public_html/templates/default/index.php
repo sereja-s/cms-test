@@ -255,57 +255,27 @@
 	</form>
 </section>
 
-<section class="news">
-	<div class="news__name subheader">Новости</div>
-	<div class="news__wrapper">
+<?php if (!empty($news)) : ?>
 
-		<div class="news__item">
-			<div class="news__item_date">
-				<span class="bigtext">24</span>
-				<span>июня<br>
-					2019</span>
-			</div>
-			<div class="news__item_main">
-				<div class="news__item_header">В каталог аксессуаров добавлены модели: Chery Exeed TXL</div>
-				<div class="news__item_text">Рады сообщить, что в нашем интернет-магазине для заказа стали доступны аксессуары для Chery Exeed TXL</div>
-				<div class="news__item_readmore readmore-underline"><a href="index.html">Читать подробрнее</a></div>
-			</div>
+	<section class="news">
+		<div class="news__name subheader">Новости</div>
+		<div class="news__wrapper">
+
+			<?php foreach ($news as $item) {
+
+				$this->showGoods($item, [], 'newsItem');
+			} ?>
+
 		</div>
+		<a href="<?= $this->alias('news') ?>" class="news__reasdmore readmore">Смотреть все</a>
+	</section>
 
-		<div class="news__item">
-			<div class="news__item_date">
-				<span class="bigtext">24</span>
-				<span>июня<br>
-					2019</span>
-			</div>
-			<div class="news__item_main">
-				<div class="news__item_header">В каталог аксессуаров добавлены модели: Chery Exeed TXL</div>
-				<div class="news__item_text">Рады сообщить, что в нашем интернет-магазине для заказа стали доступны аксессуары для Chery Exeed TXL</div>
-				<div class="news__item_readmore readmore-underline"><a href="index.html">Читать подробрнее</a></div>
-			</div>
-		</div>
-
-		<div class="news__item">
-			<div class="news__item_date">
-				<span class="bigtext">24</span>
-				<span>июня<br>
-					2019</span>
-			</div>
-			<div class="news__item_main">
-				<div class="news__item_header">В каталог аксессуаров добавлены модели: Chery Exeed TXL</div>
-				<div class="news__item_text">Рады сообщить, что в нашем интернет-магазине для заказа стали доступны аксессуары для Chery Exeed TXL</div>
-				<div class="news__item_readmore readmore-underline"><a href="index.html">Читать подробрнее</a></div>
-			</div>
-		</div>
-
-	</div>
-	<a href="index.html" class="news__reasdmore readmore">Смотреть все</a>
-</section>
+<?php endif; ?>
 
 <div class="search ">
 	<button>
 		<svg class="inline-svg-icon svg-search">
-			<use xlink:href="assets/img/icons.svg#search"></use>
+			<use xlink:href="<?= PATH . TEMPLATE ?>assets/img/icons.svg#search"></use>
 		</svg>
 	</button>
 	<input type="search" placeholder="Поиск по каталогу">

@@ -4,7 +4,8 @@
 		<div class="footer__wrapper">
 			<div class="footer__top">
 				<div class="footer__top_logo">
-					<img src="assets/img/Logo.svg" alt="">
+					<a href="<?= $this->alias() ?>"><img src="<?= $this->img($this->set['img']) ?>" alt="<?= $this->set['name'] ?>"></a>
+					<!-- <img src="assets/img/Logo.svg" alt=""> -->
 				</div>
 				<div class="footer__top_menu">
 					<ul>
