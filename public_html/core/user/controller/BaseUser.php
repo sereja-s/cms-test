@@ -156,6 +156,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 						foreach ($item as $k => $v) {
 
+							// +Выпуск №132
 							$str .= $key . '=' . $v . (!empty($item[$k + 1]) ? '&' : '');
 						}
 					} else {

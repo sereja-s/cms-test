@@ -48,8 +48,8 @@
 
 body, html {
 	margin: 0;
-	padding: 0;
-	min-height: 100%
+	padding: 1px;
+	min-height: 100%;	 
 }
 
 img {
@@ -84,7 +84,7 @@ body {
 
 @media screen and (max-width: 1024px) {
 	body {
-		padding-right: 0
+		padding: 0;
 	}
 }
 
@@ -509,8 +509,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .h1 {
-	color: #2D3033;
-	font-size: 36px;
+	color: #1708f3;
+	font-size: 30px;
 	font-weight: 700;
 	line-height: 48px;
 	text-transform: uppercase;
@@ -818,7 +818,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 .header__nav-list {
 	list-style: none;
 	display: flex;
-	padding: 0
+	padding: 0;
 }
 
 .header__nav-list a {
@@ -845,12 +845,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .header__nav-list a::before {
 	content: '';
-	height: 7px;
+	height: 3px;
 	width: 0;
-	background: #D4DDE1;
+	background: #ff7b00;
 	position: absolute;
 	left: 50%;
-	top: 4px;
+	top: 15px;
 	transition: .3s
 }
 
@@ -866,16 +866,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 .header__nav-sublist {
 	list-style: none;
 	position: absolute;
-	padding: 20px 20px 20px 0;
+	padding: 20px 20px 20px 0;	
+	margin-top: 2px;
 	display: none;
 	min-width: 320px;
-	background: rgba(255, 255, 255, 0.701961)
+	background: rgb(245, 245, 245);
 }
 
 .header__nav-sublist a {
-	font-weight: 500;
+	font-size: 18px;
 	text-transform: unset;
 	line-height: 36px;
+	color: blueviolet;
+	font-weight: 700;
 }
 
 .header__sidebar {
@@ -885,7 +888,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	top: 0;
 	right: 0;
 	z-index: 900;
-	background: #335252;
+	background: #277da1;
 }
 
 @media screen and (max-width: 1600px) {
@@ -956,7 +959,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .header__sidebar_btn {
-	background: #335252;
+	background: #277da1;
 	border-bottom: 1px solid #fff;
 	height: 79px;
 	transition: .3s
@@ -1305,12 +1308,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .header__menu_burger a::before {
 	content: '';
-	height: 7px;
+	height: 3px;
 	width: 0;
 	background: #afd9e0;
 	position: absolute;
 	left: 50%;
-	top: 4px;
+	top: 15px;
 	transition: .3s
 }
 
@@ -1456,7 +1459,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .footer {
 	width: 100%;
-	background: #2D3033;
+	background: #538fa8;
 	color: #fff
 }
 
@@ -2964,7 +2967,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .slider__item-header span {
-	background: #335252;
+	background: #ff9e00;
 	padding: 5px 16px 0;
 	margin-bottom: 9px;
 	display: inline-block
@@ -3563,7 +3566,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	background: #335252;
+	background: #abd5ee;
 	background-position-x: 80px;
 	list-style: none;
 	margin: 0;
@@ -5828,26 +5831,29 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .catalog-aside-sort-mobile__button {
 	padding-right: 40px;
-	cursor: pointer
+	cursor: pointer;
+	font-family: Impact, sans-serif;	
+	font-weight: normal;
+	color: #277da1;
 }
 
 @media screen and (max-width: 600px) {
 	.catalog-aside-sort-mobile__button {
 		font-size: 14px;
-		padding-right: 20px
+		padding-right: 32px
 	}
 }
 
 .catalog-aside-sort-mobile__button::before {
 	content: '';
 	position: absolute;
-	border-top: 2px solid #2D3033;
-	border-left: 2px solid #2D3033;
-	width: 19px;
-	height: 19px;
+	border-top: 3px solid #277da1;
+	border-left: 3px solid #277da1; 
+	width: 12px;
+	height: 12px;
 	transform: rotate(-135deg);
-	top: -2px;
-	right: 0;
+	top: 5px;
+	right: 10px;
 	transition: .3s
 }
 
@@ -5861,13 +5867,16 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1024px) {
 	.catalog-aside-block__title {
-		padding-left: 40px;
-		cursor: pointer
+		padding-left: 20px;
+		cursor: pointer;
+		font-family: Impact, sans-serif;
+		font-weight: normal;
+		color: #277da1;
 	}
 	.catalog-aside-block__title.catalog-aside-block__title_open::before {
 		transform: rotate(45deg);
 		top: 8px;
-		right: 0
+		right: 0;		
 	}
 }
 
@@ -5893,12 +5902,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 .catalog-aside-block__title::before {
 	content: none;
 	position: absolute;
-	border-top: 2px solid #2D3033;
-	border-left: 2px solid #2D3033;
-	width: 19px;
-	height: 19px;
+	border-top: 3px solid #277da1;
+	border-left: 3px solid #277da1;
+	width: 12px;
+	height: 12px;
 	transform: rotate(-135deg);
-	top: 3px;
+	top: 7px;
 	right: 0;
 	transition: .3s
 }
@@ -5915,7 +5924,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	.catalog-aside-block__title::before {
 		width: 8px;
 		height: 8px;
-		top: 2px
+		top: 5px
 	}
 }
 
@@ -6024,18 +6033,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .catalog-filter-item__title {
-	font-weight: 700;
-	font-size: 24px;
+	font-weight: 500;
+	font-size: 20px;
 	line-height: 100%;
 	letter-spacing: .23px;
-	color: #2D3033;
-	border-bottom: 1px solid #D4DDE1;
+	color: #7c8097;
+	border-bottom: 1px solid #e1dad4;
 	padding-bottom: 8px;
-	transition: .3s
+	transition: .3s;
+	font-family: Impact, sans-serif;
 }
 
 .catalog-filter-item__title:hover {
-	color: #D4DDE1
+	color: #f58a43
 }
 
 .catalog-filter-item__title:hover .catalog-filter-item__toggle::before {
@@ -6067,8 +6077,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	position: absolute;
 	border-top: 2px solid #2D3033;
 	border-left: 2px solid #2D3033;
-	width: 19px;
-	height: 19px;
+	width: 12px;
+	height: 12px;
 	transform: rotate(45deg);
 	top: calc(50% - 2px);
 	left: calc(50% - 9px);
@@ -6236,7 +6246,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	}
 }
 
-.catalog-filter-wrap__remove::before {
+/* .catalog-filter-wrap__remove::before {
 	content: '';
 	width: 1px;
 	height: 28px;
@@ -6245,16 +6255,16 @@ input[type='search'], input[type='text'], input[type='email'] {
 	position: absolute;
 	right: 10px;
 	top: calc(50% - 12px)
-}
+} */
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
 	.catalog-filter-wrap__remove::before {
 		height: 14px;
 		top: calc(50% - 7px)
 	}
-}
+} */
 
-.catalog-filter-wrap__remove::after {
+/* .catalog-filter-wrap__remove::after {
 	content: '';
 	width: 1px;
 	height: 28px;
@@ -6270,7 +6280,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 		height: 14px;
 		top: calc(50% - 7px)
 	}
-}
+} */
 
 .catalog-section {
 	display: flex;
@@ -6320,7 +6330,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 		z-index: 9;
 		background: #fff;
 		width: 100%;
-		padding: 0 10px;
+		padding: 5px 0;
 		max-height: 0;
 		transition: .3s;
 		overflow: hidden
@@ -6339,7 +6349,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .catalog-section-top-items__unit {
-	margin-right: 35px;
+	margin-right: 55px;
 	color: #2D3033;
 	font-size: 16px;
 	font-weight: 700;
@@ -6347,9 +6357,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 	letter-spacing: .16px
 }
 
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1200px) {
 	.catalog-section-top-items__unit {
-		margin-right: 15px
+		margin-right: 25px
+	}
+}
+@media screen and (max-width: 1110px) {
+	.catalog-section-top-items__unit {
+		margin-right: 10px
+	}
+}
+@media screen and (max-width: 1055px) {
+	.catalog-section-top-items__unit {
+		margin-right: 5px
 	}
 }
 
@@ -6404,21 +6424,33 @@ input[type='search'], input[type='text'], input[type='email'] {
 .catalog-section-top-items__toggle::before {
 	content: '';
 	position: absolute;
-	border-top: 2px solid #D4DDE1;
-	border-left: 2px solid #D4DDE1;
-	width: 19px;
-	height: 19px;
+	border-top: 2px solid #277da1;
+	border-left: 2px solid #277da1;
+	width: 12px;
+	height: 12px;	
 	transform: rotate(-135deg);
-	top: calc(50% - 15px);
-	right: 0;
-	transition: .3s
+	top: calc(50% - 10px);
+	right: 10px;
+	transition: .3s;
+	
+}
+
+.order-desc {
+	color: darkorange;
+}
+
+.order-desc::before {
+	transform: rotate(-315deg);
+	top: calc(50% - 1px);	
+	border-top: 2px solid darkorange;
+	border-left: 2px solid darkorange;	
 }
 
 @media screen and (max-width: 1024px) {
 	.catalog-section-top-items__toggle::before {
 		width: 8px;
 		height: 8px;
-		top: calc(50% - 4px)
+		top: calc(50% - 7px)
 	}
 }
 
@@ -7566,3 +7598,85 @@ input[type='search'], input[type='text'], input[type='email'] {
 		max-width: 100%;
 	}
 }
+
+.sort {
+	margin-left: 15px;
+	font-size: 18px;
+	font-family: Impact, sans-serif ;
+	font-weight: normal;
+	color: #277da1;
+}
+
+.button1 {
+	display: inline-block;
+	text-shadow: 1px 1px #fff;
+	text-decoration: none;
+	padding: .5em 1em .5em .5em;
+	border: 1px solid #aaa;
+	border-radius: 100px;
+	outline: none;
+	background: #d6dbbf no-repeat;
+	background-image:
+	 linear-gradient(to left, #aaa, #aaa),
+	 linear-gradient(to left, #feffe8, #feffe8),
+	 linear-gradient(#feffe8, #d6dbbf);
+	background-position: calc(100% - 2.7em) 0, calc(100% - 2.7em + 1px) 0, 0 0;
+	background-size: 1px 100%, 1px 100%, auto auto;
+	overflow: hidden;
+ }
+ .button1:after {
+	content: "\bb";
+	position: relative;
+	bottom: 0;
+	display: inline-block;
+	margin-left: 1.4em;
+	vertical-align: middle;
+	font-family: "Times","Times New Roman","serif","sans-serif","EmojiSymbols";
+	font-weight: 700;
+	font-size: 140%;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+ }
+ .button1:hover {
+	background-color: #fdfd9f;
+	color: #f38a12;
+	background-image:
+	 linear-gradient(to left, #aaa, #aaa),
+	 linear-gradient(to left, #feffe8, #feffe8),
+	 linear-gradient(#fffce7, #fdfd9f);
+ }
+ .button1:active:after {
+	bottom: -1.2em;
+	transition: .3s;
+ }
+
+ .button2 {
+	display: inline-block;
+	text-decoration: none;
+	padding: 1em 2.2em 1em 0.5em;
+	outline: none;
+	border-radius: 1px;
+	font-size: 18px;
+ }
+
+ @media screen and (max-width: 1024px) {
+	.button2 {
+		font-size: 14px;
+}
+}
+
+ .button2:hover {
+	color: #f38a12;
+	background-image:
+	 radial-gradient(1px 45% at 0% 50%, rgba(0,0,0,.6), transparent),
+	 radial-gradient(1px 45% at 100% 50%, rgba(0,0,0,.6), transparent); 
+ }
+ .button2:active {
+	color: blue;
+	background-image:
+	 radial-gradient(45% 45% at 50% 100%, rgba(255,255,255,.9), rgba(255,255,255,0)),
+	 linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.3));
+	box-shadow:
+	 inset rgba(162,95,42,.4) 0 0 0 1px,
+	 inset rgba(255,255,255,.9) 0 0 1px 3px;
+ }
