@@ -22,6 +22,10 @@ class CatalogController extends BaseUser
 			'name' => 'названию'
 		]; */
 
+		// +Выпуск №134
+		// количество товаров для отображения на странице каталога
+		$quantities = [3, 6, 12];
+
 		// Сформируем название для страницы каталог, взависимости от того в какой категории находимся
 		$data = [];
 
@@ -71,11 +75,17 @@ class CatalogController extends BaseUser
 			// Выпуск №131
 			'order' => $orderDb['order'],
 			'order_direction' => $orderDb['order_direction'],
+			// Выпуск №135
+			'pagination' => [
+				'qty' =>   $_SESSION['quantities'] ?? QTY,
+
+				'page' => $this->clearNum($_GET['page'] ?? 1) ?: 1
+			]
 		], $catalogFilters, $catalogPrices);
 
 		//$a = 1;
 
-		return compact('data', 'catalogFilters', 'catalogPrices', 'goods', 'order');
+		return compact('data', 'catalogFilters', 'catalogPrices', 'goods', 'order', 'quantities');
 	}
 
 

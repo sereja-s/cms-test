@@ -673,10 +673,11 @@ input[type='search'], input[type='text'], input[type='email'] {
 } */
 
 .header__logo span {
+	font-family:Impact, sans-serif;
     width: 160px;
     font-size: 20px;
-	 font-weight: 900;
-	 color: rgb(47, 11, 252);
+	 font-weight: 500;
+	 color: #1708f3;
     letter-spacing: 1.2px;
     /* margin-top: 11px; */
 	 text-align: center;
@@ -914,17 +915,17 @@ input[type='search'], input[type='text'], input[type='email'] {
 		position: fixed;
 		top: 0;
 		right: 0;
-		width: 60px;
+		width: 55px;
 		height: 100vh;
 		border-left: 1px solid #335252
 	}
 }
 
-@media screen and (max-width: 320px) {
+/* @media screen and (max-width: 320px) {
 	.header__sidebar {		
 		width: 55px;		
 	}
-}
+} */
 
 .header__sidebar._bg-opened .header__sidebar_btn {
 	display: none
@@ -5840,7 +5841,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 @media screen and (max-width: 600px) {
 	.catalog-aside-sort-mobile__button {
 		font-size: 14px;
-		padding-right: 32px
+		padding-right: 37px
 	}
 }
 
@@ -6317,7 +6318,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .catalog-section-top-items {
 	display: flex;
-	margin-right: 20px
+	margin-right: 5px
 }
 
 @media screen and (max-width: 1024px) {
@@ -6325,28 +6326,39 @@ input[type='search'], input[type='text'], input[type='email'] {
 		flex-direction: column;
 		position: absolute;
 		top: 23px;
-		right: 0;
+		right: 10px;
 		left: 0;
 		z-index: 9;
 		background: #fff;
-		width: 100%;
+		width: 115%;
 		padding: 5px 0;
 		max-height: 0;
 		transition: .3s;
 		overflow: hidden
 	}
 	.catalog-section-top-items.is-open {
-		max-height: 200px
+		/* max-height: 200px */
+		min-height: 180px;
+	}
+}
+@media screen and (max-width: 600px) {
+	.catalog-section-top-items.is-open {	
+		min-height: 150px;
+	}
+}
+@media screen and (max-width: 600px) {
+	.catalog-section-top-items.is-open a {	
+		margin-bottom: 7px;
 	}
 }
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
 	.catalog-section-top-items {
 		margin-right: 0;
 		flex-direction: column;
 		margin-bottom: 20px
 	}
-}
+ }*/
 
 .catalog-section-top-items__unit {
 	margin-right: 55px;
@@ -6426,13 +6438,20 @@ input[type='search'], input[type='text'], input[type='email'] {
 	position: absolute;
 	border-top: 2px solid #277da1;
 	border-left: 2px solid #277da1;
-	width: 12px;
-	height: 12px;	
+	width: 10px;
+	height: 10px;	
 	transform: rotate(-135deg);
-	top: calc(50% - 10px);
+	top: calc(50% - 5px);
 	right: 10px;
-	transition: .3s;
-	
+	transition: .3s;	
+}
+
+@media screen and (max-width: 1024px) {
+	.catalog-section-top-items__toggle::before {
+		width: 5px;
+		height: 5px;
+		top: calc(50% - 1px)
+	}
 }
 
 .order-desc {
@@ -6444,14 +6463,6 @@ input[type='search'], input[type='text'], input[type='email'] {
 	top: calc(50% - 1px);	
 	border-top: 2px solid darkorange;
 	border-left: 2px solid darkorange;	
-}
-
-@media screen and (max-width: 1024px) {
-	.catalog-section-top-items__toggle::before {
-		width: 8px;
-		height: 8px;
-		top: calc(50% - 7px)
-	}
 }
 
 .catalog-section-top-view {
@@ -7653,7 +7664,7 @@ input[type='search'], input[type='text'], input[type='email'] {
  .button2 {
 	display: inline-block;
 	text-decoration: none;
-	padding: 1em 2.2em 1em 0.5em;
+	padding: .5em 2.2em .1em .5em;
 	outline: none;
 	border-radius: 1px;
 	font-size: 18px;
@@ -7663,6 +7674,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	.button2 {
 		font-size: 14px;
 }
+
 }
 
  .button2:hover {
@@ -7680,3 +7692,37 @@ input[type='search'], input[type='text'], input[type='email'] {
 	 inset rgba(162,95,42,.4) 0 0 0 1px,
 	 inset rgba(255,255,255,.9) 0 0 1px 3px;
  }
+
+ .qty-items {
+	/* display: flex; */
+	position: absolute;
+	top: 100%;
+	/* left: 50%; */
+	/* width: 100%; */
+	z-index: 1;
+	background: #F0F7FA;
+	padding-top: 7px;
+	font-size: large;	
+	display: none;
+}
+
+@media screen and (max-width: 1024px) {
+	.qty-items {
+		display: flex;
+		background: #fff;
+	}
+}
+
+.qty-items a {
+	text-decoration: none;
+	color: #277da1;
+	padding: 5px;	
+}
+
+.qty-items a:not(:last-child) {
+	margin-right: 15px;	
+}
+
+.qty-items.opened {
+	display: flex;
+}

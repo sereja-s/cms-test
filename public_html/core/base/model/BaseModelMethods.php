@@ -8,10 +8,11 @@ namespace core\base\model;
  * 
  * Методы: protected function createFields(); protected function createOrder(); protected function createWhere();
  *  		  protected function createJoin(); protected function createInsert(); protected  function createUpdate();
- *         protected function joinStructure(); protected function createTableAlias()
+ *         protected function joinStructure(); protected function getTotalCount(); protected function createTableAlias()
  */
 abstract class BaseModelMethods
 {
+	//  +Выпуск №135
 	// количество элементов для показа
 	protected $postNumber;
 	// количество ссылок
@@ -908,7 +909,9 @@ abstract class BaseModelMethods
 		return $join_arr;
 	}
 
-
+	/** 
+	 * Метод вернёт количество записей для показа товаров в каталоге на странице (Выпуск №135)
+	 */
 	protected function getTotalCount($table, $where)
 	{
 

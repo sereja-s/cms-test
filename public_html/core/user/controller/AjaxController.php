@@ -5,15 +5,16 @@ namespace core\user\controller;
 use core\base\controller\BaseAjax;
 
 /**
- * Ajax-контроллер пользовательской части (Выпуск №67)
+ * Ajax-контроллер пользовательской части (Выпуск №67) (+Выпуск №134) 
  */
 class AjaxController extends BaseUser
 {
 	public function ajax()
 	{
-		return 'USER AJAX';
+		//return 'USER AJAX';
 
-		/* if (isset($this->ajaxData['ajax'])) {
+		// Выпуск №134
+		if (isset($this->ajaxData['ajax'])) {
 
 			$this->inputData();
 
@@ -24,8 +25,8 @@ class AjaxController extends BaseUser
 
 			switch ($this->ajaxData['ajax']) {
 
+					// Выпуск №134- Пользовательская часть | Выбор количества товаров каталога
 				case 'catalog_quantities':
-
 
 					$qty =  $this->clearNum($this->ajaxData['qty'] ?? 0);
 
@@ -33,15 +34,15 @@ class AjaxController extends BaseUser
 
 					break;
 
-					case 'add_to_cart';
+					/* case 'add_to_cart';
 
 					return $this->_addToCart();
 
-					break;
+					break; */
 			}
 		}
 
-		return json_encode(['success' => '0', 'message' => 'No ajax variable']); */
+		return json_encode(['success' => '0', 'message' => 'No ajax variable']);
 	}
 
 	/* protected function _addToCart()

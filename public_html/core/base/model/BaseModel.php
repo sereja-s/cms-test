@@ -10,6 +10,7 @@ use core\base\model\BaseModelMethods;
  * (Здесь: $crud = r - SELECT / c - INSERT / u - UPDATE / d - DELETE)
  * 
  *  Методы: protected function connect(); final public function query(); final public function get(); 
+ *          protected function createPagination();
  * 			final public function add(); final public function edit(); public function delete(); 
  *          public function buildUnion(); public function getUnion();
  *          final public function showColumns(); final public function showTables()
@@ -157,7 +158,7 @@ abstract class BaseModel extends BaseModelMethods
 
 
 	/** 
-	 * Метод get (read)- получает выборку данных из БД ($crud = r - SELECT)
+	 * Метод get (read)- получает выборку данных из БД ($crud = r - SELECT) (+Выпуск №135)
 	 * (На вход: 1- таблица, 2- массив данных (если он не придёт, то будем выбирать всё из данной таблицы))
 	 */
 	final public function get($table, $set = [])
@@ -166,6 +167,7 @@ abstract class BaseModel extends BaseModelMethods
 
 		$order = $this->createOrder($set, $table); // переменная для хранения результата работы метода сортировки
 
+		// (+Выпуск №135)
 		$paginationWhere = $where = $this->createWhere($set, $table); // переменная для базового запроса по условию (инструкция WHERE)
 
 		// если в переменную: $where ничего не пришло (Выпуск №22)
@@ -193,7 +195,7 @@ abstract class BaseModel extends BaseModelMethods
 		// иначе запишем пустую строку
 		$limit = (!empty($set['limit'])) ? 'LIMIT ' . $set['limit'] : '';
 
-
+		// (+Выпуск №135)
 		$this->createPagination($set, $table, $paginationWhere, $limit);
 
 
@@ -224,21 +226,26 @@ abstract class BaseModel extends BaseModelMethods
 	}
 
 
-
+	// Выпуск №135 | Пользовательская часть постраничная навигация | часть 1
 	protected function createPagination($set, $table, $where, &$limit)
 	{
 		if (!empty($set['pagination'])) {
 
+			// количество элементов для показа
 			$this->postNumber = isset($set['pagination']['qty']) ? (int)$set['pagination']['qty'] : QTY;
 
+			// количество ссылок
 			$this->linksNumber = isset($set['pagination']['qty_links']) ? (int)$set['pagination']['qty_links'] : QTY_LINKS;
 
+			// текущая страница
 			$this->page = !is_array($set['pagination']) ? (int)$set['pagination'] : (int)($set['pagination']['page'] ?? 1);
 
 			if ($this->page > 0 && $this->postNumber > 0) {
 
+				// количество записей
 				$this->totalCount = $this->getTotalCount($table, $where);
 
+				// количество страниц
 				$this->numberPages = (int)ceil($this->totalCount / $this->postNumber);
 
 				$limit = 'LIMIT ' . ($this->page - 1) * $this->postNumber . ',' . $this->postNumber;
