@@ -487,9 +487,10 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .h2 {
-	color: #2D3033;
+	font-family: Impact, sans-serif;
+	color: #277da1;
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 500;
 	line-height: 36px;
 	text-transform: uppercase;
 	letter-spacing: .23px
@@ -509,7 +510,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .h1 {
-	color: #1708f3;
+	color: #006d77;
 	font-size: 30px;
 	font-weight: 700;
 	line-height: 48px;
@@ -673,19 +674,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 } */
 
 .header__logo span {
-	font-family:Impact, sans-serif;
+	 font-family:'Courier New', Courier, monospace;
     width: 160px;
     font-size: 20px;
-	 font-weight: 500;
-	 color: #1708f3;
-    letter-spacing: 1.2px;
-    /* margin-top: 11px; */
+	 font-weight: 600;
+	 color: #2d82b7;
+    letter-spacing: 2.5px;
+    margin-left: 5px;
 	 text-align: center;
 }
 
 @media screen and (max-width: 1600px) {
 	.header__logo span {
-		font-size: 18px;
+		font-size: 23px;
 		width: 150px;
 		/* margin-top: 12px */
 	}
@@ -695,6 +696,11 @@ input[type='search'], input[type='text'], input[type='email'] {
 @media screen and (max-width: 1260px) {
 	.header__logo span {
 		margin-top: 0
+	}
+}
+@media screen and (max-width: 320px) {
+	.header__logo span {
+		font-size: 18px;
 	}
 }
 
@@ -753,7 +759,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	width: 100%;
 	height: 1px;
 	display: block;
-	background: #2D3033;
+	background: #005f73;
 	position: relative;
 	top: 10px;
 	left: 0;
@@ -777,7 +783,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .header__contacts a {
-	color: #2D3033;
+	color: #005f73;
 	text-decoration: none;
 	font-weight: 500
 }
@@ -823,9 +829,9 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .header__nav-list a {
-	color: rgb(47, 11, 252);
-	text-decoration: none;
-	font-weight: 800;
+	color: #006d77;
+	font-weight: 500;
+	text-decoration: none;	
 	text-transform: uppercase;
 	padding: 0 7px;
 	margin-left: 45px;
@@ -878,8 +884,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	font-size: 18px;
 	text-transform: unset;
 	line-height: 36px;
-	color: blueviolet;
-	font-weight: 700;
+	color: #006d77;
+	font-weight: 500;
 }
 
 .header__sidebar {
@@ -2035,7 +2041,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	content: "";
 	width: 1px;
 	height: 18px;
-	background: #2D3033;
+	background: #0a9396;
 	position: absolute;
 	left: 0;
 	top: 1px
@@ -2064,7 +2070,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 .breadcrumbs__link {
 	font-size: inherit;
 	line-height: inherit;
-	color: inherit;
+	color: #0a9396;
 	text-decoration: none;
 	transition: all .4s ease-in-out
 }
@@ -2290,6 +2296,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	color: #2D3033;
 	font-size: 18px;
 	font-weight: 700;
+	color: #005f73;
 	transition: .3s;
 	text-align: center;
 	cursor: pointer;
@@ -2893,7 +2900,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 .slider__item-prev-text {
 	padding-left: 16px;
-	color: #2D3033;
+	color: #005f73;
 	text-transform: uppercase;
 	font-size: 18px;
 	font-weight: 700;
@@ -2919,7 +2926,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 		margin-bottom: 10px;
 		font-size: 12px;
 		letter-spacing: normal;
-		color: blue;
+		color: #2d82b7;
 	}
 }
 
@@ -2956,7 +2963,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1024px) {
 	.slider__item-header {
-		color: #335252
+		color: #ff6b35
 	}
 }
 
@@ -2968,7 +2975,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .slider__item-header span {
-	background: #ff9e00;
+	background: #ff6b35;
 	padding: 5px 16px 0;
 	margin-bottom: 9px;
 	display: inline-block
@@ -3029,7 +3036,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	padding-left: 16px;
 	height: 100%;
 	align-items: flex-end;
-	margin-top: 45px
+	margin-top: auto;
 }
 
 @media screen and (max-width: 1600px) {
@@ -3089,8 +3096,9 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1600px) {
 	.slider__item-15yrs p {
-		margin-top: 7px;
-		line-height: 15px
+		margin-top: 10px;
+		line-height: 15px;
+		padding-left: 10px;
 	}
 }
 @media screen and (max-width: 520px) {
@@ -3103,7 +3111,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 .slider__item-15yrs p span {
 	display: block;
 	font-size: 28px;
-	font-weight: 900;
+	/* font-weight: 900; */
 	text-transform: uppercase;
 	text-align: center;
 	letter-spacing: 0.28px
@@ -3111,7 +3119,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 1600px) {
 	.slider__item-15yrs p span {
-		font-size: 25px
+		font-size: 20px
 	}
 }
 @media screen and (max-width: 520px) {
@@ -3315,7 +3323,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 
 @media screen and (max-width: 560px) {
 	.catalog {
-		padding-left: 20px
+		padding-left: 20px;
+		margin-top: 0;
 	}
 }
 
@@ -4066,6 +4075,12 @@ input[type='search'], input[type='text'], input[type='email'] {
 		margin-top: 0
 	}
 }
+@media screen and (max-width: 425px) {
+	.about__description_name {
+		font-size: 16px;
+		font-weight: 900;
+	}
+}
 
 .about__description_name img {
 	height: 27px
@@ -4182,12 +4197,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .advantages__name {
-	margin-bottom: 30px
+	margin-bottom: 20px
 }
 
 @media screen and (max-width: 768px) {
 	.advantages__name {
 		margin-left: 10px
+	}
+}
+@media screen and (max-width: 425px) {
+	.advantages__name {
+		font-size: 18px;
+		font-weight: 700;
+		margin-bottom: 10px;
 	}
 }
 
@@ -5429,9 +5451,15 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .card-tabs__top-items {
-	overflow-x: auto;
+	/* overflow-x: auto; */
 	width: 100%;
 	display: flex
+}
+
+@media screen and (max-width: 768px) {
+	.card-tabs__top-items {
+		justify-content: center;	
+	}
 }
 
 .card-tabs__top-wrapper {
@@ -5439,12 +5467,19 @@ input[type='search'], input[type='text'], input[type='email'] {
 	justify-content: space-between;
 	left: -30px;
 	max-width: 100%;
-	min-width: 680px
+	min-width: 740px
 }
 
 @media screen and (max-width: 1810px) {
 	.card-tabs__top-wrapper {
 		left: 0
+	}
+}
+@media screen and (max-width: 768px) {
+	.card-tabs__top-wrapper {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 }
 
@@ -5492,7 +5527,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 @media screen and (max-width: 480px) {
 	.card-tabs__toggle {
 		width: 50%;
-		height: 35px
+		/* height: 35px */
 	}
 }
 
@@ -5531,14 +5566,14 @@ input[type='search'], input[type='text'], input[type='email'] {
 	}
 }
 
-@media screen and (max-width: 1340px) {
+@media screen and (max-width: 768px) {
 	.card-tabs__toggle-text {
 		font-size: 15px;
 		line-height: normal
 	}
 }
 
-@media screen and (max-width: 980px) {
+/* @media screen and (max-width: 980px) {
 	.card-tabs__toggle-text {
 		font-size: 11px
 	}
@@ -5554,7 +5589,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	.card-tabs__toggle-text {
 		font-size: 10px
 	}
-}
+} */
 
 .card-tabs__bottom {
 	display: flex;
@@ -6076,8 +6111,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 .catalog-filter-item__toggle::before {
 	content: '';
 	position: absolute;
-	border-top: 2px solid #2D3033;
-	border-left: 2px solid #2D3033;
+	border-top: 2px solid #7c8097;
+	border-left: 2px solid #7c8097;
 	width: 12px;
 	height: 12px;
 	transform: rotate(45deg);
@@ -6162,8 +6197,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 	margin-right: 18px;
 	font-size: 16px;
 	font-weight: 700;
-	line-height: 150%;
-	color: #2D3033
+	color: #005f73;
+	line-height: 150%;	
 }
 
 .catalog-filter-range__input {
@@ -6361,10 +6396,11 @@ input[type='search'], input[type='text'], input[type='email'] {
  }*/
 
 .catalog-section-top-items__unit {
+	font-family: Impact, sans-serif;
 	margin-right: 55px;
-	color: #2D3033;
+	color: #7c8097;
 	font-size: 16px;
-	font-weight: 700;
+	font-weight: 500;
 	line-height: 36px;
 	letter-spacing: .16px
 }
@@ -6436,8 +6472,8 @@ input[type='search'], input[type='text'], input[type='email'] {
 .catalog-section-top-items__toggle::before {
 	content: '';
 	position: absolute;
-	border-top: 2px solid #277da1;
-	border-left: 2px solid #277da1;
+	border-top: 2px solid #7c8097;
+	border-left: 2px solid #7c8097;
 	width: 10px;
 	height: 10px;	
 	transform: rotate(-135deg);
@@ -6535,7 +6571,9 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .catalog-section-pagination {
-	display: flex
+	display: flex;
+	margin: 20px 0 10px 0;
+	overflow-x: auto;
 }
 
 @media screen and (max-width: 600px) {
@@ -6545,18 +6583,21 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .catalog-section-pagination__item {
-	font-size: 16px;
-	font-weight: 700;
-	color: #2D3033;
-	letter-spacing: .16px;
+	font-family: Impact, sans-serif;
+	font-size: 18px;
+	/* font-weight: 700; */
+	color: #006d77;
+	/* letter-spacing: .16px; */
 	transition: .3s;
 	margin-right: 24px;
-	text-decoration: none
+	text-decoration: none;
+	padding: 7px;
 }
 
 @media screen and (max-width: 600px) {
 	.catalog-section-pagination__item {
-		margin-right: 15px
+		margin-right: 16px;
+		
 	}
 }
 
@@ -6565,7 +6606,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .catalog-section-pagination__item:hover {
-	color: #335252
+	color: #f38a12;
 }
 
 .catalog-section-pagination__prev {
@@ -6916,7 +6957,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .division-internal-item__title {
-	color: #2D3033;
+	color: #005f73;
 	font-size: 24px;
 	font-weight: 700;
 	line-height: 32px;
@@ -7622,6 +7663,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	display: inline-block;
 	text-shadow: 1px 1px #fff;
 	text-decoration: none;
+	color: #005f73;
 	padding: .5em 1em .5em .5em;
 	border: 1px solid #aaa;
 	border-radius: 100px;
@@ -7645,6 +7687,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	font-family: "Times","Times New Roman","serif","sans-serif","EmojiSymbols";
 	font-weight: 700;
 	font-size: 140%;
+	color: #005f73;
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
  }
@@ -7726,3 +7769,13 @@ input[type='search'], input[type='text'], input[type='email'] {
 .qty-items.opened {
 	display: flex;
 }
+
+.pagination-current {	
+	width: 25px; 
+	height: 25px;
+	background:#fff3b0;
+	border-radius: 50%;
+	display: flex; 
+	align-items: center; 
+	justify-content: center;  
+	}

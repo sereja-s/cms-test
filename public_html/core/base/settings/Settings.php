@@ -88,13 +88,14 @@ class Settings
 		'settings' => ['name' => 'Настройки (о сайте)'],
 		'advantages' => ['name' => 'Преимущества'],
 		'socials' => ['name' => 'Соц.сети'],
+		'users' => ['name' => 'Пользователи'],
 		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png']
 	];
 
 	// свойство: массив шаблонов
 	private $templateArr = [
 		// массив вида: 'название шаблона' => массив с полями для которых должен быть подключен соответствующий шаблон
-		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years', 'discount', 'price'],
+		'text' => ['name', 'phone', 'email', 'alias', 'external_alias', 'sub_title', 'number_of_years', 'discount', 'price', 'login', 'password'],
 		'textarea' => ['content', 'keywords', 'address', 'description', 'short_content'],
 		'radio' => ['visible', 'show_top_menu', 'hit', 'sale', 'new', 'hot'],
 		'checkboxlist' => ['filters', 'filters_test'], // указали, что хотим подключить фильтры к связанной таблице: 
@@ -136,6 +137,8 @@ class Settings
 		'price' => ['Цена'],
 		'parent_id' => ['Выбрать категорию', '(К чему относится?)'],
 		'promo_img' => ['Изображение для главной страницы'],
+		'login' => ['Логин'],
+		'password' => ['Пароль']
 		//'filters' => ['Категории фильтров']
 	];
 

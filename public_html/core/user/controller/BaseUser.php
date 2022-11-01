@@ -7,7 +7,7 @@ use core\user\model\Model;
 /** 
  * Пользовательский контроллер с базовым функционалом (абстрактный класс) -Выпуск №120
  *  Методы: protected function img(); protected function alias()
- *          protected function wordsForCounter(); protected function showGoods()
+ *          protected function wordsForCounter(); protected function showGoods(); protected function pagination();
  */
 abstract class BaseUser extends \core\base\controller\BaseController
 {
@@ -15,16 +15,24 @@ abstract class BaseUser extends \core\base\controller\BaseController
 	protected $table;
 
 	// Выпуск №122- Пользовательская часть | Вывод данных в хедер сайта
-	// свойство, в которое будем класть данные из таблицы: settings (настройки системы: лого, телефон, эл.почта и т.д.)
+	/** 
+	 * свойство, в которое будем класть данные из таблицы: settings (настройки системы: лого, телефон, эл.почта и т.д.)
+	 */
 	protected $set;
 
-	// свойство с данными для меню (каталог)
+	/** 
+	 * свойство с данными для меню (каталог)
+	 */
 	protected $menu;
 
-	// Выпуск №129 (св-во для хлебных крошек)
+	/** 
+	 * Выпуск №129 (св-во для хлебных крошек)
+	 */
 	protected $breadcrumbs;
 
-	// Проектные свойства (Выпуск №123)
+	/** 
+	 * Проектные свойства (Выпуск №123)
+	 */
 	protected $socials;
 
 
@@ -272,6 +280,131 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		if (!empty($data)) {
 
 			echo $this->render(TEMPLATE . 'include/' . $template, compact('data', 'parameters'));
+		}
+	}
+
+	/**
+	 * Метод формирует ссылки пагинации при выводе карточек товаров в каталоге (Выпуск №136)	 
+	 */
+	protected function pagination($pages)
+	{
+
+		// найдём параметр: page в адресной строке
+		$str = $_SERVER['REQUEST_URI'];
+
+		// удалим (если есть) из адресной строки: page= и следующие за ним цифры 
+		if (preg_match('/page=\d+/i', $str)) {
+
+			$str = preg_replace('/page=\d+/i', '', $str);
+		}
+
+		// аналогично если рядом стоят: ?& или ?amp; , то заменим их на знак: ?
+		if (preg_match('/(\?&)|(\?amp;)/i', $str)) {
+
+			$str = preg_replace('/(\?&)|(\?amp;)/i', '?', $str);
+		}
+
+		$basePageStr = $str;
+
+		if (preg_match('/\?(.)?/i', $str, $matches)) {
+
+			if (!preg_match('/&$/', $str) && !empty($matches[1])) {
+
+				$str .= '&';
+			} else {
+
+				$basePageStr = preg_replace('/(\?$)|(&$)/', '', $str);
+			}
+		} else {
+
+			$str .= '?';
+		}
+
+		$str .= 'page=';
+
+
+
+		$firstPageStr = !empty($pages['first']) ? ($pages['first'] === 1 ? $basePageStr : $str . $pages['first']) : '';
+
+		$backPageStr = !empty($pages['back']) ? ($pages['back'] === 1 ? $basePageStr : $str . $pages['back']) : '';
+
+		//$a = 1;
+
+		if (!empty($pages['first'])) {
+
+			echo <<<HEREDOC
+			<a href="$firstPageStr" class="catalog-section-pagination__item">
+									<< </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['back'])) {
+
+			echo <<<HEREDOC
+			<a href="$backPageStr" class="catalog-section-pagination__item">
+									< </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['previous'])) {
+
+			foreach ($pages['previous'] as $item) {
+
+				$href = $item === 1 ? $basePageStr : $str . $item;
+
+				echo <<<HEREDOC
+				<a href="$href" class="catalog-section-pagination__item">
+									$item
+								</a>
+				HEREDOC;
+			}
+		}
+
+
+		if (!empty($pages['current'])) {
+
+			echo <<<HEREDOC
+			<a href="" class="catalog-section-pagination__item pagination-current">
+									{$pages['current']} </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['next'])) {
+
+			foreach ($pages['next'] as $item) {
+
+				$href = $str . $item;
+
+				echo <<<HEREDOC
+				<a href="$href" class="catalog-section-pagination__item">
+									$item
+								</a>
+				HEREDOC;
+			}
+		}
+
+
+		if (!empty($pages['forward'])) {
+
+			$href = $str . $pages['forward'];
+
+			echo <<<HEREDOC
+			<a href="$href" class="catalog-section-pagination__item">
+									> </a>
+			HEREDOC;
+		}
+
+		if (!empty($pages['last'])) {
+
+			$href = $str . $pages['last'];
+
+			echo <<<HEREDOC
+			<a href="$href" class="catalog-section-pagination__item">
+									>> </a>
+			HEREDOC;
 		}
 	}
 }

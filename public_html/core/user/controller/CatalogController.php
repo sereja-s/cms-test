@@ -77,7 +77,7 @@ class CatalogController extends BaseUser
 			'order_direction' => $orderDb['order_direction'],
 			// Выпуск №135
 			'pagination' => [
-				'qty' =>   $_SESSION['quantities'] ?? QTY,
+				'qty' => $_SESSION['quantities'] ?? QTY,
 
 				'page' => $this->clearNum($_GET['page'] ?? 1) ?: 1
 			]
@@ -85,7 +85,10 @@ class CatalogController extends BaseUser
 
 		//$a = 1;
 
-		return compact('data', 'catalogFilters', 'catalogPrices', 'goods', 'order', 'quantities');
+		// Выпуск №136
+		$pages = $this->model->getPagination();
+
+		return compact('data', 'catalogFilters', 'catalogPrices', 'goods', 'order', 'quantities', 'pages');
 	}
 
 

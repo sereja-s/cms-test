@@ -8,20 +8,31 @@ namespace core\base\model;
  * 
  * Методы: protected function createFields(); protected function createOrder(); protected function createWhere();
  *  		  protected function createJoin(); protected function createInsert(); protected  function createUpdate();
- *         protected function joinStructure(); protected function getTotalCount(); protected function createTableAlias()
+ *         protected function joinStructure(); protected function getTotalCount(); public function getPagination()
+ *         protected function createTableAlias()
  */
 abstract class BaseModelMethods
 {
 	//  +Выпуск №135
-	// количество элементов для показа
+	/** 
+	 * количество элементов для показа
+	 */
 	protected $postNumber;
-	// количество ссылок
+	/** 
+	 * количество ссылок
+	 */
 	protected $linksNumber;
-	// количество страниц
+	/** 
+	 * количество страниц
+	 */
 	protected $numberPages;
-	// текущая страница
+	/** 
+	 * текущая страница
+	 */
 	protected $page;
-	// количество записей
+	/** 
+	 * количество записей
+	 */
 	protected $totalCount;
 
 	protected $sqlFunc = ['NOW()', 'RAND()'];
@@ -919,7 +930,9 @@ abstract class BaseModelMethods
 	}
 
 
-
+	/** 
+	 * Метод формирует и возвращает массив с постраничной навигацией (Выпуск №136)
+	 */
 	public function getPagination()
 	{
 
@@ -927,6 +940,7 @@ abstract class BaseModelMethods
 
 			return false;
 		}
+
 
 		$res = [];
 
@@ -936,6 +950,7 @@ abstract class BaseModelMethods
 
 			$res['back'] = $this->page - 1;
 		}
+
 
 		if ($this->page > $this->linksNumber + 1) {
 
@@ -952,7 +967,9 @@ abstract class BaseModelMethods
 			}
 		}
 
+
 		$res['current'] = $this->page;
+
 
 		if ($this->page + $this->linksNumber < $this->numberPages) {
 
@@ -968,6 +985,7 @@ abstract class BaseModelMethods
 			}
 		}
 
+
 		if ($this->page != $this->numberPages) {
 
 			$res['forward'] = $this->page + 1;
@@ -975,9 +993,9 @@ abstract class BaseModelMethods
 			$res['last'] = $this->numberPages;
 		}
 
+
 		return $res;
 	}
-
 
 
 	/** 
