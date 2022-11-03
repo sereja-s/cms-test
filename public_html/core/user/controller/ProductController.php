@@ -15,6 +15,7 @@ class ProductController extends BaseUser
 		parent::inputData();
 
 		if (empty($this->parameters['alias'])) {
+
 			throw new RouteException('Отсутствует ссылка на товар', 3);
 		}
 
@@ -23,13 +24,14 @@ class ProductController extends BaseUser
 		]);
 
 		if (!$data) {
+
 			throw new RouteException('Отсутствует товар по ссылке ' . $this->parameters['alias']);
 		}
 
 		$data = array_shift($data);
 
+		// Выпуск №138 (пункт меню и таб в карточке товара: доставка и оплата)
 		$deliveryInfo = $this->model->get('information', [
-
 			'where' => ['visible' => 1, 'name' => 'доставка', ' name' => 'оплата'],
 			'operand' => ['=', '%LIKE%'],
 			'condition' => ['AND', 'OR'],

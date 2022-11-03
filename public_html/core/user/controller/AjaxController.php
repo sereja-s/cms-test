@@ -25,7 +25,7 @@ class AjaxController extends BaseUser
 
 			switch ($this->ajaxData['ajax']) {
 
-					// Выпуск №134- Пользовательская часть | Выбор количества товаров каталога
+					// Выпуск №134- Пользовательская часть | Выбор количества товаров показываемых в каталоге
 				case 'catalog_quantities':
 
 					$qty =  $this->clearNum($this->ajaxData['qty'] ?? 0);
@@ -34,22 +34,26 @@ class AjaxController extends BaseUser
 
 					break;
 
-					/* case 'add_to_cart';
+					// Выпуск №139 | Пользовательская часть | Добавление в корзину | часть 1
+				case 'add_to_cart';
 
 					return $this->_addToCart();
 
-					break; */
+					break;
 			}
 		}
 
 		return json_encode(['success' => '0', 'message' => 'No ajax variable']);
 	}
 
-	/* protected function _addToCart()
+	/** 
+	 * метод добавит в корзину (Выпуск №139, 140)
+	 */
+	protected function _addToCart()
 	{
 
 		//return $this->ajaxData['qty'];
 
 		return $this->addToCart($this->ajaxData['id'] ?? null, $this->ajaxData['qty'] ?? 1);
-	} */
+	}
 }

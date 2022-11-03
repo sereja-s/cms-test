@@ -8,6 +8,8 @@ use core\user\model\Model;
  * Пользовательский контроллер с базовым функционалом (абстрактный класс) -Выпуск №120
  *  Методы: protected function img(); protected function alias()
  *          protected function wordsForCounter(); protected function showGoods(); protected function pagination();
+ *          protected function addToCart(); protected function totalSum(); protected function updateCart(); 
+ *          protected function &getCart();
  */
 abstract class BaseUser extends \core\base\controller\BaseController
 {
@@ -24,6 +26,11 @@ abstract class BaseUser extends \core\base\controller\BaseController
 	 * свойство с данными для меню (каталог)
 	 */
 	protected $menu;
+
+	/** 
+	 * свойство для корзины (Выпуск №140)
+	 */
+	protected $cart = [];
 
 	/** 
 	 * Выпуск №129 (св-во для хлебных крошек)
@@ -405,6 +412,228 @@ abstract class BaseUser extends \core\base\controller\BaseController
 			<a href="$href" class="catalog-section-pagination__item">
 									>> </a>
 			HEREDOC;
+		}
+	}
+
+	/** 
+	 * Базовый метод добавления в корзину (Выпуск №140)
+	 */
+	protected function addToCart($id, $qty)
+	{
+		$id = $this->clearNum($id);
+
+		$qty = $this->clearNum($qty) ?: 1;
+
+		if (!$id) {
+
+			return ['success' => 0, 'message' => 'Отсутствует идентификатор товара'];
+		}
+
+		// получим товар (подтверждение, что такой товар существует)
+		$data = $this->model->get('goods', [
+			'where' => ['id' => $id, 'visible' => 1],
+			'limit' => 1
+		]);
+
+		if (!$data) {
+
+			return ['success' => 0, 'message' => 'Отсутствует товар для добавления в корзину'];
+		}
+
+		// заберём корзину в переменную, чтобы дальше с ней работать (в одной единой переменной):
+		$cart = &$this->getCart();
+
+		//$cart['total_qty'] = 1;
+		//$a = 1;
+
+		// в корзине хранится идентификатор товара и количество
+		$cart[$id] = $qty;
+
+		// после того как добавили товар в корзину, надо проUPDATE корзину, в случае если она лежит в куках:
+		$this->updateCart();
+
+		// на вход метода подаём флаг: $cartChanged = true, т.к. в корзине произошли изменения и их необходимо пересчитать
+		$res = $this->getCartData(true);
+
+		if ($res && !empty($res['goods'][$id])) {
+
+			$res['current'] = $res['goods'][$id];
+		}
+
+		return $res;
+	}
+
+	/** 
+	 * Метод формирует полноценные данные о нашей корзине (Выпуск №140)
+	 */
+	protected function getCartData($cartChanged = false)
+	{
+		// если корзина получена
+		if (!empty($this->cart) && !$cartChanged) {
+
+			// вернём корзину
+			return $this->cart;
+		}
+
+		// получим корзину
+		$cart = &$this->getCart();
+
+		// если корзина пуста:
+		if (empty($cart)) {
+
+			$this->clearCart();
+
+			return false;
+		}
+
+		// в переменную сохраняем товары 
+		// (в конце укажем диструкцию (фильтры не нужны))
+		$goods = $this->model->getGoods([
+			'where' => ['id' => array_keys($cart), 'visible' => 1],
+			'operand' => ['IN', '=']
+		], ...[false, false]);
+
+		if (empty($goods)) {
+
+			$this->clearCart();
+
+			return false;
+		}
+
+		// если в корзине ($cart) есть такие идентификаторы которых нет в $goods, то какой-то товар уже отключен и надо переUPDATE корзину, иначе оставляем как есть
+
+		$cartChanged = false;
+
+		foreach ($cart as $id => $qty) {
+
+			if (empty($goods[$id])) {
+
+				unset($cart[$id]);
+
+				$cartChanged = true;
+
+				continue;
+			}
+
+			$this->cart['goods'][$id] = $goods[$id];
+
+			// переложим в корзину количество:
+			$this->cart['goods'][$id]['qty'] = $qty;
+		}
+
+		// если нужно UPDATE корзину (т.е. $cartChanged = true):
+		if ($cartChanged) {
+
+			$this->updateCart();
+		}
+
+		return $this->totalSum();
+	}
+
+	/** 
+	 * Метод формирует общую сумму заказа 
+	 */
+	protected function totalSum()
+	{
+
+		if (empty($this->cart['goods'])) {
+
+			$this->clearCart();
+
+			return null;
+		}
+
+		// если в cart['goods'] не пусто, сформируем в корзине три ячейки дополнения к товару и установим им значение ноль:
+		$this->cart['total_sum'] = $this->cart['total_old_sum'] = $this->cart['total_qty'] = 0;
+
+		foreach ($this->cart['goods'] as $item) {
+
+			$this->cart['total_qty'] += $item['qty'];
+
+			$this->cart['total_sum'] += round($item['qty'] * $item['price'], 2);
+
+			// Выпуск №143 | Пользовательская часть | Корзина товаров | ч 1
+			$this->cart['total_old_sum'] += round($item['qty'] * ($item['old_price'] ?? $item['price']), 2);
+
+			/* if (!empty($item['old_price'])) {
+				$this->cart['total_old_sum'] += round($item['qty'] * $item['old_price'], 2);
+			} */
+		}
+
+		if ($this->cart['total_sum'] === $this->cart['total_old_sum']) {
+
+			// разрегистрируем ячейку (т.е. не будем выводить перечёркнутую сумму)
+			unset($this->cart['total_old_sum']);
+		}
+
+		return $this->cart;
+	}
+
+	/** 
+	 * Метод обновит корзину в случае если она лежит в куках (Выпуск №140)
+	 */
+	protected function updateCart()
+	{
+		// получим корзину
+		$cart = &$this->getCart();
+
+		/* if (empty($cart)) {
+			return $this->clearCart();
+		} */
+
+		if (defined('CART') && strtolower(CART) === 'cookie') {
+
+			// поставим куку пользователю и изменим значение его корзины
+			setcookie('cart', json_encode($cart), time() + 3600 * 24 * 4, PATH);
+		}
+
+		return true;
+	}
+
+	public function clearCart()
+	{
+
+		unset($_COOKIE['cart'], $_SESSION['cart']);
+
+		if (defined('CART') && strtolower(CART) === 'cookie') {
+
+			// удалим куку (ставим время жизни куки больше чем текущая метка времени):
+			setcookie('cart', '', 1, PATH);
+		}
+
+		$this->cart = [];
+
+		/* return null; */
+	}
+
+	// нам будет удобно работать, получив корзину единоразово (Выпуск №140)
+	// (чтобы понять какой у нас массив будет, можно хранить ссылку на суперглобальные массивы, но только 
+	// через передачу функции по ссылке):
+	/** 
+	 * Метод вернёт корзину по ссылке
+	 */
+	protected function &getCart()
+	{
+		if (!defined('CART') || strtolower(CART) !== 'cookie') {
+
+			// то значит работаем с сессией:
+			if (!isset($_SESSION['cart'])) {
+
+				$_SESSION['cart'] = [];
+			}
+
+			return $_SESSION['cart'];
+		} else {
+
+			if (!isset($_COOKIE['cart'])) {
+
+				$_COOKIE['cart'] = [];
+			} else {
+
+				$_COOKIE['cart'] = is_string($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : $_COOKIE['cart'];
+			}
+
+			return $_COOKIE['cart'];
 		}
 	}
 }
