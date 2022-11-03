@@ -8,7 +8,8 @@ use core\user\model\Model;
  * Пользовательский контроллер с базовым функционалом (абстрактный класс) -Выпуск №120
  *  Методы: protected function img(); protected function alias()
  *          protected function wordsForCounter(); protected function showGoods(); protected function pagination();
- *          protected function addToCart(); protected function totalSum(); protected function updateCart(); 
+ *          protected function addToCart(); protected function totalSum(); 
+ *          protected function updateCart(); public function clearCart();
  *          protected function &getCart();
  */
 abstract class BaseUser extends \core\base\controller\BaseController
@@ -61,6 +62,13 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 		// укажежем, что если что то пришло в свойство: $this->set, то сохраним в нём только нулевой элемент массива, который пришёл (первый по очереди)
 		$this->set && $this->set = $this->set[0];
+
+		// Выпуск №142
+		// получим данные для корзины
+		if (!$this->isAjax() && !$this->isPost()) {
+
+			$this->getCartData();
+		}
 
 		// получим в св-во: $this->menu, в ячейку: ['catalog'], то что хранится в соответствующей таблице БД
 		$this->menu['catalog'] = $this->model->get('catalog', [
@@ -452,9 +460,11 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		// после того как добавили товар в корзину, надо проUPDATE корзину, в случае если она лежит в куках:
 		$this->updateCart();
 
+		// +Выпуск №141
 		// на вход метода подаём флаг: $cartChanged = true, т.к. в корзине произошли изменения и их необходимо пересчитать
 		$res = $this->getCartData(true);
 
+		// сформируем по условию: $res['current'] т.е. текущий элемент
 		if ($res && !empty($res['goods'][$id])) {
 
 			$res['current'] = $res['goods'][$id];
@@ -475,7 +485,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 			return $this->cart;
 		}
 
-		// получим корзину
+		// получим корзину (+Выпуск №141)
 		$cart = &$this->getCart();
 
 		// если корзина пуста:
@@ -531,7 +541,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 	}
 
 	/** 
-	 * Метод формирует общую сумму заказа 
+	 * Метод формирует общую сумму заказа (Выпуск №141)
 	 */
 	protected function totalSum()
 	{
@@ -545,6 +555,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 		// если в cart['goods'] не пусто, сформируем в корзине три ячейки дополнения к товару и установим им значение ноль:
 		$this->cart['total_sum'] = $this->cart['total_old_sum'] = $this->cart['total_qty'] = 0;
+
 
 		foreach ($this->cart['goods'] as $item) {
 
@@ -590,6 +601,9 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		return true;
 	}
 
+	/** 
+	 * Метод чистит корзину (Выпуск №141)
+	 */
 	public function clearCart()
 	{
 

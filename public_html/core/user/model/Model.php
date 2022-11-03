@@ -161,7 +161,7 @@ class Model extends \core\base\model\BaseModel
 
 				//$a = 1;
 
-				// Этот код перенесли выше
+				// Этот код перенесли выше (-Выпуск №141)
 				/* if (!empty($this->showColumns('goods')['discount'])) {
 					foreach ($goods as $key => $item) {
 						$this->applyDiscount($goods[$key], $item['discount']);

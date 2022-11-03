@@ -376,11 +376,12 @@ function addToCart() {
 
 						console.log(res)
 
+						// Выпуск №141
 						try {
 
 							res = JSON.parse(res)
 
-							//console.log(res)
+							console.log(res)
 
 							if (typeof res.current === 'undefined') {
 
@@ -399,7 +400,13 @@ function addToCart() {
 
 									if (typeof res[cartAttr] !== 'undefined') {
 
-										el.innerHTML = res[cartAttr] /* + ' руб.' */
+										//console.log(cartAttr)
+										//console.log(res[cartAttr])
+										//console.log('total_qty')
+
+										//el.innerHTML = res[cartAttr] + ' руб.'
+
+										el.innerHTML = res[cartAttr] + (cartAttr !== 'total_qty' ? ' руб.' : '')
 
 									}
 
