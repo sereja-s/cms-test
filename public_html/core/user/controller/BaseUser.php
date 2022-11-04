@@ -566,11 +566,13 @@ abstract class BaseUser extends \core\base\controller\BaseController
 			// Выпуск №143 | Пользовательская часть | Корзина товаров | ч 1
 			$this->cart['total_old_sum'] += round($item['qty'] * ($item['old_price'] ?? $item['price']), 2);
 
+			// Выпуск -№143
 			/* if (!empty($item['old_price'])) {
 				$this->cart['total_old_sum'] += round($item['qty'] * $item['old_price'], 2);
 			} */
 		}
 
+		// Выпуск №143
 		if ($this->cart['total_sum'] === $this->cart['total_old_sum']) {
 
 			// разрегистрируем ячейку (т.е. не будем выводить перечёркнутую сумму)

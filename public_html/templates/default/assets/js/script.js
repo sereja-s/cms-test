@@ -381,7 +381,7 @@ function addToCart() {
 
 							res = JSON.parse(res)
 
-							console.log(res)
+							//console.log(res)
 
 							if (typeof res.current === 'undefined') {
 

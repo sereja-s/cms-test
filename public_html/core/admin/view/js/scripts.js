@@ -925,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		document.querySelectorAll('.success, .error').forEach(item => item.remove());
 
-		console.log(111333);
+		//console.log(111333);
 
 		document.removeEventListener('click', hideMessages)
 

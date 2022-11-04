@@ -2293,7 +2293,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 	width: 100%;
 	height: 71px;
 	background: #D4DDE1;
-	color: #2D3033;
+	/* color: #2D3033; */
 	font-size: 18px;
 	font-weight: 700;
 	color: #005f73;
@@ -2328,7 +2328,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .card-item__btn:hover {
-	background: #335252;
+	background: #005f73;
 	color: #fff;
 }
 
@@ -7344,12 +7344,16 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .basket-btn{
-	display: block;
+	/* display: block; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
 	width: 280px;
 	text-transform: uppercase;
     min-height: 50px;
     background: #D4DDE1;
-    color: #2D3033;
+    color: #006d77;
     font-size: 18px;
     font-weight: 700;
     transition: .3s;
@@ -7361,7 +7365,7 @@ input[type='search'], input[type='text'], input[type='email'] {
 }
 
 .basket-btn:hover {
-	background: #335252;
+	background: #005f73;
 	color: #fff;
 }
 
