@@ -9,7 +9,7 @@ use core\user\model\Model;
  *  Методы: protected function img(); protected function alias()
  *          protected function wordsForCounter(); protected function showGoods(); protected function pagination();
  *          protected function addToCart(); protected function totalSum(); 
- *          protected function updateCart(); public function clearCart();
+ *          protected function updateCart(); public function clearCart(); protected function deleteCartData()
  *          protected function &getCart();
  */
 abstract class BaseUser extends \core\base\controller\BaseController
@@ -619,7 +619,27 @@ abstract class BaseUser extends \core\base\controller\BaseController
 
 		$this->cart = [];
 
-		/* return null; */
+		return null;
+	}
+
+	/**
+	 * Метод удаления данных из корзины (Выпуск №144)
+	 */
+	protected function deleteCartData($id)
+	{
+		$id = $this->clearNum($id);
+
+		if ($id) {
+
+			$cart = &$this->getCart();
+
+			unset($cart[$id]);
+
+			$this->updateCart();
+
+			// вызываем метод с обязательным пересчётом (передаём true)
+			$this->getCartData(true);
+		}
 	}
 
 	// нам будет удобно работать, получив корзину единоразово (Выпуск №140)

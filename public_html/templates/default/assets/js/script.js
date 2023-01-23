@@ -329,6 +329,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	changeQty()
 
+	/* ========================== открывается order-popup для оформлении заказа ====================================== */
+
+	document.querySelectorAll('[data-popup]').forEach(item => {
+
+		// если не пустой атрибут
+		if (item.getAttribute('data-popup')) {
+
+			let popupElement = document.querySelector(`.${item.getAttribute('data-popup')}`);
+
+			if (popupElement) {
+
+				item.addEventListener('click', () => {
+
+					popupElement.classList.add('open')
+				});
+
+				popupElement.addEventListener('click', e => {
+
+					// если кликнули по текущему элементу (а не по внутреннему)
+					if (e.target === popupElement) {
+
+						popupElement.classList.remove('open')
+					}
+
+				});
+
+			}
+		}
+	})
+
 })
 
 
@@ -406,7 +436,10 @@ function addToCart() {
 
 										//el.innerHTML = res[cartAttr] + ' руб.'
 
-										el.innerHTML = res[cartAttr] + (cartAttr !== 'total_qty' ? ' руб.' : '')
+										//el.innerHTML = res[cartAttr] + (cartAttr !== 'total_qty' ? ' руб.' : '')
+
+										// Выпуск №144
+										el.innerHTML = res[cartAttr] + (attr === 'data-totalQty' ? '' : ' руб.');
 
 									}
 

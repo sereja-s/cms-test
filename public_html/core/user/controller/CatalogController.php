@@ -50,7 +50,8 @@ class CatalogController extends BaseUser
 
 		if ($data) {
 
-			$where = ['parent_id' => $data['id']];
+			// Выпуск №144
+			$where['parent_id'] = $data['id'];
 		} else {
 
 			$data['name'] = 'Каталог';
