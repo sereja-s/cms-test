@@ -13,7 +13,7 @@ use libraries\FileEdit;
  * 
  * Методы: protected function sendNoCacheHeaders(); protected function execBase(): protected function createTableData();
  * 		  protected function expansion(); protected function createOutputData(); protected function createRadio();
- * 		  protected function checkPost(); protected function addSessionData(); protected function countChar();
+ * 		  protected function checkPost(); protected function countChar();
  * 		  protected function emptyFields(); protected function clearPostFields(); protected function editData();
  *         protected function checkExceptFields(); protected function createFiles(); protected function sortingFiles();
  *         protected function createAlias(); protected function updateMenuPosition(); protected function checkAlias();
@@ -462,27 +462,7 @@ abstract class BaseAdmin extends BaseController
 		}
 	}
 
-	/** 
-	 * Метод, который будет добавлять данные в сессионный массив
-	 * (в сесии (в $_SESSION['res']) создаст ключи одноимённые с массивом поданным на вход, что бы все заполненные
-	 * данные попали обратно в шаблон и не потерялись у пользователя )
-	 */
-	protected function addSessionData($arr = [])
-	{
-		if (!$arr) {
 
-			$arr = $_POST;
-		}
-
-		foreach ($arr as $key => $item) {
-
-			// добавляем данные в сессионный массив: в ячейку с именем таким же как у соответствующего ключа массива (здесь- в $arr) сохраняем его значение
-			$_SESSION['res'][$key] = $item;
-		}
-
-		// перенаправим пользователя на ту же страницу
-		$this->redirect();
-	}
 
 	/** 
 	 * Метод валидатора (проверка на допустимое количество символов в поле шаблона админки)

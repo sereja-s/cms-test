@@ -8,7 +8,7 @@ namespace core\base\controller;
  * 
  * Методы: protected function clearStr(); protected function clearNum(); protected function isPost(); 
  *         protected function isAjax(); protected function redirect(); protected function getStyles(); 
- *         protected function getScripts(); protected function writeLog(); protected function getController()$
+ *         protected function getScripts(); protected function writeLog(); protected function getController(); protected function addSessionData()
  *         protected function dateFormat()
  */
 trait BaseMethods
@@ -184,6 +184,30 @@ trait BaseMethods
 			// в переменную: $this->controller вернём нулевой элемент полученного в результате массива
 			$this->controller = preg_split('/_?controller/', strtolower(preg_replace('/([^A-Z])([A-Z])/', '$1_$2', (new \ReflectionClass($this))->getShortName())), 0, PREG_SPLIT_NO_EMPTY)[0];
 	}
+
+
+	/** 
+	 * Метод, который будет добавлять данные в сессионный массив
+	 * (в сесии (в $_SESSION['res']) создаст ключи одноимённые с массивом поданным на вход, что бы все заполненные
+	 * данные попали обратно в шаблон и не потерялись у пользователя )
+	 */
+	protected function addSessionData($arr = [])
+	{
+		if (!$arr) {
+
+			$arr = $_POST;
+		}
+
+		foreach ($arr as $key => $item) {
+
+			// добавляем данные в сессионный массив: в ячейку с именем таким же как у соответствующего ключа массива (здесь- в $arr) сохраняем его значение
+			$_SESSION['res'][$key] = $item;
+		}
+
+		// перенаправим пользователя на ту же страницу
+		$this->redirect();
+	}
+
 
 	/**
 	 * метод для формирования даты Выпуск №128 | Вывод новостей 

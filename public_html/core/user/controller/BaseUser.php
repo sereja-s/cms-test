@@ -39,6 +39,11 @@ abstract class BaseUser extends \core\base\controller\BaseController
 	protected $breadcrumbs;
 
 	/** 
+	 * св-во в котором будем держать данные пользователя (Выпуск №145)
+	 */
+	protected $userData = [];
+
+	/** 
 	 * Проектные свойства (Выпуск №123)
 	 */
 	protected $socials;
@@ -422,6 +427,19 @@ abstract class BaseUser extends \core\base\controller\BaseController
 			HEREDOC;
 		}
 	}
+
+	/** 
+	 * Метод установки данных пользователя в форму (Выпуск №145)
+	 * 
+	 * на вход: 1- ключ который ищем; 2- св-во в котором ищем; 3- массив (если это не сессия)
+	 */
+	protected function setFormValues($key, $property = null, $arr = [])
+	{
+		!$arr && $arr = $_SESSION['res'] ?? [];
+
+		return $arr[$key] ?? ($this->$property[$key] ?? '');
+	}
+
 
 	/** 
 	 * Базовый метод добавления в корзину (Выпуск №140)
