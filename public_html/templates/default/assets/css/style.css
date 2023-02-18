@@ -2736,9 +2736,15 @@ input[type='email'] {
 
 
 
+@media screen and (max-width: 600px) {
+	.slider__item {
+		padding: 0 50px 0 50px
+	}
+}
+
 @media screen and (max-width: 560px) {
 	.slider__item {
-		padding: 0 60px 0 20px
+		padding: 0 50px 0 20px
 	}
 }
 
@@ -3305,8 +3311,8 @@ input[type='email'] {
 
 @media screen and (max-width: 560px) {
 	.slider__pagination {
-		right: 13px;
-		bottom: 0;
+		right: 70px;
+		bottom: 55px;
 		left: auto;
 		padding-left: 0
 	}
@@ -3336,8 +3342,14 @@ input[type='email'] {
 @media screen and (max-width: 560px) {
 	.slider__controls._prev {
 		left: auto;
-		bottom: 91px;
-		right: -4px
+		bottom: 25px;
+		right: 300px
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.slider__controls._prev {
+		display: none;
 	}
 }
 
@@ -3362,7 +3374,13 @@ input[type='email'] {
 	.slider__controls._next {
 		left: auto;
 		bottom: 25px;
-		right: -6px
+		right: 235px
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.slider__controls._next {
+		display: none;
 	}
 }
 
@@ -3885,7 +3903,7 @@ input[type='email'] {
 .offers__tabs_wrapper {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 45px
+	margin-bottom: 10px
 }
 
 .offers__tabs_card {
