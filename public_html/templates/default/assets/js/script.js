@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//---------------- перемещение слайдра при клике на картинке галереи в карточке товара (Выпуск №138) --------------//
 
-	(function () {
+	/* (function () {
 
 		let start = 0
 
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		})
 
-	})()
+	})() */
 
 	addToCart()
 

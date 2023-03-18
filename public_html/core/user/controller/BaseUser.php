@@ -54,6 +54,11 @@ abstract class BaseUser extends \core\base\controller\BaseController
 		// инициализируем стили и скрипты На вход здесь ничего не передаём
 		$this->init();
 
+
+		// Интернет магазин с нуля на php Выпуск №151 | Пользовательская часть | подготовка почтовых шаблонов
+		$this->checkAuth();
+
+
 		// получим модель (если ещё не получена)
 		!$this->model && $this->model = Model::instance();
 
