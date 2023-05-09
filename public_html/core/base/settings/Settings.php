@@ -88,8 +88,14 @@ class Settings
 		'settings' => ['name' => 'Настройки (о сайте)'],
 		'advantages' => ['name' => 'Преимущества'],
 		'socials' => ['name' => 'Соц.сети'],
+		'payments' => ['name' => 'Оплата'],
+		'delivery' => ['name' => 'Доставка'],
 		'users' => ['name' => 'Пользователи'],
-		'teachers' => ['name' => 'Учителя', 'img' => 'page-new.png']
+	];
+	// свойство с таблицами в которых будет происходить поиск
+	private $searchProjectTables = [
+		'catalog' => ['name' => 'Каталог (меню)'],
+		'goods' => ['name' => 'Товары'],
 	];
 
 	// свойство: массив шаблонов
@@ -128,7 +134,7 @@ class Settings
 		'sub_title' => ['Подзаголовок'],
 		'short_content' => ['Краткое описание'],
 		'img_years' => ['Изображение количества лет на рынке'],
-		'number_of_years' => ['Количество лет на рынке'],
+		'number_of_years' => ['год'],
 		'hit' => ['Хит продаж'],
 		'sale' => ['Акция'],
 		'new' => ['Новинка'],

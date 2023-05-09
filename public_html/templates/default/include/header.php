@@ -5,15 +5,23 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, shrink-to-fit=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Index</title>
-	<!-- <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&display=swap&subset=cyrillic" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap&subset=cyrillic" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
 
-	<link rel="stylesheet" href="assets/css/animate.css">
-	<link rel="stylesheet" href="assets/css/style.css"> -->
+	<meta name="description" content="<?= $this->set['description'] ?>">
+	<meta name="keywords" content="<?= $this->set['keywords'] ?>">
+
+	<meta property="og:title" content="<?= $this->set['name'] ?>" />
+	<meta property="og:description" content="<?= $this->set['description'] ?>" />
+	<meta property="og:image" content="<?= $this->img($this->set['img']) ?>" />
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+	<link rel="manifest" href="/favicon/site.webmanifest">
+	<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#ff5400">
+	<meta name="msapplication-TileColor" content="#ff5400">
+	<meta name="theme-color" content="#ffffff">
+	<title><?= $this->set['name'] ?></title>
+
 
 	<?php $this->getStyles() ?>
 
@@ -32,7 +40,6 @@
 					<div class="header__contacts">
 						<div><a href="mailto:<?= $this->set['email'] ?>"><?= $this->set['email'] ?></a></div>
 						<div><a href="tel:<?= preg_replace('/[^+\d]/', '', $this->set['phone']) ?>"><?= $this->set['phone'] ?></a></div>
-						<div><a class="js-callback">Связаться с нами</a></div>
 					</div>
 					<nav class="header__nav">
 						<ul class="header__nav-list">
@@ -41,6 +48,7 @@
 
 								<li class="header__nav-parent">
 									<a href="<?= $this->alias('catalog') ?>"><span>Каталог</span></a>
+
 									<ul class="header__nav-sublist">
 
 										<?php foreach ($this->menu['catalog'] as $item) : ?>
@@ -71,19 +79,15 @@
 
 							<?php endif; ?>
 
-							<li class="">
-								<a href="<?= $this->alias('news') ?>"><span>Новости</span></a>
-								<ul class="header__nav-sublist">
+							<?php if ($this->getController() === 'index') : ?>
 
-								</ul>
-							</li>
+								<li class="">
+									<a href="#news"><span>Новости</span></a>
+									<ul class="header__nav-sublist">
+									</ul>
+								</li>
 
-							<li class="">
-								<a href="<?= $this->alias('contacts') ?>"><span>Контакты</span></a>
-								<ul class="header__nav-sublist">
-
-								</ul>
-							</li>
+							<?php endif; ?>
 
 						</ul>
 					</nav>
@@ -164,25 +168,18 @@
 						<?php endif; ?>
 
 						<li>
-							<a href="<?= $this->alias('news') ?>"><span>Новости</span></a>
+							<div class="contact">
+								<h2 style="color: darkcyan; margin-bottom: 5px;">Контакты:</h2>
+								<div><a href="mailto:<?= $this->set['email'] ?>" style="color: darkcyan; text-transform: none"><?= $this->set['email'] ?></a></div>
+								<div><a href="tel:<?= preg_replace('/[^+\d]/', '', $this->set['phone']) ?>" style="color: darkcyan;"><?= $this->set['phone'] ?></a></div>
+							</div>
 
-							<ul class="header__menu_sublist">
-
-							</ul>
-
-						</li>
-
-						<li>
-							<a href="<?= $this->alias('contacts') ?>"><span>Контакты</span></a>
-
-							<ul class="header__menu_sublist">
-
-							</ul>
 
 						</li>
 
 					</ul>
 				</div>
+
 				<div class="header__callback _hidden">
 					<div class="header__callback_close close_modal"></div>
 					<div class="header__callback_header">
@@ -207,13 +204,54 @@
 
 	<?php if ($this->getController() !== 'index') : ?>
 
-		<div class="search search-internal">
+		<div class="search search-internal" style="position: relative" id="searchButton">
 			<button>
 				<svg class="inline-svg-icon svg-search">
 					<use xlink:href="<?= PATH . TEMPLATE ?>assets/img/icons.svg#search"></use>
 				</svg>
 			</button>
-			<input type="search" placeholder="Поиск по каталогу">
+			<input type="search" name="search" placeholder="поиск">
+			<input type="hidden" name="search_table" value="goods">
+			<div class="dropdown-content search_res">
+				<!-- <a href="#">Ссылка 1</a>
+				<a href="#">Ссылка 2</a>
+				<a href="#">Ссылка 3</a> -->
+			</div>
+
+			<style>
+				.search-internal.vg-search-reverse .dropdown-content {
+					display: block;
+					z-index: 999999999;
+					overflow: auto;
+				}
+
+
+				.dropdown-content {
+					display: none;
+					position: absolute;
+					background-color: #f9f9f9;
+					min-width: auto;
+					box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+					z-index: 1;
+					top: 55px;
+					left: 55px;
+				}
+
+				/* Ссылки внутри выпадающего списка */
+				.dropdown-content a {
+					color: black;
+					padding: 10px 15px;
+					text-decoration: none;
+					display: block;
+				}
+
+				/* Изменить цвет выпадающих ссылок при наведении */
+				.dropdown-content a.search_act {
+					background-color: #e5e5e5
+				}
+			</style>
+
+
 		</div>
 
 	<?php endif; ?>

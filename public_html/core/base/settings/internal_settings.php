@@ -74,6 +74,7 @@ const USER_CSS_JS = [
 		'https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap&subset=cyrillic',
 		'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css',
 		'https://unpkg.com/swiper/swiper-bundle.min.css',
+		'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css',
 		'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css',
 		'assets/css/animate.css',
 		'assets/css/style.css'
@@ -81,6 +82,7 @@ const USER_CSS_JS = [
 	'scripts' => [
 		'https://code.jquery.com/jquery-3.4.1.min.js',
 		'https://unpkg.com/swiper/swiper-bundle.min.js',
+		'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.5/gsap.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js',

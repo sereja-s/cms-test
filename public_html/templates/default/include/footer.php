@@ -1,4 +1,58 @@
 </main>
+
+<?php if ($this->getController() === 'index') : ?>
+
+	<div class="search search-internal" style="position: relative" id="searchButton">
+		<button>
+			<svg class="inline-svg-icon svg-search">
+				<use xlink:href="<?= PATH . TEMPLATE ?>assets/img/icons.svg#search"></use>
+			</svg>
+		</button>
+		<input type="search" name="search" placeholder="поиск">
+		<input type="hidden" name="search_table" value="goods">
+		<div class="dropdown-content search_res">
+			<!-- <a href="#">Ссылка 1</a>
+			<a href="#">Ссылка 2</a>
+			<a href="#">Ссылка 3</a> -->
+		</div>
+
+		<style>
+			.search-internal.vg-search-reverse .dropdown-content {
+				display: block;
+				z-index: 999999999;
+				overflow: auto;
+			}
+
+			.dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #f9f9f9;
+				min-width: auto;
+				box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+				z-index: 1;
+				top: 55px;
+				left: 55px;
+			}
+
+			/* Ссылки внутри выпадающего списка */
+			.dropdown-content a {
+				color: black;
+				padding: 10px 15px;
+				text-decoration: none;
+				display: block;
+			}
+
+			/* Изменить цвет выпадающих ссылок при наведении */
+			.dropdown-content a.search_act {
+				background-color: #e5e5e5
+			}
+		</style>
+
+
+	</div>
+
+<?php endif; ?>
+
 <footer class="footer">
 	<div class="container">
 		<div class="footer__wrapper">
@@ -10,41 +64,37 @@
 				<div class="footer__top_menu">
 					<ul>
 
-						<li>
-							<a href="http://somesite.ru/catalog/"><span>Каталог</span></a>
-						</li>
+						<?php if (!empty($this->menu['catalog'])) : ?>
 
-						<li>
-							<a href="http://somesite.ru/about/"><span>О нас</span></a>
-						</li>
+							<li>
+								<a href="<?= $this->alias('catalog') ?>"><span>Каталог</span></a>
+							</li>
 
-						<li>
-							<a href="http://somesite.ru/delivery/"><span>Доставка и оплата</span></a>
-						</li>
+						<?php endif; ?>
 
-						<li>
-							<a href="http://somesite.ru/contacts/"><span>Контакты</span></a>
-						</li>
+						<?php if (!empty($this->menu['information'])) : ?>
 
-						<li>
-							<a href="http://somesite.ru/news/"><span>Новости</span></a>
-						</li>
+							<?php foreach ($this->menu['information'] as $item) : ?>
 
-						<li>
-							<a href="http://somesite.ru/sitemap/"><span>Карта сайта</span></a>
-						</li>
+								<li>
+									<a href="<?= $this->alias(['information' => $item['alias']]) ?>"><span><?= $item['name'] ?></span></a>
+								</li>
+
+							<?php endforeach; ?>
+
+
+						<?php endif; ?>
 
 					</ul>
 				</div>
-				<div class="footer__top_contacts">
-					<div><a href="mailto:test@test.ru">test@test.ru</a></div>
-					<div><a href="tel:+74842750204">+7 (4842) 75-02-04</a></div>
-					<div><a class="js-callback">Связаться с нами</a></div>
+				<div class="footer__top_contacts" id="contact">
+					<div><a href="mailto:<?= $this->set['email'] ?>"><?= $this->set['email'] ?></a></div>
+					<div><a href="tel:<?= preg_replace('/[^+\d]/', '', $this->set['phone']) ?>"><?= $this->set['phone'] ?></a></div>
 				</div>
 			</div>
-			<div class="footer__bottom">
-				<div class="footer__bottom_copy">Copyright</div>
-			</div>
+		</div>
+		<div class="footer__bottom" style="display: flex; justify-content: center; padding-bottom: 10px;">
+			<div class="footer__bottom_copy"><a href="<?= $this->set['external_alias'] ?>" style="text-decoration: none;">SaitPostroen <?= $this->set['number_of_years'] ?></a></div>
 		</div>
 	</div>
 </footer>
@@ -60,27 +110,12 @@
 	</svg>
 </div>
 
-<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
-<script src="assets/js/jquery.maskedinput.min.js"></script>
-<script src="assets/js/TweenMax.min.js"></script>
-<script src="assets/js/ScrollMagic.min.js"></script>
-<script src="assets/js/animation.gsap.min.js"></script>
-<script src="assets/js/bodyscrolllock/bodyScrollLock.min.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/script.js"></script> -->
-
-<!-- убрать -->
-<!-- <script src="assets/js/freeHost.js"></script> -->
-<!-- убрать -->
+<!-- стрелка-вверх -->
+<div class="arrow" id="arrowTop" hidden>
+	<svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M21.22 10.61L10.61 -4.63778e-07L1.44357e-06 10.61L2.6288 13.2388L10.61 5.25759L18.5912 13.2388L21.22 10.61Z" fill="#445154" />
+	</svg>
+</div>
 
 <?php $this->getScripts() ?>
 

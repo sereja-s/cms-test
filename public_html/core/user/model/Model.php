@@ -3,6 +3,8 @@
 namespace core\user\model;
 
 use core\base\controller\Singleton;
+use core\base\exceptions\RouteException;
+use core\base\settings\Settings;
 
 /** 
  * Пользовательская модель (Выпуск №120)
@@ -282,5 +284,271 @@ class Model extends \core\base\model\BaseModel
 
 			$data['price'] = $data['old_price'] - ($data['old_price'] / 100 * $discount);
 		}
+	}
+
+	/** 
+	 * Метод работы с поиском по каталогу товаров
+	 * (на вход: 1- получили то что введено в поисковую строку, 2- получили то где ищем (приоритет поиска), 
+	 * 3-ий параметр- кол-во показываемых подсказок (ссылок)) 
+	 */
+	public function search($data, $currentTable = false, $qty = false)
+	{
+
+		$dbTables = $this->showTables();
+
+
+		$data = addslashes($data);
+
+
+		$arr = preg_split('/(,|\.)?\s+/', $data, 0, PREG_SPLIT_NO_EMPTY);
+
+
+
+		$searchArr = [];
+
+		$order = [];
+
+
+		for (;;) {
+
+			if (!$arr) {
+
+				break;
+			}
+
+
+			$searchArr[] = implode(' ', $arr);
+
+
+			unset($arr[count($arr) - 1]);
+		}
+
+
+
+		$correctCurrentTable = false;
+
+
+		//$projectTables = Settings::get('projectTables');
+		$searchProjectTables = Settings::get('searchProjectTables');
+
+		if (!$searchProjectTables) {
+			throw new RouteException('Ничего не найдено по вашему запросу');
+		}
+
+		foreach ($searchProjectTables as $table => $item) {
+
+
+			if (!in_array($table, $dbTables)) {
+				continue;
+			}
+
+
+			$searchRows = [];
+
+
+			$orderRows = ['name'];
+
+
+			$fields = [];
+
+
+			$columns = $this->showColumns($table);
+
+
+			$fields[] = $columns['id_row'] . ' as id';
+
+
+
+			$fieldName = isset($columns['name']) ? "CASE WHEN {$table}.name <> '' THEN {$table}.name " : '';
+
+			foreach ($columns as $col => $value) {
+
+
+				if ($col !== 'name' && stripos($col, 'name') !== false) {
+
+					if (!$fieldName) {
+
+						$fieldName = 'CASE ';
+					}
+
+
+					$fieldName .= "WHEN {$table}.$col <> '' THEN {$table}.$col ";
+				}
+
+
+				if (
+					isset($value['Type']) &&
+					(stripos($value['Type'], 'char') !== false ||
+						stripos($value['Type'], 'text') !== false)
+				) {
+
+					$searchRows[] = $col;
+				}
+			}
+
+			if ($fieldName) {
+
+
+				$fields[] = $fieldName . 'END as name';
+			} else {
+
+
+				$fields[] = $columns['id_row'] . ' as name';
+			}
+
+
+
+			$fields[] = "('$table') AS table_name";
+
+
+
+			$res = $this->createWhereOrder($searchRows, $searchArr, $orderRows, $table);
+
+
+			$where = $res['where'];
+
+
+			!$order && $order = $res['order'];
+
+
+
+			if ($table === $currentTable) {
+
+				$correctCurrentTable = true;
+
+
+				$fields[] = "('$currentTable') AS current_table";
+			}
+
+
+			if ($where) {
+
+				if ($table === 'goods') {
+
+					$this->buildUnion($table, [
+						'fields' => $fields,
+						'where' => $where,
+						'join' => [
+							'catalog' => [
+								'fields' => ['name as category_name'],
+								'on' => ['parent_id', 'id']
+							]
+						]
+					]);
+				} else {
+
+					$this->buildUnion($table, [
+						'fields' => $fields,
+						'where' => $where,
+						'no_concat' => true
+					]);
+				}
+			}
+		}
+
+
+
+		$orderDirection = null;
+
+
+		if ($order) {
+
+
+			$order = ($correctCurrentTable ? 'current_table DESC, ' : '') . '(' . implode('+', $order) . ')';
+
+			$orderDirection = 'DESC';
+		}
+
+
+		$result = $this->getUnion([
+			'order' => $order,
+			'order_direction' => $orderDirection
+		]);
+
+		if ($result) {
+
+			foreach ($result as $index => $item) {
+
+				// корректно сформируем name вида: название (название соответствующей таблицы) для вывода подсказок
+				$result[$index]['name'] .=  ' ' . '(' .	(isset($searchProjectTables[$item['table_name']]['name'])
+					? $searchProjectTables[$item['table_name']]['name']
+					: $item['table_name']) . ')';
+
+
+				// сформируем готовый алиас на редактирование
+				$alias = $this->get($item['table_name'], [
+					'where' => ['id' => $item['id']],
+				]);
+
+				if ($item['table_name'] === 'goods') {
+
+					$result[$index]['alias'] = PATH . 'product' . '/' . $alias[0]['alias'];
+				} else {
+					$result[$index]['alias'] = PATH . $item['table_name'] . '/' . ($alias[0]['alias'] ? $alias[0]['alias'] : '');
+				}
+			}
+		}
+
+		return $result ?: [];
+	}
+
+	/** 
+	 * Метод для формирования инструкций WHERE и ORDER для системы поиска	 
+	 * (на вход: 1- массив полей в которых будем искать, 2- массив того, что мы ищем, 3- массив по которому сортируем, 
+	 * 4- таблица в которой ищем) 
+	 */
+	protected function createWhereOrder($searchRows, $searchArr, $orderRows, $table)
+	{
+		$where = '';
+		$order = [];
+
+		if ($searchRows && $searchArr) {
+
+			$columns = $this->showColumns($table);
+
+			if ($columns) {
+
+				// определи первую скобку в инструкции: where
+				$where = '(';
+
+				foreach ($searchRows as $row) {
+
+					// на каждой итерации добавляем ещё одну скобку (будут группы запросов)
+					$where .= '(';
+
+					foreach ($searchArr as $item) {
+
+						if (in_array($row, $orderRows)) {
+
+							// символ: %- означает искать и до и после
+							$str = "($row LIKE '%$item%')";
+
+							if (!in_array($str, $order)) {
+
+								$order[] = $str;
+							}
+						}
+
+
+						// +Выпуск №113
+						if (isset($columns[$row])) {
+
+							$where .= "{$table}.$row LIKE '%$item%' OR ";
+						}
+					}
+
+
+					// preg_replace() — поиск и замена регулярных выражений
+					// на вход: 1- шаблон (регулярное выражение) для поиска, 2- строка (или массив со строками) для замены
+					// 3- строка или массив со строками для поиска и замены (где ищем)
+					$where = preg_replace('/\)?\s*or\s*\(?$/i', '', $where) . ') OR ';
+				}
+
+				// обработаем переменную ещё раз (обрежем лишний OR с пробелом в конце и добавим закрыващую скобку в конце запроса)
+				$where && $where = preg_replace('/\s*or\s*$/i', '', $where) . ')';
+			}
+		}
+
+		return compact('where', 'order');
 	}
 }

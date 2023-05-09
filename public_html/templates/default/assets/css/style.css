@@ -885,6 +885,7 @@ input[type='email'] {
 	display: none;
 	min-width: 320px;
 	background: rgb(245, 245, 245);
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .header__nav-sublist a {
@@ -1259,7 +1260,7 @@ input[type='email'] {
 
 @media screen and (max-width: 360px) {
 	.header__menu {
-		padding-left: 40px
+		padding-left: 30px
 	}
 }
 
@@ -1349,11 +1350,11 @@ input[type='email'] {
 	text-transform: unset
 }
 
-@media screen and (max-width: 1366px) {
+/* @media screen and (max-width: 1366px) {
 	.header__menu_sublist a {
 		line-height: 32px
 	}
-}
+} */
 
 .header__menu._hidden {
 	transform: translateX(100%)
@@ -1490,7 +1491,7 @@ input[type='email'] {
 
 @media screen and (max-width: 1600px) {
 	.footer__wrapper {
-		padding: 37px 60px 37px 60px
+		padding: 25px 50px 10px 50px;
 	}
 }
 
@@ -4650,7 +4651,7 @@ input[type='email'] {
 
 @media screen and (max-width: 1600px) {
 	.news {
-		padding: 70px 60px
+		padding: 10px 60px 0 60px;
 	}
 }
 
@@ -4865,9 +4866,9 @@ input[type='email'] {
 	background: #D4DDE1;
 	width: 100%;
 	padding: 27px 22px 22px;
-	font-size: 18px;
-	font-weight: 700;
-	color: #fff;
+	font-size: 20px;
+	font-weight: 300;
+	color: #5e5454;
 	display: flex;
 	align-items: center;
 	border: none;
@@ -4882,13 +4883,12 @@ input[type='email'] {
 @media screen and (max-width: 1600px) {
 	.search input[type='search'] {
 		height: 60px;
-		font-size: 16px
 	}
 }
 
 @media screen and (max-width: 480px) {
 	.search input[type='search'] {
-		font-size: 14px
+		font-size: 16px
 	}
 }
 
@@ -6228,7 +6228,8 @@ input[type='email'] {
 
 @media screen and (max-width: 600px) {
 	.catalog-filter-item__title {
-		font-size: 14px
+		font-size: 18px;
+		padding-bottom: 15px;
 	}
 }
 
@@ -7110,13 +7111,7 @@ input[type='email'] {
 
 @media screen and (max-width: 780px) {
 	.division-internal-item__title {
-		font-size: 18px
-	}
-}
-
-@media screen and (max-width: 480px) {
-	.division-internal-item__title {
-		font-size: 16px
+		font-size: 20px
 	}
 }
 
@@ -7987,4 +7982,45 @@ input[type='email'] {
 .order-popup__inner .send-order {
 	display: flex;
 	justify-content: center;
+}
+
+/* ------------------------------------------------ стрелка-вверх ------------------------------------------------ */
+
+.arrow {
+	/* display: block; */
+	width: 48px;
+	height: 48px;
+	position: fixed;
+	right: 55px;
+	bottom: 48px;
+	cursor: pointer;
+	border-radius: 50%;
+	-webkit-transition: 0.35s;
+	transition: 0.35s;
+	background: #ffffff;
+	-webkit-box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.15);
+	z-index: 99999;
+}
+
+@media (max-width: 768px) {
+	.arrow {
+		right: 10%;
+	}
+}
+
+.arrow svg {
+	position: relative;
+	top: 17px;
+	left: 14px;
+}
+
+.arrow:hover {
+	-webkit-box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.arrow:active {
+	-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 }

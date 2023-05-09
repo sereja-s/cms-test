@@ -262,7 +262,7 @@
 		</div>
 	</section>
 
-	<section class="card-slider">
+	<!-- <section class="card-slider">
 		<div class="container">
 			<div class="card-slider__wrapper">
 				<div class="card-slider__title h2">
@@ -308,203 +308,16 @@
 										<use xlink:href="/assets/img/icons.svg#hot"></use>
 									</svg>
 								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
-
-							<div class="card-item swiper-slide ">
-								<div class="card-item__tabs_image">
-									<img src="assets/img/additional_offer.png" alt="">
-								</div>
-								<div class="card-item__tabs_description">
-									<div class="card-item__tabs_name">
-										<span>Размораживатель замков "ГЛАВДОР" GL-498,</span>
-										с силиконом, 70 мл /56
-									</div>
-									<div class="card-item__tabs_price">
-										Цена: <span class="card-item_old-price">98 руб.</span> <span class="card-item_new-price">72 руб.</span>
-									</div>
-								</div>
-								<button class="card-item__btn">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#basket"></use>
-									</svg>
-									<span>в корзину</span>
-								</button>
-								<span class="card-main-info-size__body">
-									<span class="card-main-info-size__control card-main-info-size__control_minus js-counterDecrement"></span>
-									<span class="card-main-info-size__count js-counterShow">1</span>
-									<span class="card-main-info-size__control card-main-info-size__control_plus js-counterIncrement"></span>
-								</span>
-								<div class="icon-offer">
-									<svg>
-										<use xlink:href="/assets/img/icons.svg#hot"></use>
-									</svg>
-								</div>
-							</div>
+							</div>							
 
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 
-	<section class="feedback feedback-internal">
+	<!-- <section class="feedback feedback-internal">
 		<div class="feedback__name subheader h2">оставить заявку</div>
 		<form action="card.html" class="feedback__form">
 			<div class="feedback__form_left">
@@ -523,6 +336,6 @@
 			</div>
 			<button type="submit" class="form-submit feedback__submit">Отправить</button>
 		</form>
-	</section>
+	</section> -->
 
 <?php endif; ?>

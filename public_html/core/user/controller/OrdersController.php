@@ -19,8 +19,14 @@ class OrdersController extends BaseUser
 
 		if ($this->isPost()) {
 
-			$this->delivery = $this->model->get('delivery', ['join_structure' => true]);
-			$this->payments = $this->model->get('payments', ['join_structure' => true]);
+			$this->delivery = $this->model->get('delivery', [
+				'where' => ['visible' => 1],
+				'join_structure' => true
+			]);
+			$this->payments = $this->model->get('payments', [
+				'where' => ['visible' => 1],
+				'join_structure' => true
+			]);
 
 			$this->order();
 		}

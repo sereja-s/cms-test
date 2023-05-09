@@ -29,18 +29,7 @@
 								<?= $this->clearStr($item['short_content']) ?>
 
 							</div>
-							<div class="slider__item-logos">
 
-								<?php if (!empty($this->set['img_years']) && !empty($this->set['number_of_years'])) : ?>
-
-									<div class="slider__item-15yrs">
-										<img src="<?= $this->img($this->set['img_years']) ?>" alt="">
-										<p><span><?= $this->wordsForCounter($this->set['number_of_years']) ?></span>на рынке</p>
-									</div>
-
-								<?php endif; ?>
-
-							</div>
 						</div>
 						<div class="slider__item-image">
 							<img src="<?= $this->img($item['img']) ?>" alt="<?= $item['name'] ?>">
@@ -174,7 +163,6 @@
 
 				</div>
 
-				<a href="<?= $this->alias('about') ?>" class="about__description_readmore readmore">Читать подробнее</a>
 			</div>
 
 			<div class="about__image">
@@ -234,30 +222,11 @@
 </div>
 </div>
 
-<section class="feedback ">
-	<div class="feedback__name subheader ">Остались вопросы</div>
-	<form action="index.html" class="feedback__form">
-		<div class="feedback__form_left">
-			<input type="text" class="input-text feedback__input" placeholder="Ваше имя">
-			<input type="email" class="input-text feedback__input" placeholder="E-mail">
-			<input type="text" class="input-text feedback__input js-mask-phone" placeholder="Телефон">
-		</div>
-		<div class="feedback__form_right">
-			<textarea class="input-textarea feedback__textarea" placeholder="Ваш вопрос"></textarea>
-		</div>
-		<div class="feedback__privacy">
-			<label class="checkbox">
-				<input type="checkbox" />
-				<div class="checkbox__text">Соглашаюсь с правилами обработки персональных данных</div>
-			</label>
-		</div>
-		<button type="submit" class="form-submit feedback__submit">Отправить</button>
-	</form>
-</section>
+
 
 <?php if (!empty($news)) : ?>
 
-	<section class="news">
+	<section class="news" id="news">
 		<div class="news__name subheader">Новости</div>
 		<div class="news__wrapper">
 
@@ -267,16 +236,7 @@
 			} ?>
 
 		</div>
-		<a href="<?= $this->alias('news') ?>" class="news__reasdmore readmore">Смотреть все</a>
+
 	</section>
 
 <?php endif; ?>
-
-<div class="search ">
-	<button>
-		<svg class="inline-svg-icon svg-search">
-			<use xlink:href="<?= PATH . TEMPLATE ?>assets/img/icons.svg#search"></use>
-		</svg>
-	</button>
-	<input type="search" placeholder="Поиск по каталогу">
-</div>

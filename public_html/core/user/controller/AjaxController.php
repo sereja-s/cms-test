@@ -11,8 +11,6 @@ class AjaxController extends BaseUser
 {
 	public function ajax()
 	{
-		//return 'USER AJAX';
-
 		// Выпуск №134
 		if (isset($this->ajaxData['ajax'])) {
 
@@ -40,10 +38,31 @@ class AjaxController extends BaseUser
 					return $this->_addToCart();
 
 					break;
+
+					// поиск по каталогу
+				case 'search':
+					return $this->search();
+					break;
 			}
 		}
 
 		return json_encode(['success' => '0', 'message' => 'No ajax variable']);
+	}
+
+	/** 
+	 * Метод работы поиска по каталогу( Выпуск №105)
+	 */
+	protected function search()
+	{
+		// получили то что введено в поисковую строку
+		$data = $this->clearStr($this->ajaxData['data']);
+
+		// получили то где ищем (приоритет поиска)
+		$table = $this->clearStr($this->ajaxData['table']);
+
+		// вызовем метод модели
+		// здесь 3-ий параметр это кол-во подсказок (ссылок) показываемых при работе с поисковой строкой
+		return $this->model->search($data, $table, 7);
 	}
 
 	/** 

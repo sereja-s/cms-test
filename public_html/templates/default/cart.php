@@ -41,7 +41,7 @@
 							</div>
 							<div class="basket-btns">
 
-								<button class="basket-btn">Перейти к оформлению</button>
+								<!-- <button class="basket-btn">Перейти к оформлению</button> -->
 
 								<a href="<?= $this->alias(['cart' => 'remove']) ?>" class="basket-btn">Очистить корзину</a>
 

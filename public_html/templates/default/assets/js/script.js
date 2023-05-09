@@ -404,7 +404,7 @@ function addToCart() {
 
 					success: res => {
 
-						console.log(res)
+						//console.log(res)
 
 						// Выпуск №141
 						try {
@@ -626,4 +626,274 @@ function phoneValidate(item) {
 
 }
 
+//================================== поиск по каталогу ================================================================//
+menuSearch();
+
+function menuSearch() {
+
+	// Для кнопки поиска в админке (с id = "searchButton") - div внутри которого расположен другой div с изображением поиска):
+	let searchBtn = document.querySelector('#searchButton');
+
+	// для полученного в переменную div с id = "searchButtonCat" найдём input type="search"
+	let searchInput = searchBtn.querySelector('input[type=search]');
+
+	// на searchBtnCat вешаем событие: click
+	searchBtn.addEventListener('click', () => {
+
+		// что бы блок поиска появился, добавим класс: vg-search-reverse при клике
+		searchBtn.classList.add('vg-search-reverse');
+
+		// поставим курсор на поле ввода (фокус)
+		searchInput.focus();
+	});
+
+	// организуем закрытие поиска при потере фокуса (щелчке на другом месте, переключении вкладок): вешаем событие: blur
+	searchInput.addEventListener('blur', e => {
+
+		// организуем в поиске переход по подсказке (ссылке) при нажатии на неё (Выпуск №113)
+		if (e.relatedTarget && e.relatedTarget.tagName === 'A') {
+
+			return
+		}
+
+		// удалим класс: vg-search-reverse (поле поиска закроется)
+		searchBtn.classList.remove('vg-search-reverse');
+	});
+
+}
+
+
+// в переменную сохраним самовызывающуюся функцию, внутри которой будет реализовано замыкание (для работы с
+// появляющимися подсказками при вводе строки в поле поиска) Вызывается сразу после кода
+// (эта функция будет возвращать другую функцию, которую мы и будем вызывать по обращению к имени: searchResultHover)
+let searchResultHover = (() => {
+
+	// Инициализируем ряд переменных Эти переменные инициализируются один раз (при первом обращении к ф-ии в переменной:
+	// searchResultHover) и затем будут замкнуты в участке кода до: return () => {} и фактически выполнятся только один раз 
+	// Каждый раз, когда мы будем повторно вызывать: searchResultHover(), будет вызывться функция которая вернулась т.е.
+	// return() => { }, а переменные описанные выше неё останутся нетронутыми(т.е.замкнутыми) и будет выполняться (исходя 
+	// из нового вызова) участок кода описанный внутри: return () => { }:
+
+	// найдём и сохраним элемент с классом внутри которого будет выпадающее меню с ссылками-подсказками для поиска
+	let searchRes = document.querySelector('.search_res')
+
+	// аналогично найдём input с type = text (также можно было бы работать и с name="search"), содержащийся в блоке
+	// поиска (с id="searchButton")
+	let searchInput = document.querySelector('#searchButton input[name=search]')
+
+	// объявим переменную- дефолтное значение для Input поиска
+	let defaultInputValue = null
+
+	/**
+	 * Метод, который будет обрабатывать нажатие стрелочек (вниз-вверх) в подсказках при поиске (Выпуск №100)
+	 * (на вход: e- объект события)
+	 */
+	function searchKeyDown(e) {
+
+		// если элемент с id = searchButton не содержит класса: vg-search-reverse (т.е. не активен) или не нажата кнопка:
+		// стрелка-вверх и не нажата кнопка: стрелка-вниз (в объекте: е- событие, есть свойство: key, которое и показывает какую кнопку нажали)
+		if (!(document.querySelector('#searchButton').classList.contains('vg-search-reverse')) ||
+			(e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) {
+
+			// завершаем работу скрипта
+			return;
+		}
+
+		// сделаем деструктивное присваивание (приведём к массиву) для содержимого в searchRes.children
+		let children = [...searchRes.children];
+
+		if (children.length) {
+
+			// скинем действия по умолчанию (чтобы курсор не перескакивал на начало слова в строке поиска, при нажатии на кнопки: вверх (вниз))
+			e.preventDefault();
+
+			// получим активный элемент (выделенная ссылка в выпадающем меню подсказок при поиске)
+			// если querySelector() ничего не найдёт, то по умолчанию вернёт: null 
+			let activeItem = searchRes.querySelector('.search_act')
+
+			// сформируем переменную по условию и получим индекс элемента, который лежит в activeItem, иначе: -1
+			let activeIndex = activeItem ? children.indexOf(activeItem) : -1
+
+			// если нажата кнопка: стрелка-вниз
+			if (e.key === 'ArrowUp') {
+
+				// сформируем переменную по условию
+				// здесь (children.length - 1) означает последний элемент массива
+				activeIndex = activeIndex <= 0 ? children.length - 1 : --activeIndex
+
+				// если не нажата
+			} else {
+
+				// сформируем переменную по другому условию
+				activeIndex = activeIndex === children.length - 1 ? 0 : ++activeIndex
+			}
+
+			// у всех элементов: children необходимо убрать класс: search_act (если он есть)
+			children.forEach(item => item.classList.remove('search_act'))
+
+			// обратимся к массиву в переменной: children (его ячейке: [activeIndex])  и добавим класс: search_act
+			children[activeIndex].classList.add('search_act')
+
+			// +Выпуск №113
+			// в элемент: searchInput (в его значение: value) занесём значение: innerText из children[activeIndex]
+			searchInput.value = children[activeIndex].innerText.replace(/\s*\(.+?\)\s*$/, '');
+		}
+	}
+
+	/**
+	 * Метод установки значения по умолчанию: для input в переменной: searchInput (в строке поиска)
+	 */
+	function setDefaultValue() {
+
+		// в переменную: searchInput (в его переменную: value) положим значение переменной: defaultInputValue
+		searchInput.value = defaultInputValue
+	}
+
+	// Опишем 2-а слушателя событий:
+	// (На вход: 1- событие, 2- функция, должна быть вызвана только тогда, когда на элементе сработает обработчик событий 
+	// (для этого передаём её в качестве параметра без круглых скобок))
+	// Иначе (с круглыми скобками) ф-я была бы вызвана до обработчика событий
+
+	// Событие: mouseleave срабатывает, когда курсор манипулятора (обычно мыши) перемещается за границы элемента
+	searchRes.addEventListener('mouseleave', setDefaultValue)
+
+	// Событие: keydown срабатывает, когда клавиша была нажата
+	window.addEventListener('keydown', searchKeyDown)
+
+	// вернется самовызывающая функция (будет вызываться в качестве результата при каждом обращении к 
+	// переменной: searchResultHover (к ф-и в ней))
+	return () => {
+
+		//setTimeout(() => {
+
+		// в переменую положим значение searchInput (его поля)
+		defaultInputValue = searchInput.value;
+
+
+		// если подсказки(ссылки) существуют в переменной: searchRes (его св-ве: children, его св-ве: length)
+		if (searchRes.children.length) {
+
+			//  свойство children объекта возвращает живую коллекцию (HTMLCollection), которая постонно отслеживается
+			// (т.к. ссылки здесь будут постоянно меняться) и которая содержит все дочерние элементы узла, на котором оно было вызвано
+
+			// используем деструктивное присваивание (преобразуем значение из searchRes.children в массив указав слева три 
+			// точки) и сохраним в переменной: children
+			// (Деструктивное присваивание - упрощает извлечение данных из массивов и объектов, при помощи более короткого синтаксиса)
+			let children = [...searchRes.children]
+
+			children.forEach(item => {
+
+				// на текущий элемент: item, вешаем обработчик события на событие: mouseover (наведение указателя мыши)
+				item.addEventListener('mouseover', () => {
+
+					// уберём у children класс который подсвечивает подсказки (ссылки)
+					children.forEach(el => el.classList.remove('search_act'))
+
+					// для текущего элемента: item добавим класс
+					item.classList.add('search_act')
+
+					// то что лежит в св-ве innerText (для элемента: item) положим в элемент: searchInput, в его св-во: value
+					// (т.е. в поле поиска попадёт название той ссылки, на которую попадёт указатель мыши)
+					searchInput.value = item.innerText
+				})
+			})
+		}
+
+		//}, 5000);
+
+	}
+
+})()
+// самовызывающуюся функцию необходимо вызывать сразу после того как её код описан
+searchResultHover()
+
+/**
+ * Метод работы поиска в админке (вывод подсказок(ссылок)) Выпуск №105
+ */
+function search() {
+
+	let searchInput = document.querySelector('input[name=search]');
+
+	//console.log(searchInput);
+
+	if (searchInput) {
+
+		// (событие oninput происходит сразу после изменения значения элемента)
+		//searchInput.oninput = () => {
+
+		// search - событие возникает после того как пользователь нажимает на клавишу Enter или нажимает кнопку "x" (отмена) в элементе input с type="search"
+		searchInput.addEventListener('search', () => {
+
+			// сделаем ограничение (подсказки(ссылки) появятся при вводе более одного символа в поисковой строке)
+			if (searchInput.value.length > 1) {
+
+				$.ajax({
+					url: '/',
+					// в Ajax нам нужен объект: data
+					data: {
+						// в котором будет три поля (свойства)
+						data: searchInput.value, // в поле: data отправляем: searchInput.value
+						table: document.querySelector('input[name="search_table"]').value, // ищем с приоритетом по категориям (получим соответствующее поле)
+						ajax: 'search' // управляющий флаг (для Ajax-контроллера)
+					},
+					success: res => {
+
+						//console.log(res);
+
+						try {
+
+							res = JSON.parse(res);
+
+							let resBlok = document.querySelector('.search_res');
+
+							let counter = res.length > 20 ? 20 : res.length;
+
+							if (resBlok) {
+
+								resBlok.innerHTML = '';
+
+								for (let i = 0; i < counter; i++) {
+
+									// на вход: 1- параметр: вставляем в конец, 2-ой: что вставляем
+									resBlok.insertAdjacentHTML('beforeend', `<a href="${res[i]['alias']}">${res[i]['name']}</a>`);
+								}
+								// снова вызовем метод (т.к. там будут все неоходимые элементы)
+								searchResultHover();
+							}
+
+						} catch (e) {
+
+							alert('Ничего не найдено по вашему запросу')
+						}
+					}
+				})
+
+
+			} else {
+				alert("введите больше одного символа")
+			}
+
+		});
+
+		//}
+	}
+}
+
+search();
+
+//========================================== стрелка-вверх ========================================================//
+
+// sctroll to top
+var arrowTop = document.getElementById("arrowTop");
+
+//console.log(arrowTop)
+
+arrowTop.onclick = function () {
+	window.scrollTo(pageXOffset, 0);
+};
+
+// после scrollTo возникнет событие "scroll", так что стрелка автоматически скроется
+window.addEventListener('scroll', function () {
+	arrowTop.hidden = (pageYOffset < document.documentElement.clientHeight);
+});
 

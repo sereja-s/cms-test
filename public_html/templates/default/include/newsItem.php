@@ -11,7 +11,7 @@
 		<div class="news__item_main">
 			<div class="news__item_header"><?= $data['name'] ?></div>
 			<div class="news__item_text"><?= $data['short_content'] ?></div>
-			<div class="news__item_readmore readmore-underline"><a href="<?= $this->alias(['news' => $data['alias']]) ?>">Читать подробрнее</a></div>
+
 		</div>
 	</div>
 
