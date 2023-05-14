@@ -58,7 +58,26 @@
 				<div class="vg-element vg-fifth">
 					<div class="vg-element vg-half vg-right">
 						<div class="vg-element vg-text vg-center">
-							<span class="vg-firm-color5">admin</span>
+
+							<!-- <span class="vg-firm-color5">admin</span> -->
+							<?php if (!empty($this->quantities)) : ?>
+
+								<div class="admin-section-top-items__unit" onclick="this.querySelector('.qty-items').classList.toggle('opened')">
+									Показывать по: <span><?= $_SESSION['quantitiesAdmmin'] ?? '' ?></span>
+
+									<div class="qty-items">
+
+										<?php foreach ($this->quantities as $item) : ?>
+
+											<a href="#"><?= $item ?></a>
+
+										<?php endforeach; ?>
+
+									</div>
+
+								</div>
+
+							<?php endif; ?>
 						</div>
 					</div>
 					<a href="<?= PATH . \core\base\settings\Settings::get('routes')['admin']['alias'] ?>/login/logout/1" class="vg-element vg-half vg-center">

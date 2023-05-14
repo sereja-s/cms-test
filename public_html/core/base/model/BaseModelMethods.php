@@ -35,6 +35,7 @@ abstract class BaseModelMethods
 	 */
 	protected $totalCount;
 
+
 	protected $sqlFunc = ['NOW()', 'RAND()'];
 	// свойство для полей таблицы
 	protected $tableRows;

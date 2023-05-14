@@ -58,6 +58,8 @@ abstract class BaseAdmin extends BaseController
 	// свойство (флаг) для запрета на удаление данных из таблиц БД
 	protected $noDelete;
 
+
+
 	protected function inputData()
 	{
 
@@ -1843,6 +1845,131 @@ abstract class BaseAdmin extends BaseController
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Метод формирует ссылки пагинации при выводе карточек товаров в каталоге (Выпуск №136)	 
+	 */
+	protected function pagination($pages)
+	{
+
+		// найдём параметр: page в адресной строке
+		$str = $_SERVER['REQUEST_URI'];
+
+		// удалим (если есть) из адресной строки: page= и следующие за ним цифры 
+		if (preg_match('/page=\d+/i', $str)) {
+
+			$str = preg_replace('/page=\d+/i', '', $str);
+		}
+
+		// аналогично если рядом стоят: ?& или ?amp; , то заменим их на знак: ?
+		if (preg_match('/(\?&)|(\?amp;)/i', $str)) {
+
+			$str = preg_replace('/(\?&)|(\?amp;)/i', '?', $str);
+		}
+
+		$basePageStr = $str;
+
+		if (preg_match('/\?(.)?/i', $str, $matches)) {
+
+			if (!preg_match('/&$/', $str) && !empty($matches[1])) {
+
+				$str .= '&';
+			} else {
+
+				$basePageStr = preg_replace('/(\?$)|(&$)/', '', $str);
+			}
+		} else {
+
+			$str .= '?';
+		}
+
+		$str .= 'page=';
+
+
+
+		$firstPageStr = !empty($pages['first']) ? ($pages['first'] === 1 ? $basePageStr : $str . $pages['first']) : '';
+
+		$backPageStr = !empty($pages['back']) ? ($pages['back'] === 1 ? $basePageStr : $str . $pages['back']) : '';
+
+		//$a = 1;
+
+		if (!empty($pages['first'])) {
+
+			echo <<<HEREDOC
+			<a href="$firstPageStr" class="catalog-section-pagination__item">
+									<< </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['back'])) {
+
+			echo <<<HEREDOC
+			<a href="$backPageStr" class="catalog-section-pagination__item">
+									< </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['previous'])) {
+
+			foreach ($pages['previous'] as $item) {
+
+				$href = $item === 1 ? $basePageStr : $str . $item;
+
+				echo <<<HEREDOC
+				<a href="$href" class="catalog-section-pagination__item">
+									$item
+								</a>
+				HEREDOC;
+			}
+		}
+
+
+		if (!empty($pages['current'])) {
+
+			echo <<<HEREDOC
+			<a href="" class="catalog-section-pagination__item pagination-current">
+									{$pages['current']} </a>
+			HEREDOC;
+		}
+
+
+		if (!empty($pages['next'])) {
+
+			foreach ($pages['next'] as $item) {
+
+				$href = $str . $item;
+
+				echo <<<HEREDOC
+				<a href="$href" class="catalog-section-pagination__item">
+									$item
+								</a>
+				HEREDOC;
+			}
+		}
+
+
+		if (!empty($pages['forward'])) {
+
+			$href = $str . $pages['forward'];
+
+			echo <<<HEREDOC
+			<a href="$href" class="catalog-section-pagination__item">
+									> </a>
+			HEREDOC;
+		}
+
+		if (!empty($pages['last'])) {
+
+			$href = $str . $pages['last'];
+
+			echo <<<HEREDOC
+			<a href="$href" class="catalog-section-pagination__item">
+									>> </a>
+			HEREDOC;
 		}
 	}
 }

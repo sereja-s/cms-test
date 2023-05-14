@@ -139,12 +139,13 @@
 
 								<?php endif; ?>
 
+
 								<?php if (!empty($quantities)) : ?>
 
 									<div class="catalog-section-top-items__unit catalog-section-top-items__toggle button2" onclick="this.querySelector('.qty-items').classList.toggle('opened')">
 										Показывать по: <span><?= $_SESSION['quantities'] ?? '' ?></span>
 
-										<div class=" qty-items">
+										<div class="qty-items">
 
 											<?php foreach ($quantities as $item) : ?>
 

@@ -56,6 +56,11 @@ class AjaxController extends BaseAdmin
 					$file = $fileEdit->addFile($this->clearStr($this->ajaxData['table']) . '/content_file/');
 					return ['location' => PATH . UPLOAD_DIR . $file[key($file)]];
 					break;
+
+				case 'catalog_quantities':
+					$qty = $this->clearNum($this->ajaxData['qty'] ?? 0);
+					$qty && $_SESSION['quantitiesAdmmin'] = $qty;
+					break;
 			}
 		}
 

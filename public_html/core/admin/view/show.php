@@ -36,3 +36,13 @@
 	<?php endif; ?>
 
 </div>
+
+<?php if (!empty($this->pages)) : ?>
+
+	<div class="catalog-section-pagination">
+
+		<?php $this->pagination($this->pages) ?>
+
+	</div>
+
+<?php endif; ?>

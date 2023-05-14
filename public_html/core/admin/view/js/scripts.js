@@ -946,6 +946,47 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.addEventListener('click', hideMessages)
 });
 
+//================================================== показывать по ===================================================//
+
+let qtyItems = document.querySelectorAll('.qty-items a');
+
+if (qtyItems.length) {
+
+	qtyItems.forEach(item => {
+
+		item.addEventListener('click', e => {
+
+			e.preventDefault();
+
+			let qty = +item.textContent;
+
+			if (qty && !isNaN(qty)) {
+
+				item.closest('.admin-section-top-items__unit').children[0].innerText = qty;
+
+				Ajax({
+					url: '/',
+					data: {
+						qty: qty,
+						ajax: 'catalog_quantities',
+					},
+				})
+
+				// после выбора кол-ва отображаемых товаров на странице каталога, запустим перезагрузку страницы (+Выпуск №136)
+				setTimeout(() => {
+
+					location.href = location.pathname
+
+				}, 100)
+			};
+
+		});
+
+	});
+
+}
+
+
 
 
 

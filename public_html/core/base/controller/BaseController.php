@@ -42,6 +42,7 @@ abstract class BaseController
 
 	// свойство, в котором будут находиться данные, которые пришли из БД (если будет подключаться шаблон редактирования)
 	protected $data;
+	protected $quantities;
 
 	// свойство, в которое будем заносить данные при работе с ajax (Выпуск №96)
 	protected $ajaxData;

@@ -22,9 +22,9 @@
 
 			<div class="<?= $classPrefix ?>__tabs_name">
 
-				<span><?= $data['name'] ?></span>
+				<h3><?= $data['name'] ?><br><?= $data['short_content'] ?></h3>
 
-				<?= $data['short_content'] ?>
+
 
 				<?php if (!empty($data['filters'])) : ?>
 

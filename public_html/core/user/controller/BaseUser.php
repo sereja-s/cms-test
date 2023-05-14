@@ -187,6 +187,7 @@ abstract class BaseUser extends \core\base\controller\BaseController
 						// к ключу конкатенируем символ квадратных скобок
 						$key .= '[]';
 
+						// +Выпуск №132
 						foreach ($item as $k => $v) {
 
 							// +Выпуск №132

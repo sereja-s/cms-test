@@ -71,20 +71,18 @@ class CatalogController extends BaseUser
 
 		$goods = $this->model->getGoods([
 			'where' => $where,
-			// Выпуск №132
+			// +Выпуск №132
 			'operand' => $operand,
-			// Выпуск №131
+			// +Выпуск №131
 			'order' => $orderDb['order'],
 			'order_direction' => $orderDb['order_direction'],
-			// Выпуск №135
+			// +Выпуск №135
 			'pagination' => [
 				'qty' => $_SESSION['quantities'] ?? QTY,
 
 				'page' => $this->clearNum($_GET['page'] ?? 1) ?: 1
 			]
 		], $catalogFilters, $catalogPrices);
-
-		//$a = 1;
 
 		// Выпуск №136
 		$pages = $this->model->getPagination();
@@ -159,14 +157,14 @@ class CatalogController extends BaseUser
 
 		if (isset($_GET['max_price'])) {
 
-			// здесь ячейка: [' price'] названа с побелом в начале, что бы не переопределилась
+			// здесь ячейка: [' price'] названа с побелом в начале, что бы не переопределилась одноимённая ячейка выше
 			$dbWhere[' price'] = $this->clearNum($_GET['max_price']);
 
 			$dbOperand[] = '<=';
 		}
 
 
-		// Выпуск №133 Пользовательская часть | система перекрестных фильтров
+		// +Выпуск №133 Пользовательская часть | система перекрестных фильтров
 		if (!empty($_GET['filters']) && is_array($_GET['filters'])) {
 
 
@@ -304,7 +302,7 @@ class CatalogController extends BaseUser
 		if ($counter === count($arr) - 1)
 			return $arr[$counter];
 
-		// Вызовем рекурсивно этот же метод (он будет проходить и буферизовать все данные, и от последнего к первому их возвращать)
+		// Вызовем рекурсивно этот же метод (он будет проходить и буферизовать все данные и от последнего к первому их возвращать)
 		$buffer = $this->crossDiffArr($arr, $counter + 1);
 
 		$res = [];

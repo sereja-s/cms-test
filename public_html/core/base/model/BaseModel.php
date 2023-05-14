@@ -195,6 +195,7 @@ abstract class BaseModel extends BaseModelMethods
 		// иначе запишем пустую строку
 		$limit = (!empty($set['limit'])) ? 'LIMIT ' . $set['limit'] : '';
 
+
 		// (+Выпуск №135)
 		$this->createPagination($set, $table, $paginationWhere, $limit);
 

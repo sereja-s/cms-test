@@ -12,6 +12,8 @@ use core\base\settings\ShopSettings;
  */
 class ShowController extends BaseAdmin
 {
+	protected $pages;
+
 	protected function inputData()
 	{
 		if (!$this->userId) {
@@ -26,7 +28,6 @@ class ShowController extends BaseAdmin
 		// вызовем метод, который будет получать необходимые для нашего шаблона-вывода данные из текущей таблицы
 		$this->createData(/* ['fields' => 'content'] */);
 
-		//exit(print_arr($this->data));
 
 		// вызываем метод, который будет расширять функционал нашего фреймвёрка (работа с расширениями)
 		return $this->expansion(/* ShopSettings::instance() */);
@@ -44,6 +45,7 @@ class ShowController extends BaseAdmin
 		$fields = [];
 		$order = [];
 		$order_direction = [];
+		$this->quantities = [3, 6, 15, 25, 35];
 
 		// если поля columns с ячейкой id_row не пришли из БД
 		if (!$this->columns['id_row']) {
@@ -73,7 +75,7 @@ class ShowController extends BaseAdmin
 		// если количество полей меньше трёх (т.е. поле name или(и) поле img не записались)
 		if (count($fields) < 3) {
 
-			// тогда пройдёмся по массиву columns, что б понять есть ли там иные поля схожие по типу
+			// тогда пройдёмся по массиву columns, что бs понять есть ли там иные поля схожие по типу
 			foreach ($this->columns as $key => $item) {
 
 				// если нет ячейки name и в переменой key (ключе) ищем на любой позиции слово name (и находим т.е. строго не равно false)
@@ -175,9 +177,17 @@ class ShowController extends BaseAdmin
 		$this->data = $this->model->get($this->table, [
 			'fields' => $fields,
 			'order' => $order,
-			'order_direction' => $order_direction
+			'order_direction' => $order_direction,
+			'pagination' => [
+				'qty' => $_SESSION['quantitiesAdmmin'] ?? QTY,
+
+				'page' => $this->clearNum($_GET['page'] ?? 1) ?: 1
+			]
 		]);
 
-		//exit(print_arr($this->data));
+		// в переменной сохраним результат работы метода, который формирует и возвращает массив с постраничной навигацией 
+		// (Выпуск №136) в BaseModelMethods
+		$this->pages = $this->model->getPagination();
+		$a = 1;
 	}
 }
