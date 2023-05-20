@@ -26,9 +26,9 @@ class AjaxController extends BaseAdmin
 			}
 
 			switch ($this->ajaxData['ajax']) {
-					//case 'sitemap':
-					//return (new CreatesitemapController())->inputData($this->ajaxData['links_counter'], false);
-					//break;
+				case 'sitemap':
+					return (new CreatesitemapController())->inputData($this->ajaxData['links_counter'], false);
+					break;
 
 					// Выпуск №95- асинхронная отправка формы на сервер
 				case 'editData':

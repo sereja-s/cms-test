@@ -689,7 +689,7 @@ input[type='email'] {
 } */
 
 .header__logo span {
-	font-family: 'Courier New', Courier, monospace;
+	font-family: 'Courier New';
 	width: 160px;
 	font-size: 20px;
 	font-weight: 600;
@@ -714,9 +714,9 @@ input[type='email'] {
 	}
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 375px) {
 	.header__logo span {
-		font-size: 18px;
+		font-size: 17px;
 	}
 }
 
@@ -7729,6 +7729,20 @@ input[type='email'] {
 	background: white;
 	max-height: 100vh;
 	overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+	.order-popup__inner {
+		margin: 0;
+		right: 30px;
+		flex-basis: 75vw;
+	}
+}
+
+@media (max-width: 500px) {
+	.order-popup__inner {
+		padding: 10px;
+	}
 }
 
 .order-popup__inner>input,

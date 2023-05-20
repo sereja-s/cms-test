@@ -6,6 +6,7 @@ use core\base\settings\Settings;
 
 /**
  * Класс распределит запросы учитывая административная это панель или пользовательская часть сайта (Выпуск №67)
+ * 
  * Методы: public function route(); protected function generateToken()
  */
 class BaseAjax extends BaseController
@@ -18,7 +19,7 @@ class BaseAjax extends BaseController
 		$route = Settings::get('routes');
 
 		$controller = $route['user']['path'] . 'AjaxController';
-		// данные могут прийти из js могут прийти ПОСТом или ГЕТом
+		// данные могут прийти из js могут прийти POST- или GET- запросами
 		// сделаем проверку каким способои данные пришли
 		$data = $this->isPost() ? $_POST : $_GET;
 
@@ -41,7 +42,7 @@ class BaseAjax extends BaseController
 			// разрегистрируем (удалим) ячейку: $data['ADMIN_MODE'] У нас она просто флаг
 			unset($data['ADMIN_MODE']);
 
-			// и переопределяем переменную: $controller (подключаем: AjaxController) Иначе это будет пользовательский контроллер
+			// и переопределяем переменную: $controller (подключаем: AjaxController)
 			$controller = $route['admin']['path'] . 'AjaxController';
 		}
 
@@ -54,7 +55,7 @@ class BaseAjax extends BaseController
 		// данные будем заносить в св-во: ajaxData 
 		$ajax->ajaxData = $data;
 
-		// +Выпуск №96
+		// (+Выпуск №96)
 		// в переменную сохраним результат работы метода: ajax()
 		$res = $ajax->ajax();
 

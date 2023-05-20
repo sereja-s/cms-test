@@ -19,18 +19,9 @@ use core\base\controller\BaseRoute;
 use core\base\exceptions\RouteException;
 use core\base\exceptions\DbException;
 
-//use core\base\settings\Settings;
-
-//$S = Settings::instance();
-//$S1 = \core\base\settings\ShopSettings::instance();
-//exit();
-
-//if ($_POST) exit('это запрос: POST');
-//if ($_POST) hahaha();
-
 try {
 	// вызовем статический метод routeDirection() у класса BaseRoute (что бы им пользоваться, не нужно создавать объект 
-	// класса При этом мы работаем внутри класса) Выпуск №67
+	// класса При этом мы работаем внутри класса) +Выпуск №67
 	BaseRoute::routeDirection();
 
 
